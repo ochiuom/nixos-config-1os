@@ -27,12 +27,12 @@
       gtk-theme = lib.mkForce "Orchis-Dark-Compact";
       icon-theme = lib.mkForce "Hatter-Yaru";
       cursor-theme = "Yaru";
-      font-name = lib.mkForce "Inter 12";
-      document-font-name = lib.mkForce "Inter 12";
-      monospace-font-name = lib.mkForce "JetBrainsMono Nerd Font 12";
+      font-name = lib.mkForce "Inter 11";
+      document-font-name = lib.mkForce "Inter 11";
+      monospace-font-name = lib.mkForce "JetBrainsMono Nerd Font 11";
       color-scheme = "prefer-dark";
       enable-animations = true;
-      text-scaling-factor = 0.9;
+      text-scaling-factor = 1.0;
       scaling-factor = lib.hm.gvariant.mkUint32 1;
     };
 
@@ -126,7 +126,7 @@
     theme = { name = "Orchis-Dark-Compact"; };
     iconTheme = { name = "Hatter-Yaru"; };
     cursorTheme = { name = "Yaru"; package = pkgs.yaru-theme; };
-    font = { name = "Inter"; size = 12; };
+    font = { name = "Inter"; size = 11; };
   };
 
   home.file.".config/ghostty/config".text = ''
@@ -134,7 +134,7 @@
     window-height = 25
     window-step-resize = true
     font-family = JetBrains Mono
-    font-size = 12
+    font-size = 11
     cursor-style = block
     cursor-style-blink = true
     shell-integration = bash
