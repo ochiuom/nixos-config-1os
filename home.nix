@@ -95,6 +95,47 @@
     "org/gnome/desktop/session" = {
       idle-delay = lib.hm.gvariant.mkUint32 0;
     };
+
+   "org/gnome/shell/extensions/tiling-assistant" = {
+     enable-tiling-popup = true;
+     window-gap = 4;
+     maximize-with-gap = true;
+     default-wrap-mode = 0;
+    };
+
+   "org/gnome/mutter" = {
+     experimental-features = [ "scale-monitor-framebuffer" "xwayland-native-scaling" ];
+     edge-tiling = true;
+     dynamic-workspaces = true;
+    };
+
+   "org/gnome/desktop/wm/preferences" = {
+     titlebar-font = "Inter Bold 11";
+     button-layout = "appmenu:minimize,maximize,close";
+     auto-raise = false;
+     focus-mode = "click";
+     num-workspaces = 4;
+   };
+
+   "org/gnome/desktop/wm/keybindings" = {
+     maximize = [ "<Super>Up" ];
+     unmaximize = [ "<Super>Down" ];
+     tile-left = [ "<Super>Left" ];
+     tile-right = [ "<Super>Right" ];
+     switch-to-workspace-1 = [ "<Super>1" ];
+     switch-to-workspace-2 = [ "<Super>2" ];
+     switch-to-workspace-3 = [ "<Super>3" ];
+     switch-to-workspace-4 = [ "<Super>4" ];
+     move-to-workspace-1 = [ "<Super><Shift>1" ];
+     move-to-workspace-2 = [ "<Super><Shift>2" ];
+     move-to-workspace-3 = [ "<Super><Shift>3" ];
+     move-to-workspace-4 = [ "<Super><Shift>4" ];
+     close = [ "<Super>q" ];
+   };
+
+    "org/gnome/shell/keybindings" = {
+      toggle-overview = [ "<Super>s" ];
+};
     
   };
 
