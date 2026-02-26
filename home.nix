@@ -14,7 +14,7 @@
   btop
   starship
   eza
-  pkgs.python312Packages.organize
+  python3Packages.organize-tool
   ];
 
   dconf.settings = {
