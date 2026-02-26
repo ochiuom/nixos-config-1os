@@ -233,5 +233,22 @@
     };
   };
 
+systemd.user.services.organize-downloads = {
+  Unit.Description = "Organize Downloads folder";
+  Service = {
+    Type = "oneshot";
+    ExecStart = "${pkgs.bash}/bin/bash -c '${config.home.homeDirectory}/.local/bin/organize run'";
+  };
+};
+
+systemd.user.timers.organize-downloads = {
+  Unit.Description = "Run organize-downloads hourly";
+  Timer = {
+    OnCalendar = "hourly";
+    Persistent = true;
+  };
+  Install.WantedBy = [ "timers.target" ];
+};
+
   programs.home-manager.enable = true;
 }
