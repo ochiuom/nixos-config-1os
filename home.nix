@@ -20,6 +20,8 @@
   dconf.settings = {
     "org/gnome/mutter" = {
       experimental-features = [ "scale-monitor-framebuffer" "xwayland-native-scaling" ];
+      edge-tiling = true;
+      dynamic-workspaces = true;
     };
     "org/gnome/desktop/interface" = {
       gtk-theme = lib.mkForce "Orchis-Dark-Compact";
@@ -105,6 +107,8 @@
 
    "org/gnome/mutter" = {
      experimental-features = [ "scale-monitor-framebuffer" "xwayland-native-scaling" ];
+      edge-tiling = true;
+      dynamic-workspaces = true;
      edge-tiling = true;
      dynamic-workspaces = true;
     };
