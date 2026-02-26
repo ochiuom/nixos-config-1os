@@ -14,7 +14,7 @@
   btop
   starship
   eza
-  pkgs.organize-tool
+  pkgs.organize
   ];
 
   dconf.settings = {
