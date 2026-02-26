@@ -228,7 +228,7 @@
   gnomeExtensions.tiling-assistant
   gnomeExtensions.logo-menu
   gnomeExtensions.lock-guard
-  gnomeExtensions.advanced-alt-tab-window-switcher
+  gnomeExtensions.advanced-alt-tab-window-switcher-by-g-dh
   gnomeExtensions.ip-finder
   gnomeExtensions.gnome-ui-tune
   gnomeExtensions.tweaks-and-extensions-in-system-menu

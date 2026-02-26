@@ -64,7 +64,7 @@
     tiling-assistant.extensionUuid
     logo-menu.extensionUuid
     lock-guard.extensionUuid
-    advanced-alt-tab-window-switcher.extensionUuid
+    "advanced-alt-tab@G-dH.github.com"
     ip-finder.extensionUuid
     gnome-ui-tune.extensionUuid
     tweaks-and-extensions-in-system-menu.extensionUuid
