@@ -143,19 +143,8 @@
     keybind = ctrl+shift+n=new_tab
   '';
 
-  home.file.".config/gtk-3.0/gtk.css" = {
-    force = true;
-    text = ''
-      * { padding: 0px; }
-    '';
-  };
-
-  home.file.".config/gtk-4.0/gtk.css" = {
-    force = true;
-    text = ''
-      * { padding: 0px; }
-    '';
-  };
+   home.file.".local/share/themes/Orchis-Dark-Compact".source = ./themes/Orchis-Dark-Compact;
+   home.file.".local/share/icons/Hatter-Yaru".source = ./themes/Hatter-Yaru;
 
   programs.bash = {
     enable = true;
