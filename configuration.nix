@@ -145,8 +145,8 @@
   security.sudo-rs.enable = true;
   networking.firewall = {
   enable = true;
-  allowedTCPPorts = [ 22 1716 ];
-  allowedUDPPorts = [ 1716 ];
+  allowedTCPPorts = [ 22 1716 53317];
+  allowedUDPPorts = [ 1716 53317];
   };
   services.openssh = {
     enable = true;
