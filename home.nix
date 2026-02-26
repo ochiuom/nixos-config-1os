@@ -78,7 +78,7 @@
    };
 
     "org/gnome/shell/extensions/user-theme" = {
-      name = "Yaru-dark";
+      name = "Orchis-Dark-Compact";
     };
     "org/gnome/desktop/peripherals/touchpad" = {
       tap-to-click = true;
@@ -101,9 +101,6 @@
 
   #gtk = {
    # enable = true;
-   # theme = { name = "Orchis-Dark-Compact"; package = pkgs.yaru-theme; };
-   # iconTheme = { name = "Hatter-Yaru"; package = pkgs.yaru-theme; };
-   # cursorTheme = { name = "Yaru"; package = pkgs.yaru-theme; };
    # font = { name = "Inter"; size = 12; };
   #};
 
