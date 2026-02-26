@@ -64,9 +64,7 @@
     tiling-assistant.extensionUuid
     logo-menu.extensionUuid
     lock-guard.extensionUuid
-    "advanced-alt-tab@G-dH.github.com"
     ip-finder.extensionUuid
-    "gnome-ui-tune@itstime.tech"
     "tweaks-system-menu@extensions.gnome-shell.fifi.org"
      ];
    };
