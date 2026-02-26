@@ -105,13 +105,6 @@
      default-wrap-mode = 0;
     };
 
-   "org/gnome/mutter" = {
-     experimental-features = [ "scale-monitor-framebuffer" "xwayland-native-scaling" ];
-      edge-tiling = true;
-      dynamic-workspaces = true;
-     edge-tiling = true;
-     dynamic-workspaces = true;
-    };
 
    "org/gnome/desktop/wm/preferences" = {
      titlebar-font = "Inter Bold 11";
