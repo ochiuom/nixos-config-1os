@@ -171,6 +171,25 @@ home.file.".config/organize/config.yaml".text = ''
   keybind = ctrl+shift+n=new_tab
   '';
 
+  home.file.".config/gtk-3.0/gtk.css" = {
+  force = true;
+  text = ''
+    * {
+      padding: 0px;
+      }
+    '';
+  };
+
+  home.file.".config/gtk-4.0/gtk.css" = {
+  force = true;
+  text = ''
+    * {
+      padding: 0px;
+    }
+   '';
+  };
+
+
   # ── Shell & Terminal tools ────────────────────────────────────
   programs.bash = {
   enable = true;
