@@ -27,7 +27,26 @@
   # ── Kernel ────────────────────────────────────────────────────
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.initrd.kernelModules = [ "i915" ];
-  boot.kernelParams = [ "i915.enable_guc=3" "i915.enable_fbc=1" "i915.enable_psr=1" ];
+  # ── Plymouth boot splash ──────────────────────────────────────
+  boot.plymouth = {
+  enable = true;
+  theme = "bgrt";
+  };
+
+  boot.initrd.systemd.enable = true;
+
+  # Silent boot
+  boot.consoleLogLevel = 0;
+  boot.initrd.verbose = false;
+  boot.kernelParams = [
+  "i915.enable_guc=3"
+  "i915.enable_fbc=1"
+  "i915.enable_psr=1"
+  "quiet"
+  "splash"
+  "rd.udev.log_level=3"
+  "udev.log_priority=3"
+  ];
 
   # ── Networking ───────────────────────────────────────────────
   networking.hostName = "ochinix-pc";
