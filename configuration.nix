@@ -231,7 +231,7 @@
   vlc mpd mpc mpv mplayer smplayer
  
   # services terminal
-  syncthing tor
+  syncthing tor gocryptfs fuse
 
   # File manager tools
   yazi evince gparted baobab
@@ -279,6 +279,7 @@
     client.enable = true;
     client.dns.enable = true;
   };
+  programs.fuse.userAllowOther = true;
 
   system.stateVersion = "26.05";
 }

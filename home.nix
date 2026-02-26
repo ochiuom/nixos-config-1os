@@ -168,6 +168,8 @@
       cd      = "z";
       update  = "sudo nix flake update /etc/nixos && sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc";
       upgrade = "sudo nix flake update /etc/nixos && sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc && sudo nix-collect-garbage -d";
+      unlockv = "gocryptfs -allow_other ~/Documents/.vault ~/Documents/Vault";
+      lockv   = "fusermount -u -z ~/Documents/Vault";
     };
     initExtra = ''
       export TERM=xterm-256color
