@@ -22,8 +22,8 @@
       experimental-features = [ "scale-monitor-framebuffer" "xwayland-native-scaling" ];
     };
     "org/gnome/desktop/interface" = {
-      gtk-theme = "Yaru-dark";
-      icon-theme = "Yaru";
+      gtk-theme = lib.mkForce "Orchis-Dark-Compact";
+      icon-theme = lib.mkForce "Hatter-Yaru";
       cursor-theme = "Yaru";
       font-name = lib.mkForce "Inter 12";
       document-font-name = lib.mkForce "Inter 12";
