@@ -54,7 +54,10 @@
     ];
   };
 
-  environment.sessionVariables = { LIBVA_DRIVER_NAME = "iHD"; };
+  environment.sessionVariables = {
+  LIBVA_DRIVER_NAME = "iHD";
+  NIXOS_OZONE_WL = "1";
+  };
   services.xserver.videoDrivers = [ "modesetting" ];
 
   services.fstrim.enable = true;
@@ -95,6 +98,8 @@
       nerd-fonts.jetbrains-mono
       nerd-fonts.fira-code
       nerd-fonts.hack
+      font-awesome
+      atkinson-hyperlegible-next
     ];
     fontconfig = {
       enable = true;
@@ -113,8 +118,20 @@
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
-    enable = true; alsa.enable = true; alsa.support32Bit = true;
-    pulse.enable = true; wireplumber.enable = true;
+  enable = true;
+  alsa.enable = true;
+  alsa.support32Bit = true;
+  pulse.enable = true;
+  wireplumber.enable = true;
+  extraConfig.pipewire."10-clock" = {
+    "context.properties" = {
+      "default.clock.rate" = 48000;
+      "default.clock.allowed-rates" = [ 44100 48000 96000 192000 ];
+      "default.clock.quantum" = 1024;
+      "default.clock.min-quantum" = 32;
+      "default.clock.max-quantum" = 8192;
+      };
+    };
   };
 
   # ── Users ────────────────────────────────────────────────────
@@ -126,12 +143,21 @@
   };
 
   # ── Security ─────────────────────────────────────────────────
-  security.sudo.wheelNeedsPassword = true;
+  security.sudo-rs.enable = true;
   networking.firewall = { enable = true; allowedTCPPorts = [ 22 ]; };
   services.openssh = {
     enable = true;
     settings = { PermitRootLogin = "no"; PasswordAuthentication = true; };
   };
+
+  services.fprintd.enable = true;
+
+  hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
+
+  services.devmon.enable = true;
+  services.gvfs.enable = true;
+  services.udisks2.enable = true;
   
   # ── Nix ──────────────────────────────────────────────────────
   nix.settings = {
@@ -139,6 +165,14 @@
   auto-optimise-store = true;
   min-free = 1073741824;
   max-free = 5368709120;
+  substituters = [
+    "https://cache.nixos.org"
+    "https://nix-community.cachix.org"
+  ];
+  trusted-public-keys = [
+    "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+   ];
   };
 
   nix.gc = {
@@ -155,7 +189,8 @@
     xdg-desktop-portal-gnome
     firefox kitty ghostty vscode  vlc
     mpd mpc mpv  mplayer smplayer zed yazi
-
+    # Extra utilities
+    evince gparted baobab wl-color-picker localsend xdg-utils glib exfatprogs qpwgraph
 
     gnome-tweaks gnome-extension-manager
     gnomeExtensions.appindicator       gnomeExtensions.user-themes
