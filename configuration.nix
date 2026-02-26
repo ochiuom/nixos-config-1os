@@ -144,7 +144,11 @@
 
   # ── Security ─────────────────────────────────────────────────
   security.sudo-rs.enable = true;
-  networking.firewall = { enable = true; allowedTCPPorts = [ 22 ]; };
+  networking.firewall = {
+  enable = true;
+  allowedTCPPorts = [ 22 1716 ];
+  allowedUDPPorts = [ 1716 ];
+  };
   services.openssh = {
     enable = true;
     settings = { PermitRootLogin = "no"; PasswordAuthentication = true; };
@@ -187,6 +191,14 @@
   git vim wget curl htop ffmpeg libva-utils
   sbctl btrfs-progs cryptsetup pciutils usbutils lshw
   networkmanagerapplet xdg-utils xdg-desktop-portal-gnome glib
+  
+  # Office & Docs
+  libreoffice-fresh
+  hunspell
+  hunspellDicts.en_US
+  
+  # LaTeX
+  texstudio
 
   # Browsers & Internet
   firefox

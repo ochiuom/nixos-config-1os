@@ -36,9 +36,17 @@
       titlebar-font = "Ubuntu Bold 11";
       button-layout = "appmenu:minimize,maximize,close";
     };
+
+
     "org/gnome/desktop/background" = {
+      picture-uri = "file:///run/current-system/sw/share/backgrounds/gnome/blobs-l.svg";
+      picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/gnome/blobs-d.svg";
       picture-options = "zoom";
       primary-color = "#300a24";
+    };
+    "org/gnome/desktop/screensaver" = {
+      picture-uri = "file:///run/current-system/sw/share/backgrounds/gnome/blobs-d.svg";
+      picture-options = "zoom";
     };
 
     "org/gnome/shell" = {
@@ -120,8 +128,8 @@
   };
 
   home.file.".config/ghostty/config".text = ''
-  window-width = 120
-  window-height = 35
+  window-width = 90
+  window-height = 25
   window-step-resize = true
   font-family = JetBrains Mono
   font-size = 12
