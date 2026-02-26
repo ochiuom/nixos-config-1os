@@ -25,16 +25,16 @@
       gtk-theme = "Yaru-dark";
       icon-theme = "Yaru";
       cursor-theme = "Yaru";
-      font-name = "Ubuntu 12";
-      document-font-name = "Ubuntu 12";
-      monospace-font-name = "Ubuntu Mono 12";
+      font-name = lib.mkForce "Inter 12";
+      document-font-name = lib.mkForce "Inter 12";
+      monospace-font-name = lib.mkForce "JetBrainsMono Nerd Font 12";
       color-scheme = "prefer-dark";
       enable-animations = true;
       text-scaling-factor = 0.9;
       scaling-factor = lib.hm.gvariant.mkUint32 1;
     };
     "org/gnome/desktop/wm/preferences" = {
-      titlebar-font = "Ubuntu Bold 11";
+      titlebar-font = lib.mkForce "Inter Bold 11";
       button-layout = "appmenu:minimize,maximize,close";
     };
 
