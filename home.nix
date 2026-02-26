@@ -99,12 +99,20 @@
   };
 
 
+  #gtk = {
+   # enable = true;
+   # theme = { name = "Orchis-Dark-Compact"; package = pkgs.yaru-theme; };
+   # iconTheme = { name = "Hatter-Yaru"; package = pkgs.yaru-theme; };
+   # cursorTheme = { name = "Yaru"; package = pkgs.yaru-theme; };
+   # font = { name = "Inter"; size = 12; };
+  #};
+
   gtk = {
-    enable = true;
-    theme = { name = "Yaru-dark"; package = pkgs.yaru-theme; };
-    iconTheme = { name = "Yaru"; package = pkgs.yaru-theme; };
-    cursorTheme = { name = "Yaru"; package = pkgs.yaru-theme; };
-    font = { name = "Ubuntu"; size = 12; };
+  enable = true;
+  theme = { name = "Orchis-Dark-Compact"; };
+  iconTheme = { name = "Hatter-Yaru"; };
+  cursorTheme = { name = "Yaru"; package = pkgs.yaru-theme; };
+  font = { name = "Inter"; size = 12; };
   };
 
   home.file.".config/ghostty/config".text = ''
@@ -149,8 +157,6 @@
   initExtra = ''
     export TERM=xterm-256color
     eval "$(zoxide init bash)"
-    eval "$(fzf --bash)"
-    eval "$(starship init bash)"
   '';
  };
 
