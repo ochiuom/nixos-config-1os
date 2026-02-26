@@ -66,7 +66,7 @@
     lock-guard.extensionUuid
     "advanced-alt-tab@G-dH.github.com"
     ip-finder.extensionUuid
-    gnome-ui-tune.extensionUuid
+    "gnome-ui-tune@itstime.tech"
     tweaks-and-extensions-in-system-menu.extensionUuid
      ];
    };
