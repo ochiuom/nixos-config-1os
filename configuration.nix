@@ -210,6 +210,9 @@
 
   # Media
   vlc mpd mpc mpv mplayer smplayer
+ 
+  # services terminal
+  syncthing tor
 
   # File manager tools
   yazi evince gparted baobab
@@ -241,6 +244,22 @@
   gnomeExtensions.lock-guard
   gnomeExtensions.ip-finder
  ];
+ 
+ # ── Syncthing ─────────────────────────────────────────────────
+  services.syncthing = {
+    enable = true;
+    user = "ochinix";
+    dataDir = "/home/ochinix";
+    configDir = "/home/ochinix/.config/syncthing";
+    openDefaultPorts = true;  # opens 22000/TCP and 21027/UDP automatically
+  };
+
+ # ── Tor ───────────────────────────────────────────────────────
+   services.tor = {
+    enable = true;
+    client.enable = true;
+    client.dns.enable = true;
+  };
 
   system.stateVersion = "26.05";
 }
