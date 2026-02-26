@@ -40,23 +40,37 @@
       picture-options = "zoom";
       primary-color = "#300a24";
     };
+
     "org/gnome/shell" = {
-      enabled-extensions = [
-        "appindicatorsupport@rgcjonas.gmail.com"
-        "user-theme@gnome-shell-extensions.gcampax.github.com"
-        "caffeine@patapon.info"
-        "places-menu@gnome-shell-extensions.gcampax.github.com"
-        "blur-my-shell@aunetx"
-        "gsconnect@andyholmes.github.io"
-        "ddterm@amezin.github.com"
-        "search-light@icedman.github.com"
-        "compiz-windows-effect@hermes83.github.com"
-        "compiz-alike-magic-lamp-effect@hermes83.github.com"
-        "burn-my-windows@schneegans.github.com"
-        "impatience@gfxmonk.net"
-        "desktop-cube@schneegans.github.com"
-      ];
-    };
+    disable-user-extensions = false;
+    enabled-extensions = with pkgs.gnomeExtensions; [
+    user-themes.extensionUuid
+    caffeine.extensionUuid
+    places-status-indicator.extensionUuid
+    blur-my-shell.extensionUuid
+    gsconnect.extensionUuid
+    vitals.extensionUuid
+    desktop-cube.extensionUuid
+    burn-my-windows.extensionUuid
+    tophat.extensionUuid
+    impatience.extensionUuid
+    compiz-windows-effect.extensionUuid
+    compiz-alike-magic-lamp-effect.extensionUuid
+    ddterm.extensionUuid
+    search-light.extensionUuid
+    space-bar.extensionUuid
+    appindicator.extensionUuid
+    dash2dock-lite.extensionUuid
+    tiling-assistant.extensionUuid
+    logo-menu.extensionUuid
+    lock-guard.extensionUuid
+    advanced-alt-tab-window-switcher.extensionUuid
+    ip-finder.extensionUuid
+    gnome-ui-tune.extensionUuid
+    tweaks-and-extensions-in-system-menu.extensionUuid
+     ];
+   };
+
     "org/gnome/shell/extensions/user-theme" = {
       name = "Yaru-dark";
     };

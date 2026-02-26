@@ -181,28 +181,58 @@
   options = "--delete-older-than 14d --max-freed 10G";
   };
   
+ # ── Packages ─────────────────────────────────────────────────
+ environment.systemPackages = with pkgs; [
+  # Core
+  git vim wget curl htop ffmpeg libva-utils
+  sbctl btrfs-progs cryptsetup pciutils usbutils lshw
+  networkmanagerapplet xdg-utils xdg-desktop-portal-gnome glib
 
-  # ── Packages ─────────────────────────────────────────────────
-  environment.systemPackages = with pkgs; [
-    git vim wget curl htop ffmpeg libva-utils vlc firefox
-    sbctl btrfs-progs cryptsetup pciutils usbutils lshw networkmanagerapplet
-    xdg-desktop-portal-gnome
-    firefox kitty ghostty vscode  vlc
-    mpd mpc mpv  mplayer smplayer zed-editor yazi
-    # Extra utilities
-    evince gparted baobab wl-color-picker localsend xdg-utils glib exfatprogs qpwgraph
+  # Browsers & Internet
+  firefox
 
-    gnome-tweaks gnome-extension-manager
-    gnomeExtensions.appindicator       gnomeExtensions.user-themes
-    gnomeExtensions.caffeine           gnomeExtensions.places-status-indicator
-    gnomeExtensions.blur-my-shell      gnomeExtensions.gsconnect
-    gnomeExtensions.ddterm             gnomeExtensions.search-light
-    gnomeExtensions.compiz-windows-effect
-    gnomeExtensions.compiz-alike-magic-lamp-effect
-    gnomeExtensions.burn-my-windows    gnomeExtensions.impatience
-    gnomeExtensions.desktop-cube
-    gnomeExtensions.compact-top-bar
-  ];
+  # Terminals
+  kitty ghostty
+
+  # Editors
+  vscode zed-editor
+
+  # Media
+  vlc mpd mpc mpv mplayer smplayer
+
+  # File manager tools
+  yazi evince gparted baobab
+  wl-color-picker localsend exfatprogs qpwgraph
+
+  # GNOME tools
+  gnome-tweaks gnome-extension-manager
+
+  # GNOME Extensions
+  gnomeExtensions.user-themes
+  gnomeExtensions.caffeine
+  gnomeExtensions.places-status-indicator
+  gnomeExtensions.blur-my-shell
+  gnomeExtensions.gsconnect
+  gnomeExtensions.vitals
+  gnomeExtensions.desktop-cube
+  gnomeExtensions.burn-my-windows
+  gnomeExtensions.tophat
+  gnomeExtensions.impatience
+  gnomeExtensions.compiz-windows-effect
+  gnomeExtensions.compiz-alike-magic-lamp-effect
+  gnomeExtensions.ddterm
+  gnomeExtensions.search-light
+  gnomeExtensions.space-bar
+  gnomeExtensions.appindicator
+  gnomeExtensions.dash2dock-lite
+  gnomeExtensions.tiling-assistant
+  gnomeExtensions.logo-menu
+  gnomeExtensions.lock-guard
+  gnomeExtensions.advanced-alt-tab-window-switcher
+  gnomeExtensions.ip-finder
+  gnomeExtensions.gnome-ui-tune
+  gnomeExtensions.tweaks-and-extensions-in-system-menu
+ ];
 
   system.stateVersion = "26.05";
 }
