@@ -203,6 +203,12 @@ home.file.".config/organize/config.yaml".text = ''
   '';
  };
 
+  home.sessionPath = [
+  "$HOME/.local/bin"
+  "$HOME/.cargo/bin"
+  "/usr/local/texlive/2025/bin/x86_64-linux"
+  ];
+
  programs.fzf = {
   enable = true;
   enableBashIntegration = true;
