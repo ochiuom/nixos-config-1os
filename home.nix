@@ -131,6 +131,7 @@
     cd    = "z";
   };
   initExtra = ''
+    export TERM=xterm-256color
     eval "$(zoxide init bash)"
     eval "$(fzf --bash)"
     eval "$(starship init bash)"

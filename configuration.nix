@@ -188,7 +188,7 @@
     sbctl btrfs-progs cryptsetup pciutils usbutils lshw networkmanagerapplet
     xdg-desktop-portal-gnome
     firefox kitty ghostty vscode  vlc
-    mpd mpc mpv  mplayer smplayer zed yazi
+    mpd mpc mpv  mplayer smplayer zed-editor yazi
     # Extra utilities
     evince gparted baobab wl-color-picker localsend xdg-utils glib exfatprogs qpwgraph
 
