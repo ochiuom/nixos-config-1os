@@ -108,6 +108,20 @@
     font = { name = "Ubuntu"; size = 12; };
   };
 
+  home.file.".config/ghostty/config".text = ''
+  window-width = 120
+  window-height = 35
+  window-step-resize = true
+  font-family = JetBrains Mono
+  font-size = 12
+  cursor-style = block
+  cursor-style-blink = true
+  shell-integration = bash
+  gtk-single-instance = true
+  keybind = ctrl+shift+e=new_window
+  keybind = ctrl+shift+n=new_tab
+  '';
+
   # ── Shell & Terminal tools ────────────────────────────────────
   programs.bash = {
   enable = true;
