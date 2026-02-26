@@ -201,6 +201,7 @@
     gnomeExtensions.compiz-alike-magic-lamp-effect
     gnomeExtensions.burn-my-windows    gnomeExtensions.impatience
     gnomeExtensions.desktop-cube
+    gnomeExtensions.compact-top-bar
   ];
 
   system.stateVersion = "26.05";
