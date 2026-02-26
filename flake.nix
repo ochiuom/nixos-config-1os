@@ -27,6 +27,7 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.ochinix = import ./home.nix;
+          home-manager.backupFileExtension = "backup";
           nixpkgs.config.allowUnfree = true;
         }
       ];
