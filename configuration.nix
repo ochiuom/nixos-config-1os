@@ -229,7 +229,6 @@
   gnomeExtensions.logo-menu
   gnomeExtensions.lock-guard
   gnomeExtensions.ip-finder
-  gnomeExtensions.tweaks-system-menu
  ];
 
   system.stateVersion = "26.05";

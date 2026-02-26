@@ -65,7 +65,6 @@
     logo-menu.extensionUuid
     lock-guard.extensionUuid
     ip-finder.extensionUuid
-    "tweaks-system-menu@extensions.gnome-shell.fifi.org"
      ];
    };
 
