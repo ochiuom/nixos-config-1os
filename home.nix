@@ -67,7 +67,7 @@
     "advanced-alt-tab@G-dH.github.com"
     ip-finder.extensionUuid
     "gnome-ui-tune@itstime.tech"
-    tweaks-and-extensions-in-system-menu.extensionUuid
+    "tweaks-system-menu@extensions.gnome-shell.fifi.org"
      ];
    };
 

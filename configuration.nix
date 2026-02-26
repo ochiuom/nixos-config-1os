@@ -231,7 +231,7 @@
   gnomeExtensions.advanced-alt-tab-window-switcher-by-g-dh
   gnomeExtensions.ip-finder
   gnomeExtensions.gnome-ui-tune
-  gnomeExtensions.tweaks-and-extensions-in-system-menu
+  gnomeExtensions.tweaks-system-menu
  ];
 
   system.stateVersion = "26.05";
