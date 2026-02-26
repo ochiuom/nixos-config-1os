@@ -98,19 +98,6 @@
     
   };
 
-  home.file.".config/gtk-3.0/gtk.css".text = ''
-  * { 
-    padding: 0px;
-  }
-  '';
-
-  home.file.".config/gtk-4.0/gtk.css".text = ''
-  * {
-    padding: 0px;
-  }
-  '';
-
-   home.file.".config/gnome-shell/extensions/user-theme/stylesheet.css".text = ''
   #panel {
     height: 28px;
     font-size: 11px;
