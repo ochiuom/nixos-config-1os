@@ -5,7 +5,15 @@
   home.stateVersion = "26.05";
 
   home.packages = with pkgs; [
-    yaru-theme
+  yaru-theme
+  fzf
+  zoxide
+  fd
+  ripgrep
+  bat
+  btop
+  starship
+  eza
   ];
 
   dconf.settings = {
@@ -99,6 +107,84 @@
     cursorTheme = { name = "Yaru"; package = pkgs.yaru-theme; };
     font = { name = "Ubuntu"; size = 12; };
   };
+
+  # ── Shell & Terminal tools ────────────────────────────────────
+  programs.bash = {
+  enable = true;
+  enableCompletion = true;
+  shellAliases = {
+    ll    = "eza -alh --icons";
+    la    = "eza -A --icons";
+    l     = "eza --icons";
+    ".."  = "cd ..";
+    "..." = "cd ../..";
+    gs    = "git status";
+    ga    = "git add .";
+    gc    = "git commit -m";
+    gp    = "git push";
+    nrs   = "sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc";
+    ngc   = "sudo nix-collect-garbage -d";
+    cat   = "bat";
+    find  = "fd";
+    grep  = "rg";
+    top   = "btop";
+    cd    = "z";
+  };
+  initExtra = ''
+    eval "$(zoxide init bash)"
+    eval "$(fzf --bash)"
+    eval "$(starship init bash)"
+  '';
+ };
+
+ programs.fzf = {
+  enable = true;
+  enableBashIntegration = true;
+  defaultOptions = [
+    "--height 40%"
+    "--layout=reverse"
+    "--border"
+    "--color=dark"
+  ];
+ };
+
+ programs.zoxide = {
+  enable = true;
+  enableBashIntegration = true;
+ };
+
+ programs.starship = {
+  enable = true;
+  settings = {
+    add_newline = false;
+    character = {
+      success_symbol = "[❯](bold green)";
+      error_symbol = "[❯](bold red)";
+    };
+    directory = {
+      truncation_length = 3;
+      truncate_to_repo = true;
+    };
+    git_branch.symbol = " ";
+    nix_shell.symbol = " ";
+  };
+ };
+
+ programs.bat = {
+  enable = true;
+  config = {
+    theme = "TwoDark";
+    italic-text = "always";
+  };
+ };
+
+ programs.btop = {
+  enable = true;
+  settings = {
+    color_theme = "dracula";
+    vim_keys = true;
+  };
+ };
 
   programs.home-manager.enable = true;
 }
