@@ -160,7 +160,7 @@
       gc      = "git commit -m";
       gp      = "git push";
       nrs     = "sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc";
-      ngc     = "sudo nix-collect-garbage -d";
+      ngc = "sudo nix-env --delete-generations +3 --profile /nix/var/nix/profiles/system && sudo nix-store --gc";
       cat     = "bat";
       find    = "fd";
       grep    = "rg";

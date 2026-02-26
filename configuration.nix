@@ -181,7 +181,7 @@
   nix.gc = {
   automatic = true;
   dates = "weekly";
-  options = "--delete-older-than 14d --max-freed 10G";
+  options = "--delete-generations +3";
   };
   
  # ── Packages ─────────────────────────────────────────────────
