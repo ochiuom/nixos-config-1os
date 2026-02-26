@@ -98,43 +98,6 @@
     
   };
 
-  #panel {
-    height: 28px;
-    font-size: 11px;
-  }
-  '';  
-
-
-home.file.".config/organize/config.yaml".text = ''
-  rules:
-    - name: "Organize Downloads"
-      locations:
-        - path: ~/Downloads
-          exclude_dirs:
-            - "Organize"
-      filters:
-        - extension
-        - not extension:
-            - rpm
-            - appimage
-            - sh
-            - run
-      actions:
-        - move: "~/Downloads/Organize/{extension|upper}/"
-    - name: "Handle Installers"
-      locations:
-        - path: ~/Downloads
-          exclude_dirs:
-            - "Organize"
-      filters:
-        - extension:
-            - rpm
-            - appimage
-            - sh
-            - run
-      actions:
-        - move: "~/Downloads/Organize/Installers/"
-  '';
 
   gtk = {
     enable = true;
