@@ -14,6 +14,7 @@
     btop
     starship
     eza
+    pipx
   ];
 
   dconf.settings = {
