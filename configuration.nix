@@ -73,7 +73,6 @@
     gnome-tour gnome-connections geary epiphany totem
     gnome-maps gnome-music gnome-weather gnome-contacts
     gnome-clocks gnome-calendar gnome-logs gnome-software
-    simple-scan yelp gnome-backgrounds
   ];
 
   # ── Power ─────────────────────────────────────────────────────

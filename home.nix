@@ -94,10 +94,18 @@
     "org/gnome/desktop/session" = {
       idle-delay = lib.hm.gvariant.mkUint32 0;
     };
+    
+    "org/gnome/desktop/background" = {
+      picture-uri = ...
+      picture-uri-dark = ...
+      picture-options = "zoom";
+      primary-color = "#300a24";
+      };
     "org/gnome/desktop/screensaver" = {
-      lock-enabled = false;
-      idle-activation-enabled = false;
-    };
+      picture-uri = ...
+      picture-options = "zoom";
+     };
+
   };
 
   home.file.".config/gtk-3.0/gtk.css".text = ''
