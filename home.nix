@@ -30,7 +30,7 @@
       cursor-theme = "Yaru";
       font-name = lib.mkForce "Inter 10";
       document-font-name = lib.mkForce "Inter 10";
-      monospace-font-name = lib.mkForce "JetBrainsMono Nerd Font 10";
+      monospace-font-name = lib.mkForce "JetBrainsMono Nerd Font 9";
       color-scheme = "prefer-dark";
       enable-animations = true;
       text-scaling-factor = 1.0;
@@ -144,12 +144,12 @@
     window-height = 25
     window-step-resize = true
     font-family = JetBrains Mono
-    font-size = 10
+    font-size = 9
     cursor-style = block
     cursor-style-blink = true
     shell-integration = bash
     gtk-single-instance = true
-    background = #282c34
+    background = #3b3b3f
     keybind = ctrl+shift+e=new_window
     keybind = ctrl+shift+n=new_tab
   '';
