@@ -208,8 +208,7 @@
   # Core
   git vim wget curl htop ffmpeg libva-utils
   sbctl btrfs-progs cryptsetup pciutils usbutils lshw
-  networkmanagerapplet xdg-utils xdg-desktop-portal-gnome glib gpick
-  hyprpicker  
+  networkmanagerapplet xdg-utils xdg-desktop-portal-gnome glib gpick  
   
   # Office & Docs
   libreoffice-fresh
@@ -263,6 +262,9 @@
   gnomeExtensions.logo-menu
   gnomeExtensions.lock-guard
   gnomeExtensions.ip-finder
+  gnomeExtensions.color-picker
+  gnomeExtensions.dash2dock-lite
+  gnomeExtensions.compact-top-bar
  ];
  
  # ── Syncthing ─────────────────────────────────────────────────

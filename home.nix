@@ -69,6 +69,9 @@
         logo-menu.extensionUuid
         lock-guard.extensionUuid
         ip-finder.extensionUuid
+        color-picker.extensionUuid
+        dash2dock-lite.extensionUuid
+        compact-top-bar.exstensionUuid
       ];
     };
 
@@ -140,6 +143,7 @@
     cursor-style-blink = true
     shell-integration = bash
     gtk-single-instance = true
+    background = #424242
     keybind = ctrl+shift+e=new_window
     keybind = ctrl+shift+n=new_tab
   '';
