@@ -424,7 +424,6 @@ systemd.user.timers.organize-downloads = {
   cp -f ${./starship/starship.toml} ~/.config/starship.toml
   ''; 
  
-
   home.activation.copyEasyEffects = lib.hm.dag.entryAfter ["writeBoundary"] ''
   mkdir -p ~/.config/easyeffects/output
   mkdir -p ~/.config/easyeffects/irs
@@ -432,7 +431,6 @@ systemd.user.timers.organize-downloads = {
   cp -rf ${./easyeffects}/output/. ~/.config/easyeffects/output/
   cp -rf ${./easyeffects}/irs/.  ~/.config/easyeffects/irs/
   ''; 
-
 
   programs.home-manager.enable = true;
 }
