@@ -439,9 +439,9 @@ systemd.user.timers.organize-downloads = {
    };
 
    home.activation.copyMPD = lib.hm.dag.entryAfter ["writeBoundary"] ''
-   mkdir -p ~/.config/mpd
-   cp -rf ${./mpd}/. ~/.config/mpd/
-   '';
+    mkdir -p ~/.config/mpd
+    cp -f ${./mpd/mpd.conf} ~/.config/mpd/mpd.conf
+    '';
 
   programs.home-manager.enable = true;
 }
