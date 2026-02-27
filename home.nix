@@ -416,7 +416,9 @@ systemd.user.timers.organize-downloads = {
  '';
   
   home.activation.copyStarship = lib.hm.dag.entryAfter ["writeBoundary"] ''
-  mkdir -p ~/.config
+  # remove stale backup if exists
+  rm -f ~/.config/starship.toml.backup
+  rm -f ~/.config/starship.toml.bak
   cp -f ${./starship/starship.toml} ~/.config/starship.toml
   '';
 
