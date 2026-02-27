@@ -432,6 +432,11 @@ systemd.user.timers.organize-downloads = {
   cp -rf ${./easyeffects}/output/. ~/.config/easyeffects/output/
   cp -rf ${./easyeffects}/irs/.  ~/.config/easyeffects/irs/
   ''; 
+   
+   services.easyeffects = {
+    enable = true;
+    preset = "C+Cry+BE+Max"; # optional, name of your saved preset
+   };
 
   programs.home-manager.enable = true;
 }
