@@ -28,6 +28,7 @@
     audacious-plugins
     audacity
     warp-terminal
+    ncmpcpp
   ];
 
   dconf.settings = {
@@ -408,7 +409,8 @@ systemd.user.timers.organize-downloads = {
   vimAlias = true;
   };
   
-  home.file.".config/easyeffects".source = ./easyeffects;
-
+  home.file.".config/easyeffects/output".source = /etc/nixos/easyeffects-presets/output;
+  home.file.".config/easyeffects/input".source  = /etc/nixos/easyeffects-presets/input;
+  home.file.".config/easyeffects/irs".source = /etc/nixos/easyeffects-presets/irs;
   programs.home-manager.enable = true;
 }
