@@ -258,7 +258,7 @@
     bind "set bell-style none" 2>/dev/null
     bind "set completion-ignore-case on" 2>/dev/null
 
-    eval "$(fzf --bash)"
+   # eval "$(fzf --bash)"
 
     _fzf_comprun() {
       local command=$1
