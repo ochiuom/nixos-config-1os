@@ -228,16 +228,100 @@
 
   # ── Security ─────────────────────────────────────────────────
   security.sudo-rs.enable = true;
-  networking.firewall = {
-  enable = true;
-  allowedTCPPorts = [ 22 1716 53317];
-  allowedUDPPorts = [ 1716 53317];
-  };
-  services.openssh = {
-    enable = true;
-    settings = { PermitRootLogin = "no"; PasswordAuthentication = true; };
-  };
 
+# ── Firewall — nftables backend (modern replacement for iptables) ──
+networking.nftables.enable = true;
+networking.firewall = {
+  enable = true;
+  allowedTCPPorts = [ 22 1716 53317 ];
+  allowedUDPPorts = [ 1716 53317 ];
+};
+
+# ── SSH ──────────────────────────────────────────────────────
+services.openssh = {
+  enable = true;
+  settings = {
+    PermitRootLogin = "no";
+    PasswordAuthentication = true;
+    # Limit auth attempts per connection
+    MaxAuthTries = 3;
+    # Close idle sessions after 5 min
+    ClientAliveInterval = 300;
+    ClientAliveCountMax = 2;
+  };
+};
+
+# ── Fail2ban — bans IPs after repeated failed SSH attempts ───
+services.fail2ban = {
+  enable = true;
+  maxretry = 5;
+  bantime = "1h";
+  bantime-increment = {
+    enable = true;       # each repeat offense doubles the ban
+    multiplier = "2 4 8 16 32 64";
+    maxtime = "168h";    # cap at 1 week
+    overalljails = true;
+  };
+  jails = {
+    ssh = {
+      settings = {
+        enabled = true;
+        port = "ssh";
+        filter = "sshd";
+        maxretry = 3;
+        bantime = "2h";
+      };
+    };
+  };
+};
+
+# ── Firejail — sandboxing for browsers and internet apps ─────
+programs.firejail = {
+  enable = true;
+  wrappedBinaries = {
+    firefox = {
+      executable = "${pkgs.firefox}/bin/firefox";
+      profile = "${pkgs.firejail}/etc/firejail/firefox.profile";
+      extraArgs = [ "--private-dev" "--noroot" ];
+    };
+  };
+};
+
+  # ── Kernel hardening ─────────────────────────────────────────
+    boot.kernel.sysctl = {
+  # Disable unprivileged user namespaces
+  # Closes a large class of container-escape / privilege-escalation bugs
+  # Only disable if you don't use rootless podman/docker or similar
+  "kernel.unprivileged_userns_clone" = 0;
+
+  # Hide kernel pointers from unprivileged users
+  "kernel.kptr_restrict" = 2;
+
+  # Restrict dmesg to root only
+  "kernel.dmesg_restrict" = 1;
+
+  # Prevent ptrace from spying on other processes
+  "kernel.yama.ptrace_scope" = 1;
+
+  # Ignore ICMP broadcast (smurf attack mitigation)
+  "net.ipv4.icmp_echo_ignore_broadcasts" = 1;
+
+  # Don't accept ICMP redirects (MITM mitigation)
+  "net.ipv4.conf.all.accept_redirects" = 0;
+  "net.ipv6.conf.all.accept_redirects" = 0;
+
+  # Don't send ICMP redirects
+  "net.ipv4.conf.all.send_redirects" = 0;
+
+  # Ignore bogus ICMP error responses
+  "net.ipv4.icmp_ignore_bogus_error_responses" = 1;
+
+  # SYN flood protection
+  "net.ipv4.tcp_syncookies" = 1;
+
+  # Log martian packets (spoofed/impossible source IPs)
+  "net.ipv4.conf.all.log_martians" = 1;
+  };
 
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
