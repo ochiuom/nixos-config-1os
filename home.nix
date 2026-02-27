@@ -18,6 +18,7 @@
     aria2
     fastfetch
     rsync
+    blesh
   ];
 
   dconf.settings = {
@@ -31,8 +32,8 @@
       gtk-theme = lib.mkForce "Orchis-Dark-Compact";
       icon-theme = lib.mkForce "Hatter-Yaru";
       cursor-theme = "Yaru";
-      font-name = lib.mkForce "Inter 10";
-      document-font-name = lib.mkForce "Inter 10";
+      font-name = lib.mkForce "Inter 11";
+      document-font-name = lib.mkForce "Inter 11";
       monospace-font-name = lib.mkForce "JetBrainsMono Nerd Font 10";
       color-scheme = "prefer-dark";
       enable-animations = true;
@@ -139,7 +140,7 @@
     theme = { name = "Orchis-Dark-Compact"; };
     iconTheme = { name = "Hatter-Yaru"; };
     cursorTheme = { name = "Yaru"; package = pkgs.yaru-theme; };
-    font = { name = "Inter"; size = 10; };
+    font = { name = "Inter"; size = 11; };
   };
 
   home.file.".config/ghostty/config".text = ''
@@ -291,7 +292,19 @@
     }
 
     eval "$(starship init bash)"
-    command -v fastfetch >/dev/null 2>&1 && fastfetch
+    command -v fastfetch >/dev/null 2>&1 && fastfetch 
+    
+    # ble.sh
+    if [ -f "${pkgs.blesh}/share/blesh/ble.sh" ]; then
+      source "${pkgs.blesh}/share/blesh/ble.sh" --noattach
+      ble-attach
+      bleopt complete_style=menu
+      bleopt complete_ambiguous=menu
+      bleopt complete_menu_style=desc
+      bleopt complete_menu_maxlines=15
+      bleopt suggest_style=faint
+    fi
+
     '';
   };
 
