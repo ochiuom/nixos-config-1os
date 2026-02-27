@@ -26,7 +26,13 @@
     wl-color-picker localsend exfatprogs qpwgraph
 
     pdfstudioviewer
-
+    strawberry
+    gimp
+    inkscape
+    rustdesk
+    imagemagick
+    shotwell
+    
     gnome-tweaks gnome-extension-manager
 
     gnomeExtensions.user-themes
