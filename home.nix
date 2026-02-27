@@ -167,8 +167,8 @@
       grep    = "rg";
       top     = "btop";
       cd      = "z";
-      update  = "sudo nix flake update /etc/nixos && sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc";
-      upgrade = "sudo nix flake update /etc/nixos && sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc && sudo nix-collect-garbage -d";
+      update  = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc";
+      upgrade = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc && ngc";
       unlockv = "gocryptfs -allow_other ~/Documents/.vault ~/Documents/Vault";
       lockv   = "fusermount -u -z ~/Documents/Vault";
     };
