@@ -293,10 +293,12 @@
     eval "$(starship init bash)"
     command -v fastfetch >/dev/null 2>&1 && fastfetch 
     
+    eval "$(zoxide init bash)"
+ 
     # ble.sh
     if [ -f "${pkgs.blesh}/share/blesh/ble.sh" ]; then
-      source "${pkgs.blesh}/share/blesh/ble.sh" --noattach
-      ble-attach
+      source "${pkgs.blesh}/share/blesh/ble.sh" 
+     # ble-attach
       bleopt complete_style=menu
       bleopt complete_ambiguous=menu
       bleopt complete_menu_style=desc
