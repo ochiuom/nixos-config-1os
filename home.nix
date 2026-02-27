@@ -408,7 +408,7 @@ systemd.user.timers.organize-downloads = {
   vimAlias = true;
   };
   
-
+  home.file.".config/easyeffects".source = ./easyeffects;
 
   programs.home-manager.enable = true;
 }
