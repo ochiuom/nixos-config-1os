@@ -173,7 +173,6 @@
     c       = "clear";
     reload  = "source ~/.bashrc";
     j       = "zi";
-    cd      = "zi";
 
     # Safety
     cp      = "cp -i";
