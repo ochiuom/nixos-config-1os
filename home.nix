@@ -414,13 +414,16 @@ systemd.user.timers.organize-downloads = {
   mkdir -p ~/.config/kitty
   cp -rf ${./kitty}/. ~/.config/kitty/
  '';
-  
-  home.activation.copyStarship = lib.hm.dag.entryAfter ["writeBoundary"] ''
-  # remove stale backup if exists
+
+  home.activation.cleanStarshipBackup = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
   rm -f ~/.config/starship.toml.backup
   rm -f ~/.config/starship.toml.bak
-  cp -f ${./starship/starship.toml} ~/.config/starship.toml
   '';
+
+  home.activation.copyStarship = lib.hm.dag.entryAfter ["writeBoundary"] ''
+  cp -f ${./starship/starship.toml} ~/.config/starship.toml
+  ''; 
+ 
 
   home.activation.copyEasyEffects = lib.hm.dag.entryAfter ["writeBoundary"] ''
   mkdir -p ~/.config/easyeffects/output
