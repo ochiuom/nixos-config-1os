@@ -53,10 +53,8 @@
         places-status-indicator.extensionUuid
         blur-my-shell.extensionUuid
         gsconnect.extensionUuid
-        vitals.extensionUuid
         desktop-cube.extensionUuid
         burn-my-windows.extensionUuid
-        tophat.extensionUuid
         impatience.extensionUuid
         compiz-windows-effect.extensionUuid
         compiz-alike-magic-lamp-effect.extensionUuid
@@ -72,6 +70,14 @@
         color-picker.extensionUuid
         dash2dock-lite.extensionUuid
         compact-top-bar.extensionUuid
+        advanced-weather-companion.extensionUuid
+        adaptive-brightness.extensionUuid
+        astra-monitor.extensionUuid
+        gnome-40-ui-improvements.extensionUuid
+        fuzzy-app-search.extensionUuid
+        penguin-ai-chatbot.extensionUuid
+        status-area-horizontal-spacing.extensionUuid
+        tailscale-status.extensionUuid
       ];
     };
 
@@ -143,7 +149,7 @@
     cursor-style-blink = true
     shell-integration = bash
     gtk-single-instance = true
-    background = #424242
+    background = #282c34
     keybind = ctrl+shift+e=new_window
     keybind = ctrl+shift+n=new_tab
   '';

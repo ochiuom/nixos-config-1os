@@ -246,10 +246,8 @@
   gnomeExtensions.places-status-indicator
   gnomeExtensions.blur-my-shell
   gnomeExtensions.gsconnect
-  gnomeExtensions.vitals
   gnomeExtensions.desktop-cube
   gnomeExtensions.burn-my-windows
-  gnomeExtensions.tophat
   gnomeExtensions.impatience
   gnomeExtensions.compiz-windows-effect
   gnomeExtensions.compiz-alike-magic-lamp-effect
@@ -265,6 +263,14 @@
   gnomeExtensions.color-picker
   gnomeExtensions.dash2dock-lite
   gnomeExtensions.compact-top-bar
+  gnomeExtensions.advanced-weather-companion
+  gnomeExtensions.adaptive-brightness
+  gnomeExtensions.astra-monitor
+  gnomeExtensions.gnome-40-ui-improvements
+  gnomeExtensions.fuzzy-app-search
+  gnomeExtensions.penguin-ai-chatbot
+  gnomeExtensions.status-area-horizontal-spacing
+  gnomeExtensions.tailscale-status
  ];
  
  # ── Syncthing ─────────────────────────────────────────────────
