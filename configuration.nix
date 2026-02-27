@@ -295,6 +295,6 @@
   programs.fuse.userAllowOther = true;
 
   
-  home-manager.backupFileExtension = "bak";
+ 
   system.stateVersion = "26.05";
 }
