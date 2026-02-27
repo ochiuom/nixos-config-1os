@@ -27,6 +27,8 @@
     audacious
     audacious-plugins
     audacity
+    warp-terminal
+    nautilus-python
   ];
 
   dconf.settings = {
@@ -406,6 +408,8 @@ systemd.user.timers.organize-downloads = {
   viAlias = true;
   vimAlias = true;
   };
+  
+  home.file.".local/share/nautilus-python/extensions/ghostty.py".source = ./ghostty.py;
 
   programs.home-manager.enable = true;
 }
