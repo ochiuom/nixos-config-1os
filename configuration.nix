@@ -289,10 +289,6 @@ programs.firejail = {
 
   # ── Kernel hardening ─────────────────────────────────────────
     boot.kernel.sysctl = {
-  # Disable unprivileged user namespaces
-  # Closes a large class of container-escape / privilege-escalation bugs
-  # Only disable if you don't use rootless podman/docker or similar
-  "kernel.unprivileged_userns_clone" = 0;
 
   # Hide kernel pointers from unprivileged users
   "kernel.kptr_restrict" = 2;
