@@ -19,6 +19,14 @@
     fastfetch
     rsync
     blesh
+    easyeffects
+    weylus
+    xournalpp
+    tigervnc
+    remmina
+    audacious
+    audacious-plugins
+    audacity
   ];
 
   dconf.settings = {
@@ -66,7 +74,6 @@
         search-light.extensionUuid
         space-bar.extensionUuid
         appindicator.extensionUuid
-        dash2dock-lite.extensionUuid
         tiling-assistant.extensionUuid
         logo-menu.extensionUuid
         lock-guard.extensionUuid
@@ -82,6 +89,8 @@
         penguin-ai-chatbot.extensionUuid
         status-area-horizontal-spacing.extensionUuid
         tailscale-status.extensionUuid
+        workspace-matrix.extensionUuid
+        wallpaper-slideshow.extensionUuid
       ];
     };
 

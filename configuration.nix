@@ -254,7 +254,6 @@
   gnomeExtensions.search-light
   gnomeExtensions.space-bar
   gnomeExtensions.appindicator
-  gnomeExtensions.dash2dock-lite
   gnomeExtensions.tiling-assistant
   gnomeExtensions.logo-menu
   gnomeExtensions.lock-guard
@@ -270,6 +269,8 @@
   gnomeExtensions.penguin-ai-chatbot
   gnomeExtensions.status-area-horizontal-spacing
   gnomeExtensions.tailscale-status
+  gnomeExtensions.workspace-matrix
+  gnomeExtensions.wallpaper-slideshow
  ];
  
  # ── Syncthing ─────────────────────────────────────────────────
