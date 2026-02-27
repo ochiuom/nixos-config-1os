@@ -285,7 +285,6 @@
       [ -n "$dir" ] && cd "$dir"
     }
      
-    eval "$(zoxide init bash)"
     eval "$(starship init bash)"
 
     # ble.sh first
@@ -332,6 +331,12 @@
       "--border"
       "--color=dark"
     ];
+  };
+
+
+   programs.zoxide = {
+    enable = true;
+    enableBashIntegration = true;
   };
 
   programs.starship = {
