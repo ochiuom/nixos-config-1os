@@ -30,15 +30,15 @@
       cursor-theme = "Yaru";
       font-name = lib.mkForce "Inter 10";
       document-font-name = lib.mkForce "Inter 10";
-      monospace-font-name = lib.mkForce "JetBrainsMono Nerd Font 9";
+      monospace-font-name = lib.mkForce "JetBrainsMono Nerd Font 10";
       color-scheme = "prefer-dark";
       enable-animations = true;
-      text-scaling-factor = 1.0;
+      text-scaling-factor = 0.95;
       scaling-factor = lib.hm.gvariant.mkUint32 1;
     };
 
     "org/gnome/desktop/wm/preferences" = {
-      titlebar-font = lib.mkForce "Inter Bold 11";
+      titlebar-font = lib.mkForce "Inter Bold 10";
       button-layout = "appmenu:minimize,maximize,close";
       auto-raise = false;
       focus-mode = "click";
@@ -144,12 +144,12 @@
     window-height = 25
     window-step-resize = true
     font-family = JetBrains Mono
-    font-size = 9
+    font-size = 10
     cursor-style = block
     cursor-style-blink = true
     shell-integration = bash
     gtk-single-instance = true
-    background = #3b3b3f
+    background = #2c2c2c
     keybind = ctrl+shift+e=new_window
     keybind = ctrl+shift+n=new_tab
   '';
