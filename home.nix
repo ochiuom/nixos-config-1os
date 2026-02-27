@@ -28,6 +28,8 @@
     audacious-plugins
     audacity
     warp-terminal
+    python3
+    python3Packages.pygobject3
     nautilus-python
   ];
 
