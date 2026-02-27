@@ -30,7 +30,7 @@
       cursor-theme = "Yaru";
       font-name = lib.mkForce "Inter 11";
       document-font-name = lib.mkForce "Inter 11";
-      monospace-font-name = lib.mkForce "JetBrainsMono Nerd Font 11";
+      monospace-font-name = lib.mkForce "JetBrainsMono Nerd Font 10";
       color-scheme = "prefer-dark";
       enable-animations = true;
       text-scaling-factor = 1.0;
