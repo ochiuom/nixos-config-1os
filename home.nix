@@ -408,7 +408,7 @@ systemd.user.timers.organize-downloads = {
   vimAlias = true;
   };
   
-  home.file.".local/share/nautilus-python/extensions/ghostty.py".source = ./ghostty.py;
+  xdg.datafile.".local/share/nautilus-python/extensions/ghostty.py".source = ./ghostty.py;
 
   programs.home-manager.enable = true;
 }
