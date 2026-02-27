@@ -274,18 +274,20 @@
       echo "System Peak Performance Reached!"
     }
 
-    fif() {
+   fif() {
       rg --files-with-matches --no-messages "$1" | fzf --preview "rg --ignore-case --pretty --context 10 '$1' {}" | xargs -r nvim
     }
 
-    eval "$(starship init bash)"
-    command -v fastfetch >/dev/null 2>&1 && fastfetch 
-    
-    eval "$(zoxide init bash)"
- 
-    # ble.sh
+    # FZF directory picker Ctrl+F
+    _fzf_cd() {
+      local dir
+      dir=$(fd -t d | fzf --preview 'eza --tree --level=2 --icons {}' --preview-window=right:50%)
+      [ -n "$dir" ] && cd "$dir"
+    }
+
+    # ble.sh first
     if [ -f "${pkgs.blesh}/share/blesh/ble.sh" ]; then
-      source "${pkgs.blesh}/share/blesh/ble.sh"  
+      source "${pkgs.blesh}/share/blesh/ble.sh" --noattach
       ble-attach
       bleopt complete_style=menu
       bleopt complete_ambiguous=menu
@@ -294,8 +296,8 @@
       bleopt suggest_style=faint
     fi
 
+    # fzf after ble.sh
     eval "$(fzf --bash)"
-
     _fzf_comprun() {
       local command=$1
       shift
@@ -306,8 +308,11 @@
         *)            fzf --preview 'bat -n --color=always {}' "$@" ;;
       esac
     }
+    bind -x '"\C-f": _fzf_cd'
 
-
+    eval "$(zoxide init bash)"
+    eval "$(starship init bash)"
+    command -v fastfetch >/dev/null 2>&1 && fastfetch
     '';
   };
 
