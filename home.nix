@@ -15,6 +15,9 @@
     starship
     eza
     pipx
+    aria2
+    fastfetch
+    rsync
   ];
 
   dconf.settings = {
@@ -156,35 +159,140 @@
 
    home.file.".local/share/themes/Orchis-Dark-Compact".source = ./themes/Orchis-Dark-Compact;
    home.file.".local/share/icons/Hatter-Yaru".source = ./themes/Hatter-Yaru;
-
+   
   programs.bash = {
-    enable = true;
-    enableCompletion = true;
-    shellAliases = {
-      ll      = "eza -alh --icons";
-      la      = "eza -A --icons";
-      l       = "eza --icons";
-      ".."    = "cd ..";
-      "..."   = "cd ../..";
-      gs      = "git status";
-      ga      = "git add .";
-      gc      = "git commit -m";
-      gp      = "git push";
-      nrs     = "sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc";
-      ngc = "sudo nix-env --delete-generations +3 --profile /nix/var/nix/profiles/system && sudo nix-store --gc";
-      cat     = "bat";
-      find    = "fd";
-      grep    = "rg";
-      top     = "btop";
-      cd      = "z";
-      update  = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc";
-      upgrade = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc && ngc";
-      unlockv = "gocryptfs -allow_other ~/Documents/.vault ~/Documents/Vault";
-      lockv   = "fusermount -u -z ~/Documents/Vault";
-    };
-    initExtra = ''
-      export TERM=xterm-256color
-      eval "$(zoxide init bash)"
+  enable = true;
+  enableCompletion = true;
+
+  shellAliases = {
+    # Navigation
+    ".."    = "cd ..";
+    "..."   = "cd ../..";
+    "~"     = "cd ~";
+    c       = "clear";
+    reload  = "source ~/.bashrc";
+    j       = "zi";
+    cd      = "z";
+
+    # Safety
+    cp      = "cp -i";
+    mv      = "mv -i";
+    rm      = "rm -i";
+
+    # eza
+    ls      = "eza -a --icons --group-directories-first";
+    ll      = "eza -l --icons --group-directories-first --time-style=long-iso";
+    lt      = "eza -T --level=2 --icons";
+    la      = "eza -A --icons";
+    l       = "eza --icons";
+
+    # Modern replacements
+    cat     = "bat";
+    grep    = "rg";
+    top     = "btop";
+    find    = "fd";
+    a2      = "aria2c -x 16 -s 16 -k 1M";
+
+    # Git
+    gs      = "git status";
+    ga      = "git add .";
+    gc      = "git commit -m";
+    gp      = "git push";
+
+    # System
+    cleanram      = "sudo sync; echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null && echo 'RAM cleared'";
+    clean-journal = "sudo journalctl --vacuum-time=7d";
+    big           = "sudo du -ahx / | sort -rh | head -n 20";
+    lsblk         = "lsblk -e7";
+    bootload      = "systemd-analyze blame | head -n 10";
+    zstat         = "zramctl";
+    ssd           = "sudo compsize -x /";
+    battery       = "upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E 'state|to empty|percentage'";
+    watts         = "upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep energy-rate";
+
+    # Vault
+    unlockv  = "gocryptfs -allow_other ~/Documents/.vault ~/Documents/Vault";
+    lockv    = "fusermount -u -z ~/Documents/Vault";
+    backupv  = "mkdir -p ~/Backups && rsync -av --delete ~/Documents/.vault ~/Backups/Vault_Encrypted_Backup/";
+
+    # NixOS
+    nrs     = "sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc";
+    ngc     = "sudo nix-env --delete-generations +3 --profile /nix/var/nix/profiles/system && sudo nix-store --gc";
+    update  = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc";
+    upgrade = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc && ngc";
+  };
+
+  sessionVariables = {
+    EDITOR   = "nvim";
+    VISUAL   = "nvim";
+    CLICOLOR = "1";
+    LESS     = "-RFMX";
+    HISTSIZE         = "50000";
+    HISTFILESIZE     = "200000";
+    HISTCONTROL      = "ignoredups:erasedups:ignorespace";
+    HISTTIMEFORMAT   = "%F %T ";
+    HISTIGNORE       = "ls:ll:la:cd:pwd:exit:clear";
+    FZF_DEFAULT_OPTS = "--height 40% --layout=reverse --border --inline-info --color=header:italic";
+    FZF_COMPLETION_TRIGGER = "**";
+  };
+
+  initExtra = ''
+    export TERM=xterm-256color
+
+    # Path
+    _path_append() {
+      for arg do
+        case ":$PATH:" in
+          *:"$arg":*) ;;
+          *) PATH="''${PATH:+$PATH:}$arg" ;;
+        esac
+      done
+    }
+    _path_append "$HOME/.local/bin" "$HOME/.cargo/bin" "/usr/local/texlive/2025/bin/x86_64-linux"
+    export PATH
+
+    [ -f ~/.api_keys ] && source ~/.api_keys
+
+    shopt -s checkwinsize histappend globstar
+    PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+    bind "set bell-style none" 2>/dev/null
+    bind "set completion-ignore-case on" 2>/dev/null
+
+    eval "$(zoxide init bash)"
+    eval "$(fzf --bash)"
+
+    _fzf_comprun() {
+      local command=$1
+      shift
+      case "$command" in
+        cd)           fzf --preview 'eza --tree --level=2 --icons {}' "$@" ;;
+        export|unset) fzf --preview "eval 'echo \$'{}" "$@" ;;
+        ssh)          fzf --preview 'dig {}' "$@" ;;
+        *)            fzf --preview 'bat -n --color=always {}' "$@" ;;
+      esac
+    }
+
+    bind -x '"\ec": "zi\n"'
+
+    UP() {
+      echo "Starting Full System Upgrade..."
+      cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc
+      echo "Updating Flatpaks..."
+      flatpak update -y
+      flatpak uninstall --unused -y
+      echo "Checking Firmware..."
+      sudo fwupdmgr get-updates && sudo fwupdmgr update
+      echo "Cleaning old generations..."
+      ngc
+      echo "System Peak Performance Reached!"
+    }
+
+    fif() {
+      rg --files-with-matches --no-messages "$1" | fzf --preview "rg --ignore-case --pretty --context 10 '$1' {}" | xargs -r nvim
+    }
+
+    eval "$(starship init bash)"
+    command -v fastfetch >/dev/null 2>&1 && fastfetch
     '';
   };
 
@@ -259,6 +367,15 @@ systemd.user.timers.organize-downloads = {
   };
   Install.WantedBy = [ "timers.target" ];
 };
+ 
+  #Neovim declare then install via github
+  # git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
+  programs.neovim = {
+  enable = true;
+  defaultEditor = true;
+  viAlias = true;
+  vimAlias = true;
+  };
 
   programs.home-manager.enable = true;
 }
