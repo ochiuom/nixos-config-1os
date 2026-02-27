@@ -409,8 +409,8 @@ systemd.user.timers.organize-downloads = {
   vimAlias = true;
   };
   
-  home.file.".config/easyeffects/output".source = ./easyeffects-presets/output;
-  home.file.".config/easyeffects/input".source  = ./easyeffects-presets/input;
-  home.file.".config/easyeffects/irs".source = ./easyeffects-presets/irs;
+  home.file.".config/easyeffects/output".source = ./easyeffects/output;
+  home.file.".config/easyeffects/input".source  = ./easyeffects/input;
+  home.file.".config/easyeffects/irs".source = ./easyeffects/irs;
   programs.home-manager.enable = true;
 }
