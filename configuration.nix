@@ -95,7 +95,72 @@
   ];
 
   # ── Power ─────────────────────────────────────────────────────
-  powerManagement.cpuFreqGovernor = "performance";
+  # Remove the global governor — TLP will manage this per-state
+  # powerManagement.cpuFreqGovernor = "performance";
+
+  # Fix Intel power throttling bug on T480s (BD PROCHOT workaround)
+  services.throttled.enable = true;
+
+  # TLP for fine-grained power management — conflicts with power-profiles-daemon
+  services.power-profiles-daemon.enable = false;
+  services.tlp = {
+    enable = true;
+     settings = {
+
+    # ── CPU ──────────────────────────────────────────────────
+    CPU_SCALING_GOVERNOR_ON_AC  = "performance";
+    CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+
+    CPU_ENERGY_PERF_POLICY_ON_AC  = "performance";
+    CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+
+    # T480s has 2 cores / 4 threads — let it boost on AC, limit on bat
+    CPU_BOOST_ON_AC  = 1;
+    CPU_BOOST_ON_BAT = 0;
+
+    CPU_HWP_DYN_BOOST_ON_AC  = 1;
+    CPU_HWP_DYN_BOOST_ON_BAT = 0;
+
+    # ── Battery charge thresholds ─────────────────────────────
+    # Keeps battery between 40–80% to maximise long-term health
+    # T480s has dual battery support (internal + external)
+    START_CHARGE_THRESH_BAT0 = 40;
+    STOP_CHARGE_THRESH_BAT0  = 80;
+    START_CHARGE_THRESH_BAT1 = 40;
+    STOP_CHARGE_THRESH_BAT1  = 80;
+
+    # ── Disk ─────────────────────────────────────────────────
+    DISK_DEVICES = "nvme0n1";
+    DISK_APM_LEVEL_ON_AC  = 254;
+    DISK_APM_LEVEL_ON_BAT = 128;
+    # AHCI link power — med_power_with_dipm is safe for NVMe
+    AHCI_RUNTIME_PM_ON_AC  = "on";
+    AHCI_RUNTIME_PM_ON_BAT = "auto";
+
+    # ── PCIe / Runtime PM ────────────────────────────────────
+    PCIE_ASPM_ON_AC  = "default";
+    PCIE_ASPM_ON_BAT = "powersupersave";
+    RUNTIME_PM_ON_AC  = "on";
+    RUNTIME_PM_ON_BAT = "auto";
+
+    # ── USB ──────────────────────────────────────────────────
+    USB_AUTOSUSPEND = 1;
+    # Exclude USB devices you don't want autosuspended
+    # Find your device IDs with: lsusb
+    # USB_AUTOSUSPEND_DISALLOW_LIST = "046d:c52b 8087:0026";
+
+    # ── WiFi ─────────────────────────────────────────────────
+    WIFI_PWR_ON_AC  = "off";
+    WIFI_PWR_ON_BAT = "on";
+
+    # ── Radio / Wake on LAN ──────────────────────────────────
+    WOL_DISABLE = "Y";
+
+    # ── Platform profile (ThinkPad-specific) ─────────────────
+    PLATFORM_PROFILE_ON_AC  = "performance";
+    PLATFORM_PROFILE_ON_BAT = "low-power";
+    };
+  };
 
   # ── Flatpak + Flathub ────────────────────────────────────────
   services.flatpak.enable = true;
