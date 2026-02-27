@@ -78,14 +78,14 @@ class OpenInGhosttyAction(GObject.GObject, Nautilus.MenuProvider):
         else:
             return paths
 
-    def get_file_items(self, *args):
+   # def get_file_items(self, *args):
         # Nautilus 3.0 API passes args (window, files), 4.0 API just passes files
         #files = args[0] if len(args) == 1 else args[1]
         #paths = self._paths_to_open(files)
         #if paths:
          #   return [self._make_item(name='GhosttyNautilus::open_in_ghostty', paths=paths)]
         #else:
-            return []
+        #    return []
 
     def get_background_items(self, *args):
         # Nautilus 3.0 API passes args (window, file), 4.0 API just passes file
