@@ -258,18 +258,6 @@
     bind "set bell-style none" 2>/dev/null
     bind "set completion-ignore-case on" 2>/dev/null
 
-   # eval "$(fzf --bash)"
-
-    _fzf_comprun() {
-      local command=$1
-      shift
-      case "$command" in
-        cd)           fzf --preview 'eza --tree --level=2 --icons {}' "$@" ;;
-        export|unset) fzf --preview "eval 'echo \$'{}" "$@" ;;
-        ssh)          fzf --preview 'dig {}' "$@" ;;
-        *)            fzf --preview 'bat -n --color=always {}' "$@" ;;
-      esac
-    }
 
     bind -x '"\ec": "zi\n"'
 
@@ -297,14 +285,28 @@
  
     # ble.sh
     if [ -f "${pkgs.blesh}/share/blesh/ble.sh" ]; then
-      source "${pkgs.blesh}/share/blesh/ble.sh" 
-     # ble-attach
+      source "${pkgs.blesh}/share/blesh/ble.sh"  
+      ble-attach
       bleopt complete_style=menu
       bleopt complete_ambiguous=menu
       bleopt complete_menu_style=desc
       bleopt complete_menu_maxlines=15
       bleopt suggest_style=faint
     fi
+
+    eval "$(fzf --bash)"
+
+    _fzf_comprun() {
+      local command=$1
+      shift
+      case "$command" in
+        cd)           fzf --preview 'eza --tree --level=2 --icons {}' "$@" ;;
+        export|unset) fzf --preview "eval 'echo \$'{}" "$@" ;;
+        ssh)          fzf --preview 'dig {}' "$@" ;;
+        *)            fzf --preview 'bat -n --color=always {}' "$@" ;;
+      esac
+    }
+
 
     '';
   };
