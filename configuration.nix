@@ -208,8 +208,9 @@
   git vim wget curl htop ffmpeg libva-utils
   sbctl btrfs-progs cryptsetup pciutils usbutils lshw
   networkmanagerapplet xdg-utils xdg-desktop-portal-gnome glib gpick  
-
+  
   nautilus-python
+  gobject-introspection
   (python3.withPackages (ps: with ps; [ pygobject3 ]))
   
   # Office & Docs
