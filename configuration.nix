@@ -258,7 +258,7 @@ services.fail2ban = {
   bantime = "1h";
   bantime-increment = {
     enable = true;       # each repeat offense doubles the ban
-    multiplier = "2 4 8 16 32 64";
+    multipliers = "2 4 8 16 32 64";
     maxtime = "168h";    # cap at 1 week
     overalljails = true;
   };
