@@ -284,6 +284,9 @@
       dir=$(fd -t d | fzf --preview 'eza --tree --level=2 --icons {}' --preview-window=right:50%)
       [ -n "$dir" ] && cd "$dir"
     }
+     
+    eval "$(zoxide init bash)"
+    eval "$(starship init bash)"
 
     # ble.sh first
     if [ -f "${pkgs.blesh}/share/blesh/ble.sh" ]; then
@@ -309,10 +312,8 @@
       esac
     }
     bind -x '"\C-f": _fzf_cd'
-
-    eval "$(zoxide init bash)"
     command -v fastfetch >/dev/null 2>&1 && fastfetch
-    eval "$(starship init bash)"
+
     '';
   };
 
