@@ -266,7 +266,8 @@
     [ -f ~/.api_keys ] && source ~/.api_keys
 
     shopt -s checkwinsize histappend globstar
-    PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+   # PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+    PROMPT_COMMAND="history -a; history -c; history -r"
     bind "set bell-style none" 2>/dev/null
     bind "set completion-ignore-case on" 2>/dev/null
 
