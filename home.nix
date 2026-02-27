@@ -438,5 +438,10 @@ systemd.user.timers.organize-downloads = {
     preset = "C+Cry+BE+Max"; # optional, name of your saved preset
    };
 
+   home.activation.copyMPD = lib.hm.dag.entryAfter ["writeBoundary"] ''
+   mkdir -p ~/.config/mpd
+   cp -rf ${./mpd}/. ~/.config/mpd/
+   '';
+
   programs.home-manager.enable = true;
 }

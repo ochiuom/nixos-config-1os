@@ -33,6 +33,10 @@
     imagemagick
     shotwell
     
+    ymuse          # lightweight GTK, simple clean UI
+    plattenalbum   # formerly mpdevil, more GNOME-native feel
+    cantata
+
     gnome-tweaks gnome-extension-manager
 
     gnomeExtensions.user-themes
