@@ -440,8 +440,14 @@ systemd.user.timers.organize-downloads = {
 
    home.activation.copyMPD = lib.hm.dag.entryAfter ["writeBoundary"] ''
     mkdir -p ~/.config/mpd
+    mkdir -p ~/.config/mpd/playlists
     cp -f ${./mpd/mpd.conf} ~/.config/mpd/mpd.conf
     '';
+
+    services.mpd = {
+    enable = true;
+    musicDirectory = "/home/ochinix/Music";
+      };
 
   programs.home-manager.enable = true;
 }
