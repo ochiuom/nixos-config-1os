@@ -311,8 +311,8 @@
     bind -x '"\C-f": _fzf_cd'
 
     eval "$(zoxide init bash)"
-    eval "$(starship init bash)"
     command -v fastfetch >/dev/null 2>&1 && fastfetch
+    eval "$(starship init bash)"
     '';
   };
 
