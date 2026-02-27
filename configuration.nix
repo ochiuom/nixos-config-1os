@@ -208,7 +208,7 @@
   # Core
   git vim wget curl htop ffmpeg libva-utils
   sbctl btrfs-progs cryptsetup pciutils usbutils lshw
-  networkmanagerapplet xdg-utils xdg-desktop-portal-gnome glib gpic
+  networkmanagerapplet xdg-utils xdg-desktop-portal-gnome glib gpick
   
   # Office & Docs
   libreoffice-fresh
