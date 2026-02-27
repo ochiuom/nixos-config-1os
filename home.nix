@@ -71,7 +71,7 @@
         ip-finder.extensionUuid
         color-picker.extensionUuid
         dash2dock-lite.extensionUuid
-        compact-top-bar.exstensionUuid
+        compact-top-bar.extensionUuid
       ];
     };
 
