@@ -28,7 +28,8 @@
     audacious-plugins
     audacity
     warp-terminal
-    ncmpcpp
+    cmus
+    mc
   ];
 
   dconf.settings = {
@@ -409,7 +410,24 @@ systemd.user.timers.organize-downloads = {
   vimAlias = true;
   };
   
-  home.file.".config/easyeffects/output".source = ./easyeffects/output;
-  home.file.".config/easyeffects/irs".source = ./easyeffects/irs;
+ home.activation.copyKitty = lib.hm.dag.entryAfter ["writeBoundary"] ''
+  mkdir -p ~/.config/kitty
+  cp -rf ${./kitty}/. ~/.config/kitty/
+ '';
+  
+  home.activation.copyStarship = lib.hm.dag.entryAfter ["writeBoundary"] ''
+  mkdir -p ~/.config
+  cp -f ${./starship/starship.toml} ~/.config/starship.toml
+  '';
+
+  home.activation.copyEasyEffects = lib.hm.dag.entryAfter ["writeBoundary"] ''
+  mkdir -p ~/.config/easyeffects/output
+  mkdir -p ~/.config/easyeffects/irs
+
+  cp -rf ${./easyeffects}/output/. ~/.config/easyeffects/output/
+  cp -rf ${./easyeffects}/irs/.  ~/.config/easyeffects/irs/
+  ''; 
+
+
   programs.home-manager.enable = true;
 }

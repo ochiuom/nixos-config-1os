@@ -1,0 +1,88 @@
+# BEGIN_KITTY_THEME
+# Nord
+#include current-theme.conf
+# END_KITTY_THEME
+
+# vim:fileencoding=utf-8:ft=conf
+
+# ---------------------------------------------------------
+# 🗚 FONTS
+# ---------------------------------------------------------
+# Modern recommendation: Fira Code or JetBrains Mono (Nerd Font versions)
+font_family      FiraCode Nerd Font Mono
+bold_font        auto
+italic_font      auto
+bold_italic_font auto
+font_size        12.0
+
+# Disable ligatures when the cursor is over them (easier to edit code)
+disable_ligatures cursor
+
+# ---------------------------------------------------------
+# 🎨 COLORS & THEME (Tokyo Night Modern)
+# ---------------------------------------------------------
+background            #1a1b26
+foreground            #c0caf5
+selection_background  #33467c
+selection_foreground  #c0caf5
+url_color             #73daca
+cursor                #bb9af7
+
+# Window Transparency (0.85 - 0.95 is the sweet spot)
+background_opacity         0.92
+dynamic_background_opacity yes
+
+# ---------------------------------------------------------
+# 🖱️ CURSOR CUSTOMIZATION (2026 Modern Look)
+# ---------------------------------------------------------
+cursor_shape               beam
+cursor_beam_thickness      1.5
+cursor_blink_interval      0.5
+cursor_stop_blinking_after 15.0
+
+# Cursor Trail (A 2025/2026 feature for smoother visual tracking)
+cursor_trail               3
+cursor_trail_decay         0.1 0.4
+cursor_trail_start_threshold 2
+
+# ---------------------------------------------------------
+# 🔲 WINDOW & TAB BAR
+# ---------------------------------------------------------
+window_padding_width 10
+hide_window_decorations yes
+confirm_os_window_close 0
+
+# Modern Tab Bar Style
+tab_bar_edge            top
+tab_bar_style           powerline
+tab_powerline_style     slanted
+active_tab_foreground   #1a1b26
+active_tab_background   #7aa2f7
+inactive_tab_foreground #545c7e
+inactive_tab_background #16161e
+
+# ---------------------------------------------------------
+# ⚡ PERFORMANCE & ADVANCED
+# ---------------------------------------------------------
+repaint_delay    8
+input_delay      2
+sync_to_monitor  yes
+detect_urls      yes
+copy_on_select   yes
+
+# ---------------------------------------------------------
+# ⌨️ KEYBINDINGS
+# ---------------------------------------------------------
+# Quick reload
+map ctrl+shift+f5 load_config_file
+
+# Layout management
+map ctrl+shift+enter new_window_with_cwd
+map ctrl+shift+t     new_tab_with_cwd
+
+# Use Alt + Arrows to switch windows (like a pro)
+map alt+left  neighboring_window left
+map alt+right neighboring_window right
+map alt+up    neighboring_window up
+map alt+down  neighboring_window down
+
