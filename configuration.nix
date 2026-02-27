@@ -317,6 +317,12 @@ programs.firejail = {
 
   # Log martian packets (spoofed/impossible source IPs)
   "net.ipv4.conf.all.log_martians" = 1;
+
+   # performance additions
+  "vm.swappiness" = 10;
+  "vm.vfs_cache_pressure" = 50;
+  "net.core.rmem_max" = 2500000;
+
   };
 
   hardware.bluetooth.enable = true;
