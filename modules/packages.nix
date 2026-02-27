@@ -25,7 +25,7 @@
     yazi evince gparted baobab
     wl-color-picker localsend exfatprogs qpwgraph
 
-    proton-vpn-cli
+    pdfstudioviewer
 
     gnome-tweaks gnome-extension-manager
 
