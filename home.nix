@@ -477,5 +477,11 @@ systemd.user.timers.organize-downloads = {
     fi
    '';
 
+   home.activation.createVaultDirs = lib.hm.dag.entryAfter ["writeBoundary"] ''
+   mkdir -p ~/Documents/.vault
+   mkdir -p ~/Documents/Vault
+   mkdir -p ~/Backups
+   '';
+
   programs.home-manager.enable = true;
 }
