@@ -63,6 +63,7 @@
     gnomeExtensions.advanced-weather-companion
     gnomeExtensions.adaptive-brightness
     gnomeExtensions.astra-monitor
+    gnomeExtensions.tophat
     gnomeExtensions.gnome-40-ui-improvements
     gnomeExtensions.fuzzy-app-search
     gnomeExtensions.penguin-ai-chatbot

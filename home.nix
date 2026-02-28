@@ -87,6 +87,7 @@
         advanced-weather-companion.extensionUuid
         adaptive-brightness.extensionUuid
         astra-monitor.extensionUuid
+        tophat.extensionUuid
         gnome-40-ui-improvements.extensionUuid
         fuzzy-app-search.extensionUuid
         penguin-ai-chatbot.extensionUuid
