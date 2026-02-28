@@ -458,7 +458,7 @@ systemd.user.timers.organize-downloads = {
     home.activation.copyFonts = lib.hm.dag.entryAfter ["writeBoundary"] ''
     mkdir -p ~/.local/share/fonts
     cp -rf ${./fonts}/. ~/.local/share/fonts/
-    fc-cache -f
+    ${pkgs.fontconfig}/bin/fc-cache -f
     '';
 
   programs.home-manager.enable = true;
