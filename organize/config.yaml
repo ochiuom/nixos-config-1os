@@ -1,0 +1,36 @@
+# organize configuration file
+# https://organize.readthedocs.io
+
+# Save this as config.yaml
+
+rules:
+  - name: "Organize Downloads"
+    locations:
+      - path: ~/Downloads
+        # This tells Organize to ignore the folder named 'Organize' entirely
+        exclude_dirs:
+          - "Organize"
+    filters:
+      - extension
+      # We skip system files and installers here so they can be handled by the next rule
+      - not extension:
+          - rpm
+          - appimage
+          - sh
+          - run
+    actions:
+      - move: "~/Downloads/Organize/{extension|upper}/"
+
+  - name: "Handle Installers"
+    locations:
+      - path: ~/Downloads
+        exclude_dirs:
+          - "Organize"
+    filters:
+      - extension:
+          - rpm
+          - appimage
+          - sh
+          - run
+    actions:
+      - move: "~/Downloads/Organize/Installers/" 

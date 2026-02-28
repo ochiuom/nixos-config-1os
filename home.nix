@@ -44,7 +44,7 @@
       icon-theme = lib.mkForce "Hatter-Yaru";
       cursor-theme = "Yaru";
       font-name = lib.mkForce "Inter 11";
-      document-font-name = lib.mkForce "Inter 11";
+      document-font-name = lib.mkForce "Noto Sans 11";
       monospace-font-name = lib.mkForce "JetBrainsMono Nerd Font 10";
       color-scheme = "prefer-dark";
       enable-animations = true;
@@ -448,6 +448,18 @@ systemd.user.timers.organize-downloads = {
     enable = true;
     musicDirectory = "/home/ochinix/Music";
       };
+
+
+    home.activation.copyOrganize = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    mkdir -p ~/.config/organize
+    cp -f ${./organize/config.yaml} ~/.config/organize/config.yaml
+    '';
+
+    home.activation.copyFonts = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    mkdir -p ~/.local/share/fonts
+    cp -rf ${./fonts}/. ~/.local/share/fonts/
+    fc-cache -f
+    '';
 
   programs.home-manager.enable = true;
 }

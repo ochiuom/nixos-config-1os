@@ -233,6 +233,22 @@ boot.plymouth.theme = "bgrt";
 
 ---
 
+### Fonts
+
+Fonts are managed via `home.nix` and deployed automatically on every rebuild — no manual installation needed.
+
+**Inter** (UI font) is downloaded from Google Fonts and tracked in the repo under `fonts/`:
+- Download: https://fonts.google.com/specimen/Inter
+
+On rebuild, fonts are copied to `~/.local/share/fonts/` and the font cache is refreshed automatically. GNOME picks them up without any manual Tweaks configuration.
+
+Fonts applied automatically:
+- Interface text: `Inter Regular 11`
+- Document text: `Noto Sans Regular 11`
+- Monospace text: `JetBrains Mono 10`
+
+---
+
 ### Tor + Thunderbird
 
 Tor client runs locally on `localhost:9050`. To route Thunderbird email over Tor for secure sending and receiving:
@@ -256,46 +272,22 @@ pipx ensurepath
 organize --version
 ```
 
-Config file at `~/.config/organize/config.yaml` — create it manually:
-```yaml
-# organize configuration file
-# https://organize.readthedocs.io
+The config is tracked in this repo at `organize/config.yaml` and deployed automatically via `home.nix` on every rebuild — no manual file creation needed.
 
-rules:
-  - name: "Organize Downloads"
-    locations:
-      - path: ~/Downloads
-        exclude_dirs:
-          - "Organize"
-    filters:
-      - extension
-      - not extension:
-          - rpm
-          - appimage
-          - sh
-          - run
-    actions:
-      - move: "~/Downloads/Organize/{extension|upper}/"
+---
 
-  - name: "Handle Installers"
-    locations:
-      - path: ~/Downloads
-        exclude_dirs:
-          - "Organize"
-    filters:
-      - extension:
-          - rpm
-          - appimage
-          - sh
-          - run
-    actions:
-      - move: "~/Downloads/Organize/Installers/"
+### Neovim / NvChad
+
+Neovim is installed via NixOS packages but without any config files — it's a bare install. To set up NvChad as the config and plugin manager, run after first rebuild:
+```bash
+git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
 ```
 
-To track this file in NixOS config instead, add to `home.nix`:
-```nix
-home.file.".config/organize/config.yaml".source = ./organize/config.yaml;
-```
+NvChad will auto-install on first launch. Let it complete then restart nvim.
+
+> Reference: https://nvchad.com/docs/quickstart/install/
+
+
 
 ---
 
@@ -520,6 +512,7 @@ sudo dmesg | grep -i microcode
 - EasyEffects community presets: https://github.com/wwmm/easyeffects/wiki/Community-presets
 - Orchis GTK theme: https://www.gnome-look.org/p/1357889
 - Hatteru Yaru icon theme: https://www.gnome-look.org/p/2146096
+- NvChad: https://nvchad.com/docs/quickstart/install/
 
 ---
 
