@@ -29,7 +29,7 @@
     strawberry
     gimp
     inkscape
-    rustdesk
+    # rustdesk  # expensive build ~10min, uncomment when needed
     imagemagick
     shotwell
     
