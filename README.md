@@ -18,7 +18,9 @@ Coming from Arch, Fedora, and Ubuntu — NixOS is a fundamentally different appr
 
 **Package isolation** — Flatpak for browsers and KDE apps keeps them containerized and self-contained. Firefox is installed via NixOS packages for better system integration but sandboxed via firejail to limit system-wide access. Best of both worlds.
 
-**Learning curve** — NixOS is completely different from any other Linux distro. Took 3 days to learn from zero. Once it clicks, going back feels like a step backwards.
+**Learning curve** — NixOS is completely different from any other Linux distro. Took 3 days to learn from zero. Once it clicks, going back feels like a step backwards. With this repo, a new machine is fully up and running in under 30 minutes from a fresh install — reduced 3 days of setup to half an hour.
+
+**Shell out of the box** — ble.sh (bash line editor) is declared as a Nix package in `home.nix`. No manual installation needed — autocomplete, syntax highlighting, and menu-style completion work automatically after first rebuild.
 
 ---
 
@@ -121,38 +123,6 @@ zram0          11.6GB   Compressed swap (zstd, 50% RAM)
 
 ---
 
-## Flatpak Applications
-
-Installed via Flathub. Browsers and KDE apps are kept as Flatpak for sandboxing and self-containment.
-
-| Name | Application ID |
-|------|----------------|
-| Brave | com.brave.Browser |
-| Microsoft Edge | com.microsoft.Edge |
-| Opera | com.opera.Opera |
-| Pinta | com.github.PintaProject.Pinta |
-| Sioyek | com.github.ahrm.sioyek |
-| Jellyfin Media Player | com.github.iwalton3.jellyfin-media-player |
-| Pixelorama | com.orama_interactive.Pixelorama |
-| Planify | io.github.alainm23.planify |
-| Weylus Community Edition | io.github.electronstudio.WeylusCommunityEdition |
-| Elisa | org.kde.elisa |
-| Krita | org.kde.krita |
-| Okular | org.kde.okular |
-| LocalSend | org.localsend.localsend_app |
-| GNU Octave | org.octave.Octave |
-| ONLYOFFICE Desktop Editors | org.onlyoffice.desktopeditors |
-| Signal Desktop | org.signal.Signal |
-| Telegram | org.telegram.desktop |
-| Thunderbird | org.mozilla.Thunderbird |
-
-> Install all at once:
-> ```bash
-> flatpak install flathub com.brave.Browser com.microsoft.Edge com.opera.Opera com.github.PintaProject.Pinta com.github.ahrm.sioyek com.github.iwalton3.jellyfin-media-player com.orama_interactive.Pixelorama io.github.alainm23.planify io.github.electronstudio.WeylusCommunityEdition org.kde.elisa org.kde.krita org.kde.okular org.localsend.localsend_app org.octave.Octave org.onlyoffice.desktopeditors org.signal.Signal org.telegram.desktop org.mozilla.Thunderbird
-> ```
-
----
-
 ## Key Commands
 
 These aliases are defined in `home.nix`:
@@ -201,6 +171,12 @@ When you need to allow a new machine to SSH in:
 2. From the new client: `ssh-copy-id ochinix@<T480s-IP>`
 3. Set `PasswordAuthentication = false` and rebuild
 
+> If SSH connection is suddenly refused from a known client, fail2ban may have banned your IP after too many failed attempts. Unban it on the T480s:
+> ```bash
+> sudo fail2ban-client unban 192.xxx.xx.xx
+> ```
+> Replace with your host machine's IP. Connection will work immediately after.
+
 ---
 
 ## VPN
@@ -242,6 +218,116 @@ It is commented out by default in `modules/packages.nix`:
 ```
 
 To enable, uncomment and rebuild. Subsequent rebuilds use the cached store path and are instant.
+
+
+## Post Installation
+
+### Boot Splash Theme
+
+Using `systemd-boot` with `lanzaboote`, not GRUB. Plymouth splash is configured in `modules/boot.nix`:
+```nix
+boot.plymouth.theme = "bgrt";
+```
+
+`bgrt` displays your vendor logo (Lenovo on T480s). Change to any installed Plymouth theme. No GRUB config needed.
+
+---
+
+### Tor + Thunderbird
+
+Tor client runs locally on `localhost:9050`. To route Thunderbird email over Tor for secure sending and receiving:
+
+In Thunderbird → Settings → General → Network Settings → Manual proxy:
+- SOCKS Host: `localhost`
+- Port: `9050`
+- Select: `SOCKS v5`
+- Check: **Proxy DNS when using SOCKS v5**
+
+---
+
+### organize-tool
+
+Automatically sorts `~/Downloads` by file type into subfolders hourly via a systemd user timer declared in `home.nix`.
+
+Install after first rebuild:
+```bash
+pipx install organize-tool
+pipx ensurepath
+organize --version
+```
+
+Config file at `~/.config/organize/config.yaml` — create it manually:
+```yaml
+# organize configuration file
+# https://organize.readthedocs.io
+
+rules:
+  - name: "Organize Downloads"
+    locations:
+      - path: ~/Downloads
+        exclude_dirs:
+          - "Organize"
+    filters:
+      - extension
+      - not extension:
+          - rpm
+          - appimage
+          - sh
+          - run
+    actions:
+      - move: "~/Downloads/Organize/{extension|upper}/"
+
+  - name: "Handle Installers"
+    locations:
+      - path: ~/Downloads
+        exclude_dirs:
+          - "Organize"
+    filters:
+      - extension:
+          - rpm
+          - appimage
+          - sh
+          - run
+    actions:
+      - move: "~/Downloads/Organize/Installers/"
+```
+
+To track this file in NixOS config instead, add to `home.nix`:
+```nix
+home.file.".config/organize/config.yaml".source = ./organize/config.yaml;
+```
+
+---
+
+### Flatpak Applications
+
+Installed via Flathub. Browsers and KDE apps kept as Flatpak for sandboxing and self-containment.
+
+| Name | Application ID |
+|------|----------------|
+| Brave | com.brave.Browser |
+| Microsoft Edge | com.microsoft.Edge |
+| Opera | com.opera.Opera |
+| Pinta | com.github.PintaProject.Pinta |
+| Sioyek | com.github.ahrm.sioyek |
+| Jellyfin Media Player | com.github.iwalton3.jellyfin-media-player |
+| Pixelorama | com.orama_interactive.Pixelorama |
+| Planify | io.github.alainm23.planify |
+| Weylus Community Edition | io.github.electronstudio.WeylusCommunityEdition |
+| Elisa | org.kde.elisa |
+| Krita | org.kde.krita |
+| Okular | org.kde.okular |
+| LocalSend | org.localsend.localsend_app |
+| GNU Octave | org.octave.Octave |
+| ONLYOFFICE Desktop Editors | org.onlyoffice.desktopeditors |
+| Signal Desktop | org.signal.Signal |
+| Telegram | org.telegram.desktop |
+| Thunderbird | org.mozilla.Thunderbird |
+
+Install all at once:
+```bash
+flatpak install flathub com.brave.Browser com.microsoft.Edge com.opera.Opera com.github.PintaProject.Pinta com.github.ahrm.sioyek com.github.iwalton3.jellyfin-media-player com.orama_interactive.Pixelorama io.github.alainm23.planify io.github.electronstudio.WeylusCommunityEdition org.kde.elisa org.kde.krita org.kde.okular org.localsend.localsend_app org.octave.Octave org.onlyoffice.desktopeditors org.signal.Signal org.telegram.desktop org.mozilla.Thunderbird
+```
 
 ---
 
@@ -426,6 +512,14 @@ sudo dmesg | grep -i microcode
 | vainfo: no iHD driver | Check `LIBVA_DRIVER_NAME=iHD` in sessionVariables. Log out and back in |
 | WiFi not detected | Confirm `hardware.enableRedistributableFirmware = true`. Check `dmesg | grep firmware` |
 | btrfs error at boot | Subvol names in `hardware-configuration.nix` must match `btrfs subvolume list /` |
+
+---
+
+## References
+
+- EasyEffects community presets: https://github.com/wwmm/easyeffects/wiki/Community-presets
+- Orchis GTK theme: https://www.gnome-look.org/p/1357889
+- Hatteru Yaru icon theme: https://www.gnome-look.org/p/2146096
 
 ---
 
