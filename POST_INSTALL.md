@@ -67,8 +67,44 @@ NvChad will auto-install on first launch. Let it complete then restart nvim.
 > Reference: https://nvchad.com/docs/quickstart/install/
 
 
+---
+
+## Adding a New SSH Client
+
+When you need to allow a new machine to SSH in:
+
+1. Set `PasswordAuthentication = true` in `modules/networking.nix` and rebuild
+2. From the new client: `ssh-copy-id ochinix@<T480s-IP>`
+3. Set `PasswordAuthentication = false` and rebuild
+
+> If SSH connection is suddenly refused from a known client, fail2ban may have banned your IP after too many failed attempts. Unban it on the T480s:
+> ```bash
+> sudo fail2ban-client unban 192.xxx.xx.xx
+> ```
+> Replace with your host machine's IP. Connection will work immediately after.
 
 ---
+
+## VPN
+
+ProtonVPN via WireGuard — no app needed, built into NetworkManager.
+
+```bash
+# Download WireGuard config from account.proton.me
+# Rename to a valid interface name
+mv ProtonVPN-config.conf protonvpn-xx.conf
+nmcli connection import type wireguard file protonvpn-xx.conf
+nmcli connection modify protonvpn-xx ipv6.method ignore
+
+# Connect / disconnect via terminal
+nmcli connection up protonvpn-xx
+nmcli connection down protonvpn-xx
+```
+
+Or toggle on/off directly from the GNOME top panel → network icon → VPN section — no terminal needed.
+
+---
+
 
 ### Flatpak Applications
 
