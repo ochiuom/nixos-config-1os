@@ -469,10 +469,10 @@ systemd.user.timers.organize-downloads = {
     mkdir -p ~/.config/nvim/lua/plugins
 
     # Copy plugins 1:1
-    cp -rf ${./nvchad/plugins}/. ~/.config/nvim/lua/plugins/
+    cp -rf ${./nvchad-lua/plugins}/. ~/.config/nvim/lua/plugins/
 
     # Overwrite autocmds.lua
-    cp -f ${./nvchad/autocmds.lua} ~/.config/nvim/lua/autocmds.lua
+    cp -f ${./nvchad-lua/autocmds.lua} ~/.config/nvim/lua/autocmds.lua
 
     fi
    '';
