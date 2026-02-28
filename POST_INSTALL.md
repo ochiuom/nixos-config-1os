@@ -55,15 +55,27 @@ The config is tracked in this repo at `organize/config.yaml` and deployed automa
 
 ---
 
-### Neovim / NvChad
+### Neovim / (NvChad + LaTeX Workflow)
 
 Neovim is installed via NixOS packages but without any config files — it's a bare install. To set up NvChad as the config and plugin manager, run after first rebuild:
+
+
+### Step 1 — Install NvChad
 ```bash
 git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
 ```
 
 NvChad will auto-install on first launch. Let it complete then restart nvim.
 
+
+### Step 2 — Apply NvChad Custom Layer from This Repo
+
+After NvChad finishes installing on first `nvim` launch, rebuild NixOS to copy the custom config layer from this repo on top of NvChad:
+```bash
+sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc
+```
+
+This copies the extra config files declared in `home.nix` into `~/.config/nvim/` without replacing or breaking NvChad — safe to run after every NvChad update as well.
 > Reference: https://nvchad.com/docs/quickstart/install/
 
 
@@ -105,6 +117,35 @@ Or toggle on/off directly from the GNOME top panel → network icon → VPN sect
 
 ---
 
+### Encrypted Vault
+
+Vault directories are created automatically on every rebuild via `home.nix`:
+```
+~/
+├── Documents/
+│   ├── .vault/     ← encrypted storage (hidden, tracked by gocryptfs)
+│   └── Vault/      ← mount point (empty when locked, files visible when unlocked)
+└── Backups/
+    └── Vault_Encrypted_Backup/  ← rsync backup of encrypted vault
+```
+
+**One-time setup after fresh install:**
+```bash
+gocryptfs -init ~/Documents/.vault
+# Set a strong password when prompted — this is your vault password
+# Never needed again on this machine
+```
+
+**Daily usage via aliases:**
+```bash
+unlockv    # mount — enter vault password, files appear in ~/Documents/Vault
+lockv      # unmount — files hidden again
+backupv    # rsync encrypted .vault to ~/Backups (safe to backup encrypted)
+```
+
+> The vault is encrypted at rest. Even if someone accesses your disk, `.vault` contents are unreadable without the password. `lockv` before suspending or leaving the machine unattended.
+
+---
 
 ### Flatpak Applications
 
