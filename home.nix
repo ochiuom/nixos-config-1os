@@ -461,6 +461,21 @@ systemd.user.timers.organize-downloads = {
     cp -rf ${./fonts}/. ~/.local/share/fonts/
     ${pkgs.fontconfig}/bin/fc-cache -f
     '';
+    
+    home.activation.copyNvchadCustom = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    # Only run if NvChad is installed
+    if [ -d ~/.local/share/nvim/lazy/NvChad ]; then
+
+    mkdir -p ~/.config/nvim/lua/plugins
+
+    # Copy plugins 1:1
+    cp -rf ${./nvchad/plugins}/. ~/.config/nvim/lua/plugins/
+
+    # Overwrite autocmds.lua
+    cp -f ${./nvchad/autocmds.lua} ~/.config/nvim/lua/autocmds.lua
+
+    fi
+   '';
 
   programs.home-manager.enable = true;
 }
