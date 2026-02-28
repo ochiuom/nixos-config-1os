@@ -14,7 +14,11 @@
     enable = true;
     settings = {
       PermitRootLogin = "no";
-      PasswordAuthentication = true;
+      # To add a new client:
+      # 1. Set PasswordAuthentication = true and rebuild
+      # 2. Run ssh-copy-id user@192.168.31.14 from new client
+      # 3. Set PasswordAuthentication = false and rebuild
+      PasswordAuthentication = false;
       MaxAuthTries = 3;
       ClientAliveInterval = 300;
       ClientAliveCountMax = 2;
