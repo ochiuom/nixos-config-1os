@@ -154,7 +154,9 @@ lockv
 
 ## Quick Start
 
-> Assumes you have already completed **Fresh Install from Scratch** below — working NixOS base system with Secure Boot enrolled.
+>Assumes you have already completed [Fresh Install from Scratch](INSTALL.md) — working NixOS base system with Secure Boot enrolled.
+
+
 
 ```bash
 sudo git clone https://github.com/ochiuom/nixos-config /etc/nixos
