@@ -221,6 +221,10 @@ To enable, uncomment and rebuild. Subsequent rebuilds use the cached store path 
 
 ---
 
+## Post Installation
+
+See [POST_INSTALL.md](POST_INSTALL.md) for complete post installation setup including fonts, Tor, Neovim, organize-tool, and Flatpak apps.
+
 ## References
 
 - EasyEffects community presets: https://github.com/wwmm/easyeffects/wiki/Community-presets
