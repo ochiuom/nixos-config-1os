@@ -233,7 +233,7 @@
     ngc     = "sudo nix-env --delete-generations +3 --profile /nix/var/nix/profiles/system && sudo nix-store --gc";
     update  = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc";
     upgrade = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc && ngc";
-    nos='nh os switch --hostname ochinix-pc'
+    nos="nh os switch --hostname ochinix-pc"
   };
 
   sessionVariables = {
