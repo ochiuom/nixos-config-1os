@@ -129,7 +129,7 @@ These aliases are defined in `home.nix`:
 
 ```bash
 # Rebuild and switch
-nrs
+nos
 
 # Update flake inputs and rebuild
 update
@@ -148,6 +148,26 @@ unlockv
 
 # Lock vault
 lockv
+```
+
+---
+
+## Adding a Package — Workflow
+
+One-time setup (run once as normal user):
+
+```bash
+sudo git config --system --add safe.directory /etc/nixos
+```
+
+Daily workflow as normal user:
+
+```bash
+cd /etc/nixos
+# edit the relevant .nix file e.g. modules/packages.nix
+git add .
+git commit -m "add: packagename"
+nos
 ```
 
 ---
