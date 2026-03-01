@@ -15,7 +15,7 @@
 # └─────────────────────────────────────────────────────────┘
 #
 #   nvme0n1
-#   ├─ nvme0n1p1   1G     EFI (REUSED, NOT FORMATTED)
+#   ├─ nvme0n1p1   200M     EFI (REUSED, NOT FORMATTED)
 #   ├─ nvme0n1p3   ???    Windows (UNTOUCHED)
 #   └─ nvme0n1p4   rest   LUKS2 → BTRFS
 #                         ├─ @            → /
