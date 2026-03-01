@@ -101,24 +101,18 @@ zram0          11.6GB   Compressed swap (zstd, 50% RAM)
 /etc/nixos/
 ├── flake.nix                     # Inputs: nixpkgs, lanzaboote, home-manager
 ├── flake.lock
-├── hardware-configuration.nix    # Auto-generated, do not edit
 ├── configuration.nix             # Entry point, imports all modules
+├── hardware-configuration.nix    # Auto-generated, do not edit
 ├── home.nix                      # Home Manager configuration
-├── modules/
-│   ├── boot.nix                  # Bootloader, kernel, Plymouth, kernel params
-│   ├── hardware.nix              # GPU, firmware, bluetooth, btrfs, zram
-│   ├── networking.nix            # Hostname, firewall, SSH, fail2ban
-│   ├── desktop.nix               # GNOME, GDM, Flatpak, fonts, PipeWire
-│   ├── power.nix                 # TLP, throttled, thermald, sysctls
-│   ├── security.nix              # firejail, sudo-rs, hardening
-│   ├── packages.nix              # System packages
-│   └── services.nix              # Syncthing, Tor, Nix settings, GC
-├── mpd/
-│   └── mpd.conf                  # MPD configuration
-├── kitty/                        # Kitty terminal config
-├── starship/                     # Starship prompt config
-├── easyeffects/                  # EasyEffects presets and IRs
-└── themes/                       # GTK themes and icon packs
+└── modules/
+    ├── boot.nix                  # Bootloader, kernel, Plymouth, kernel params
+    ├── hardware.nix              # GPU, firmware, bluetooth, btrfs, zram
+    ├── networking.nix            # Hostname, firewall, SSH, fail2ban
+    ├── desktop.nix               # GNOME, GDM, Flatpak, fonts, PipeWire
+    ├── power.nix                 # TLP, throttled, thermald, sysctls
+    ├── security.nix              # firejail, sudo-rs, hardening
+    ├── packages.nix              # System packages
+    └── services.nix              # Syncthing, Tor, Nix settings, GC
 ```
 
 ---
