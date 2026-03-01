@@ -12,46 +12,6 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  boot.initrd.luks.devices."cryptroot" = {
-    device = "/dev/disk/by-uuid/01f3d27d-c887-4c4c-876a-eff0d5eeb8a8";
-    allowDiscards = true;
-  };
-
-  fileSystems."/" = {
-    device = "/dev/mapper/cryptroot";
-    fsType = "btrfs";
-    options = [ "subvol=@" "compress=zstd:1" "noatime" "discard=async" ];
-  };
-  fileSystems."/home" = {
-    device = "/dev/mapper/cryptroot";
-    fsType = "btrfs";
-    options = [ "subvol=@home" "compress=zstd:1" "noatime" "discard=async" ];
-  };
-  fileSystems."/nix" = {
-    device = "/dev/mapper/cryptroot";
-    fsType = "btrfs";
-    options = [ "subvol=@nix" "compress=zstd:1" "noatime" "discard=async" ];
-  };
-  fileSystems."/.snapshots" = {
-    device = "/dev/mapper/cryptroot";
-    fsType = "btrfs";
-    options = [ "subvol=@snapshots" "compress=zstd:1" "noatime" "discard=async" ];
-  };
-  fileSystems."/var/log" = {
-    device = "/dev/mapper/cryptroot";
-    fsType = "btrfs";
-    options = [ "subvol=@var-log" "compress=zstd:1" "noatime" "discard=async" ];
-  };
-  fileSystems."/tmp" = {
-    device = "/dev/mapper/cryptroot";
-    fsType = "btrfs";
-    options = [ "subvol=@tmp" "compress=zstd:1" "noatime" "discard=async" ];
-  };
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/7837-3A98";
-    fsType = "vfat";
-    options = [ "fmask=0077" "dmask=0077" ];
-  };
 
   swapDevices = [ ];
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";

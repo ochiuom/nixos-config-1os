@@ -13,16 +13,29 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # 🔥 Disko (Declarative Disk Management)
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, lanzaboote, home-manager, ... }: {
+  outputs = { self, nixpkgs, lanzaboote, home-manager, disko, ... }: {
     nixosConfigurations.ochinix-pc = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
+
       modules = [
+        # 🔥 Disko must come first
+        disko.nixosModules.disko
+        ./disko.nix
+
         ./hardware-configuration.nix
         ./configuration.nix
+
         lanzaboote.nixosModules.lanzaboote
         home-manager.nixosModules.home-manager
+
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;

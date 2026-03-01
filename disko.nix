@@ -1,5 +1,3 @@
-{ lib, ... }:
-
 # =============================================================
 # Disko — Declarative Disk Configuration
 # =============================================================
@@ -78,48 +76,86 @@
 #   Active by default — comment out if using Scenario B.
 # =============================================================
 
+{ lib, ... }:
+
+let
+  mountOpts = [
+    "compress=zstd:1"
+    "noatime"
+    "discard=async"
+    "autodefrag"
+  ];
+in
 {
   disko.devices = {
-    nodev = {
-      # Reuse existing EFI partition — no format
-      boot = {
-        type = "filesystem";
-        device = "/dev/nvme0n1p1";
-        mountpoint = "/boot";
-        mountOptions = [ "defaults" ];
-      };
-      # NixOS encrypted partition
-      cryptroot = {
-        type = "luks";
-        device = "/dev/nvme0n1p4";
-        name = "cryptroot";
-        settings = {
-          allowDiscards = true;
-          bypassWorkqueues = true;
-        };
-        extraFormatArgs = [
-          "--type" "luks2"
-          "--cipher" "aes-xts-plain64"
-          "--key-size" "512"
-          "--hash" "sha512"
-          "--pbkdf" "argon2id"
-        ];
-        content = {
-          type = "btrfs";
-          extraArgs = [ "-f" "-L" "nixos" ];
-          subvolumes = {
-            "@"          = { mountpoint = "/";           mountOptions = [ "compress=zstd:1" "noatime" "discard=async" "autodefrag" ]; };
-            "@home"      = { mountpoint = "/home";       mountOptions = [ "compress=zstd:1" "noatime" "discard=async" "autodefrag" ]; };
-            "@nix"       = { mountpoint = "/nix";        mountOptions = [ "compress=zstd:1" "noatime" "discard=async" "autodefrag" ]; };
-            "@snapshots" = { mountpoint = "/.snapshots"; mountOptions = [ "compress=zstd:1" "noatime" "discard=async" "autodefrag" ]; };
-            "@var-log"   = { mountpoint = "/var/log";    mountOptions = [ "compress=zstd:1" "noatime" "discard=async" "autodefrag" ]; };
-            "@tmp"       = { mountpoint = "/tmp";        mountOptions = [ "compress=zstd:1" "noatime" "discard=async" "autodefrag" ]; };
+
+    # We are NOT redefining the disk or GPT.
+    # We only define the partitions we manage.
+
+    disk.main = {
+      type = "disk";
+      device = "/dev/disk/by-id/nvme-INTEL_SSDPEKNU512GZ_BTKA23010K50512A";
+
+      content = {
+        type = "gpt";
+
+        partitions = {
+
+          # Existing EFI (DO NOT FORMAT)
+          ESP = {
+            device = "/dev/disk/by-id/nvme-INTEL_SSDPEKNU512GZ_BTKA23010K50512A-part1";
+            type = "EF00";
+
+            content = {
+              type = "filesystem";
+              format = "vfat";
+              mountpoint = "/boot";
+            };
           };
+
+          # Existing NixOS partition (p4)
+          nixos = {
+            device = "/dev/disk/by-id/nvme-INTEL_SSDPEKNU512GZ_BTKA23010K50512A-part4";
+
+            content = {
+              type = "luks";
+              name = "cryptroot";
+
+              settings = {
+                allowDiscards = true;
+                bypassWorkqueues = true;
+              };
+
+              extraFormatArgs = [
+                "--type" "luks2"
+                "--cipher" "aes-xts-plain64"
+                "--key-size" "512"
+                "--hash" "sha512"
+                "--pbkdf" "argon2id"
+              ];
+
+              content = {
+                type = "btrfs";
+                extraArgs = [ "-f" "-L" "nixos" ];
+
+                subvolumes = {
+                  "@"          = { mountpoint = "/";           mountOptions = mountOpts; };
+                  "@home"      = { mountpoint = "/home";       mountOptions = mountOpts; };
+                  "@nix"       = { mountpoint = "/nix";        mountOptions = mountOpts; };
+                  "@snapshots" = { mountpoint = "/.snapshots"; mountOptions = mountOpts; };
+                  "@var-log"   = { mountpoint = "/var/log";    mountOptions = mountOpts; };
+                  "@tmp"       = { mountpoint = "/tmp";        mountOptions = mountOpts; };
+                };
+              };
+            };
+          };
+
         };
       };
     };
   };
 }
+
 
 # =============================================================
 # SCENARIO B — Full Disk NixOS only (no Windows)
