@@ -177,7 +177,14 @@ sudo git clone https://github.com/ochiuom/nixos-config /etc/nixos
 sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc
 ```
 
+After the first build, `nh` and all aliases are available. Use `nos` for all subsequent rebuilds:
+
+```bash
+nos
+```
+
 ---
+
 
 ## Heavy Packages
 
