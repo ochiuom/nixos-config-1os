@@ -467,12 +467,16 @@ systemd.user.timers.organize-downloads = {
     if [ -d ~/.local/share/nvim/lazy/NvChad ]; then
 
     mkdir -p ~/.config/nvim/lua/plugins
+    mkdir -p ~/.config/nvim/lua/configs
 
     # Copy plugins 1:1
     cp -rf ${./nvchad-lua/plugins}/. ~/.config/nvim/lua/plugins/
 
     # Overwrite autocmds.lua
     cp -f ${./nvchad-lua/autocmds.lua} ~/.config/nvim/lua/autocmds.lua
+ 
+    # LSP config (your new file)
+    cp -f ${./nvchad-lua/configs/lspconfig.lua} ~/.config/nvim/lua/configs/lspconfig.lua
 
     fi
    '';

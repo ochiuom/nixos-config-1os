@@ -35,7 +35,11 @@
     
     ymuse          # lightweight GTK, simple clean UI
     plattenalbum   # formerly mpdevil, more GNOME-native feel
-    cantata
+    
+    vscode-langservers-extracted  # html, css
+    stylua                        # lua formatter
+    texlab                        # latex
+    zathura 
 
     gnome-tweaks gnome-extension-manager
 
