@@ -292,7 +292,7 @@
    flatpak uninstall --unused -y
 
    echo -e "\n\033[1;33m▶ Checking Firmware...\033[0m"
-   sudo fwupdmgr get-updates && sudo fwupdmgr update
+   sudo fwupdmgr get-updates -y  && sudo fwupdmgr update -y
 
    echo -e "\n\033[1;33m▶ Cleaning Old Generations...\033[0m"
    ngc
