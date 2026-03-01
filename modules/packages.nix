@@ -44,6 +44,8 @@
     # texlive installed separately — full scheme via official installer
     # default binary path added to PATH in bashrc via home.nix
 
+    nh
+
     gnome-tweaks gnome-extension-manager
 
     gnomeExtensions.user-themes
