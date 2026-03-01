@@ -81,4 +81,10 @@
     gnomeExtensions.workspace-matrix
     gnomeExtensions.wallpaper-slideshow
   ];
+
+   environment.variables = {
+   NH_FLAKE = "/etc/nixos";
+
+};
 }
+
