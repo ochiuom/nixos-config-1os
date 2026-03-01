@@ -96,7 +96,6 @@
         settings = {
           allowDiscards = true;
           bypassWorkqueues = true;
-          crypttabExtraOpts = [ "fido2-device=auto" ];
         };
         extraFormatArgs = [
           "--type" "luks2"
@@ -157,7 +156,6 @@
 #               settings = {
 #                 allowDiscards = true;
 #                 bypassWorkqueues = true;
-#                 crypttabExtraOpts = [ "fido2-device=auto" ];
 #               };
 #               extraFormatArgs = [
 #                 "--type" "luks2"
