@@ -18,7 +18,7 @@ Coming from Arch, Fedora, and Ubuntu — NixOS is a fundamentally different appr
 
 **Package isolation** — Flatpak for browsers and KDE apps keeps them containerized and self-contained. Firefox is installed via NixOS packages for better system integration but sandboxed via firejail to limit system-wide access. Best of both worlds.
 
-**Learning curve** — NixOS is completely different from any other Linux distro. Took 3 days to learn from zero. Once it clicks, going back feels like a step backwards. With this repo, a new machine is fully up and running in under 30 minutes from a fresh install — reduced 3 days of setup to half an hour.
+**Learning curve** — NixOS is completely different from any other Linux distro. Once it clicks, going back feels like a step backwards. With this repo, a new machine is fully up and running in under 40 minutes from a fresh install.
 
 **Shell out of the box** — ble.sh (bash line editor) is declared as a Nix package in `home.nix`. No manual installation needed — autocomplete, syntax highlighting, and menu-style completion work automatically after first rebuild.
 
