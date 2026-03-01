@@ -55,29 +55,104 @@ The config is tracked in this repo at `organize/config.yaml` and deployed automa
 
 ---
 
-### Neovim / (NvChad + LaTeX Workflow)
+# Neovim / NvChad + LaTeX Workflow
 
-Neovim is installed via NixOS packages but without any config files — it's a bare install. To set up NvChad as the config and plugin manager, run after first rebuild:
+Neovim is installed via NixOS packages but without any config files — it's a bare install. To set up NvChad as the config and plugin manager, follow the steps below.
 
+---
 
-### Step 1 — Install NvChad
+## Step 1 — Install NvChad
+
 ```bash
 git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
 ```
 
 NvChad will auto-install on first launch. Let it complete then restart nvim.
 
+> Reference: https://nvchad.com/docs/quickstart/install/
 
-### Step 2 — Apply NvChad Custom Layer from This Repo
+---
+
+## Step 2 — Apply NvChad Custom Layer from This Repo
 
 After NvChad finishes installing on first `nvim` launch, rebuild NixOS to copy the custom config layer from this repo on top of NvChad:
+
 ```bash
 sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc
 ```
 
 This copies the extra config files declared in `home.nix` into `~/.config/nvim/` without replacing or breaking NvChad — safe to run after every NvChad update as well.
-> Reference: https://nvchad.com/docs/quickstart/install/
 
+---
+
+## NixOS Packages Required
+
+Add to `environment.systemPackages` in `configuration.nix`:
+
+```nix
+environment.systemPackages = with pkgs; [
+  # LSPs (via Nix, not Mason)
+  vscode-langservers-extracted  # html-lsp, css-lsp, json-lsp
+  stylua                        # lua formatter
+  texlab                        # latex LSP
+
+  # LaTeX
+  # LaTeX
+  # texlive installed separately — full scheme via official installer
+  # default binary path added to PATH in bashrc via home.nix
+
+  # PDF viewer (auto-reloads on recompile)
+  zathura
+];
+```
+
+> **Note:** Mason will show install failures for `css-lsp`, `html-lsp`, and `stylua` — this is expected on NixOS. These are already provided by Nix and work correctly. Ignore Mason's errors.
+
+Verify LSPs are on PATH:
+
+```bash
+which vscode-html-language-server
+which vscode-css-language-server
+which latexmk
+```
+
+---
+
+## Config File Overview
+
+| File | Purpose |
+|------|---------|
+| `lua/plugins/latex.lua` | VimTeX plugin — lualatex compiler, zathura viewer, folding, conceal |
+| `lua/plugins/zen.lua` | ZenMode — distraction-free writing (80 char width) |
+| `lua/plugins/cmp.lua` | Adds vimtex autocomplete source on top of NvChad defaults |
+| `lua/configs/lspconfig.lua` | Enables html, cssls, texlab LSP servers |
+| `lua/autocmds.lua` | Tex filetype settings — wrap, spell check, keymaps |
+
+---
+
+## LaTeX Workflow
+
+Open a `.tex` file in nvim, then:
+
+| Keymap | Action |
+|--------|--------|
+| `\ll` | Start auto-compile with lualatex (watches file on save) |
+| `\lk` | Stop auto-compile |
+| `\lv` | Open PDF in Zathura |
+| `\le` | Show compile errors |
+| `\lw` | Word count |
+| `\lz` | Toggle ZenMode |
+| `zc` / `zo` | Fold / unfold section under cursor |
+| `zM` / `zR` | Fold all / unfold all sections |
+| `<leader>s` | Spelling suggestions on cursor |
+
+Zathura auto-reloads the PDF on every recompile — no manual refresh needed.
+
+---
+
+## Mason Note
+
+Mason is kept as-is with no changes to `ensure_installed`. It may report failures for tools already installed via Nix — these errors are harmless. Nix-managed binaries are on `$PATH` and used directly by lspconfig.
 
 ---
 
