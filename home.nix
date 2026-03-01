@@ -276,18 +276,31 @@
 
     bind -x '"\ec": "zi\n"'
 
-    UP() {
-      echo "Starting Full System Upgrade..."
-      cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc
-      echo "Updating Flatpaks..."
-      flatpak update -y
-      flatpak uninstall --unused -y
-      echo "Checking Firmware..."
-      sudo fwupdmgr get-updates && sudo fwupdmgr update
-      echo "Cleaning old generations..."
-      ngc
-      echo "System Peak Performance Reached!"
-    }
+   UP() {
+   echo -e "\n\033[1;36m╔══════════════════════════════════════╗\033[0m"
+   echo -e "\033[1;36m║       🚀 Full System Upgrade          ║\033[0m"
+   echo -e "\033[1;36m╚══════════════════════════════════════╝\033[0m\n"
+
+   echo -e "\033[1;33m▶ Updating Nix Flake...\033[0m"
+   cd /etc/nixos && sudo nix flake update
+
+   echo -e "\n\033[1;33m▶ Rebuilding NixOS...\033[0m"
+   nh os switch --hostname ochinix-pc
+
+   echo -e "\n\033[1;33m▶ Updating Flatpaks...\033[0m"
+   flatpak update -y
+   flatpak uninstall --unused -y
+
+   echo -e "\n\033[1;33m▶ Checking Firmware...\033[0m"
+   sudo fwupdmgr get-updates && sudo fwupdmgr update
+
+   echo -e "\n\033[1;33m▶ Cleaning Old Generations...\033[0m"
+   ngc
+
+   echo -e "\n\033[1;32m╔══════════════════════════════════════╗\033[0m"
+   echo -e "\033[1;32m║   ✅ System Peak Performance Reached! ║\033[0m"
+   echo -e "\033[1;32m╚══════════════════════════════════════╝\033[0m\n"
+  }
 
    fif() {
       rg --files-with-matches --no-messages "$1" | fzf --preview "rg --ignore-case --pretty --context 10 '$1' {}" | xargs -r nvim
