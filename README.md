@@ -168,20 +168,16 @@ nos
 
 ## Quick Start
 
->Assumes you have already completed [Fresh Install from Scratch](INSTALL.md) — working NixOS base system with Secure Boot enrolled.
+## 🚧 Disko Declarative Integration (Experimental)
 
+The `disko-declarative` branch integrates fully declarative disk management using Disko.
 
+⚠️ This branch is still under verification.
 
-```bash
-sudo git clone https://github.com/ochiuom/nixos-config /etc/nixos
-sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc
-```
-
-After the first build, `nh` and all aliases are available. Use `nos` for all subsequent rebuilds:
-
-```bash
-nos
-```
+- Dual boot layout preserved (Windows untouched)
+- EFI reused (no reformat on rebuild)
+- LUKS2 + Btrfs subvolumes fully declarative
+- hardware-configuration no longer defines mounts
 
 ---
 
