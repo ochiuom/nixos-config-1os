@@ -40,6 +40,9 @@
     stylua                        # lua formatter
     texlab                        # latex
     zathura 
+    # LaTeX
+    # texlive installed separately — full scheme via official installer
+    # default binary path added to PATH in bashrc via home.nix
 
     gnome-tweaks gnome-extension-manager
 
