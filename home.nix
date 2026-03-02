@@ -276,31 +276,60 @@
 
     bind -x '"\ec": "zi\n"'
 
-   UP() {
-   echo -e "\n\033[1;36m╔══════════════════════════════════════╗\033[0m"
-   echo -e "\033[1;36m║       🚀 Full System Upgrade          ║\033[0m"
-   echo -e "\033[1;36m╚══════════════════════════════════════╝\033[0m\n"
 
-   echo -e "\033[1;33m▶ Updating Nix Flake...\033[0m"
-   cd /etc/nixos && sudo nix flake update
-
-   echo -e "\n\033[1;33m▶ Rebuilding NixOS...\033[0m"
-   nh os switch --hostname ochinix-pc
-
-   echo -e "\n\033[1;33m▶ Updating Flatpaks...\033[0m"
-   flatpak update -y
-   flatpak uninstall --unused -y
-
-   echo -e "\n\033[1;33m▶ Checking Firmware...\033[0m"
-   sudo fwupdmgr get-updates -y  && sudo fwupdmgr update -y
-
-   echo -e "\n\033[1;33m▶ Cleaning Old Generations...\033[0m"
-   ngc
-
-   echo -e "\n\033[1;32m╔══════════════════════════════════════╗\033[0m"
-   echo -e "\033[1;32m║   ✅ System Peak Performance Reached! ║\033[0m"
-   echo -e "\033[1;32m╚══════════════════════════════════════╝\033[0m\n"
+    UP() {
+  local start_time=$(date +%s)
+  local failed=()
+  _up_header() {
+    echo -e "\n\033[1;36m╔══════════════════════════════════════╗\033[0m"
+    echo -e "\033[1;36m║       🚀 Full System Upgrade          ║\033[0m"
+    echo -e "\033[1;36m║   $(date '+%Y-%m-%d %H:%M:%S')            ║\033[0m"
+    echo -e "\033[1;36m╚══════════════════════════════════════╝\033[0m\n"
   }
+  _up_step() {
+    echo -e "\033[1;33m▶ $1...\033[0m"
+  }
+  _up_ok() {
+    echo -e "\033[1;32m  ✔ $1\033[0m"
+  }
+  _up_fail() {
+    echo -e "\033[1;31m  ✘ $1 failed\033[0m"
+    failed+=("$1")
+  }
+  _up_run() {
+    local name="$1"; shift
+    _up_step "$name"
+    if "$@"; then
+      _up_ok "$name"
+    else
+      _up_fail "$name"
+    fi
+    echo
+  }
+  _up_header
+  _up_run "Updating Nix Flake"   bash -c "cd /etc/nixos && sudo nix flake update"
+  _up_run "Rebuilding NixOS"     nh os switch --hostname ochinix-pc
+  _up_run "Updating Flatpaks"    bash -c "flatpak update -y && flatpak uninstall --unused -y"
+  _up_run "Checking Firmware"    bash -c "sudo fwupdmgr get-updates -y; sudo fwupdmgr update -y; exit 0"
+  _up_run "Cleaning Generations" bash -c "sudo nix-env --delete-generations +3 --profile /nix/var/nix/profiles/system && sudo nix-store --gc"
+  local end_time=$(date +%s)
+  local elapsed=$((end_time - start_time))
+  local minutes=$((elapsed / 60))
+  local seconds=$((elapsed % 60))
+  if [ ''${#failed[@]} -eq 0 ]; then
+    echo -e "\033[1;32m╔══════════════════════════════════════╗\033[0m"
+    echo -e "\033[1;32m║   ✅ System upgrade complete!         ║\033[0m"
+    echo -e "\033[1;32m║   ⏱  Time: ''${minutes}m ''${seconds}s\033[0m"
+    echo -e "\033[1;32m╚══════════════════════════════════════╝\033[0m\n"
+  else
+    echo -e "\033[1;31m╔══════════════════════════════════════╗\033[0m"
+    echo -e "\033[1;31m║   ⚠  Upgrade completed with errors   ║\033[0m"
+    echo -e "\033[1;31m║   ⏱  Time: ''${minutes}m ''${seconds}s\033[0m"
+    echo -e "\033[1;31m╚══════════════════════════════════════╝\033[0m"
+    echo -e "\033[1;31m  Failed steps: ''${failed[*]}\033[0m\n"
+    return 1
+  fi
+}
 
    fif() {
       rg --files-with-matches --no-messages "$1" | fzf --preview "rg --ignore-case --pretty --context 10 '$1' {}" | xargs -r nvim

@@ -60,13 +60,25 @@
 #   # 1. Clone config and run Disko
 #    git clone https://github.com/ochiuom/nixos-config
 #    cd nixos-config
-#    sudo nix run github:nix-community/disko -- --mode formatMount ./disko.nix
+#    git checkout disko-declarative
+#    Flakes are not enabled by default there.
+#    Run everything with experimental features enabled.
+#    sudo nix --extra-experimental-features "nix-command flakes" run github:nix-community/disko -- --mode format,mount ./disko.nix
 
-# 2. Copy cloned config into mounted system
-#     sudo cp -r ../nixos-config /mnt/etc/nixos
-
-# 3. Install
-#     sudo nixos-install --root /mnt --flake /mnt/etc/nixos#ochinix-pc
+#   sbctl create-keys
+#   Secure boot keys created!
+#   nix-shell -p e2fsprogs
+#   it will give u inside nix shell
+#   chattr -i /sys/firmware/efi/efivars/*
+#   sbctl enroll-keys --microsoft
+#   then u need to exit from nix shell
+#   again exit from chroot /
+#   now back in live iso git config
+#   sudo nix --extra-experimental-features "nix-command flakes" run nixpkgs#nixos-install -- --flake .#ochinix-pc
+#   5gb download, total 16GB disk space
+#   put root password
+#   reboot
+#   "changeme" passowrd
 #
 # =============================================================
 # SCENARIO A — Dual Boot (Windows already installed)
@@ -76,68 +88,143 @@
 #   Active by default — comment out if using Scenario B.
 # =============================================================
 
+#{ lib, ... }:
+
+#let
+#  mountOpts = [
+#    "compress=zstd:1"
+#    "noatime"
+#    "discard=async"
+#    "autodefrag"
+#  ];
+#in
+#{
+#  disko.devices = {
+#
+#    # We are NOT redefining the disk or GPT.
+#    # We only define the partitions we manage.
+#
+#    disk.main = {
+#      type = "disk";
+#      device = "/dev/disk/by-id/nvme-INTEL_SSDPEKNU512GZ_BTKA23010K50512A";
+#
+#      content = {
+#        type = "gpt";
+#
+#        partitions = {
+#
+#          # Existing EFI (DO NOT FORMAT)
+#          ESP = {
+#            device = "/dev/disk/by-id/nvme-INTEL_SSDPEKNU512GZ_BTKA23010K50512A-part1";
+#            type = "EF00";
+#
+#            content = {
+#              type = "filesystem";
+#              format = "vfat";
+#              mountpoint = "/boot";
+#            };
+#          };
+#
+#          # Existing NixOS partition (p4)
+#          nixos = {
+#            device = "/dev/disk/by-id/nvme-INTEL_SSDPEKNU512GZ_BTKA23010K50512A-part4";
+#
+#            content = {
+#              type = "luks";
+#              name = "cryptroot";
+#              askPassword = true;
+#
+#              settings = {
+#                allowDiscards = true;
+#                bypassWorkqueues = true;
+#               };
+#
+#              extraFormatArgs = [
+#                "--type" "luks2"
+#                "--cipher" "aes-xts-plain64"
+#                "--key-size" "512"
+#                "--hash" "sha512"
+#                "--pbkdf" "argon2id"
+#              ];
+#
+#              content = {
+#                type = "btrfs";
+#                extraArgs = [ "-f" "-L" "nixos" ];
+#
+#                subvolumes = {
+#                  "@"          = { mountpoint = "/";           mountOptions = mountOpts; };
+#                  "@home"      = { mountpoint = "/home";       mountOptions = mountOpts; };
+#                  "@nix"       = { mountpoint = "/nix";        mountOptions = mountOpts; };
+#                  "@snapshots" = { mountpoint = "/.snapshots"; mountOptions = mountOpts; };
+#                  "@var-log"   = { mountpoint = "/var/log";    mountOptions = mountOpts; };
+#                  "@tmp"       = { mountpoint = "/tmp";        mountOptions = mountOpts; };
+#                };
+#              };
+#            };
+#          };
+#
+#        };
+#      };
+#    };
+#  };
+#}
+
+
+# =============================================================
+# SCENARIO B — Full Disk NixOS only (no Windows)
+#   Wipes the entire drive. Creates fresh GPT with 1G EFI
+#   and the rest as LUKS2 + btrfs.
+#   To use: comment out Scenario A above and uncomment below.
+# =============================================================
+
 { lib, ... }:
 
 let
   mountOpts = [
-    "compress=zstd:1"
     "noatime"
+    "compress=zstd"
+    "ssd"
     "discard=async"
-    "autodefrag"
   ];
 in
 {
   disko.devices = {
-
-    # We are NOT redefining the disk or GPT.
-    # We only define the partitions we manage.
-
     disk.main = {
+      device = "/dev/disk/by-id/nvme-KBG40ZNT256G_TOSHIBA_MEMORY_90SPCCRXQA81";
       type = "disk";
-      device = "/dev/disk/by-id/nvme-INTEL_SSDPEKNU512GZ_BTKA23010K50512A";
 
       content = {
         type = "gpt";
 
         partitions = {
 
-          # Existing EFI (DO NOT FORMAT)
           ESP = {
-            device = "/dev/disk/by-id/nvme-INTEL_SSDPEKNU512GZ_BTKA23010K50512A-part1";
+            size = "1G";
             type = "EF00";
 
             content = {
               type = "filesystem";
               format = "vfat";
-              mountpoint = "/boot";
+              mountpoint = "/boot/efi";
+              mountOptions = [ "umask=0077" ];
             };
           };
 
-          # Existing NixOS partition (p4)
-          nixos = {
-            device = "/dev/disk/by-id/nvme-INTEL_SSDPEKNU512GZ_BTKA23010K50512A-part4";
+          crypt = {
+            size = "100%";
 
             content = {
               type = "luks";
               name = "cryptroot";
               askPassword = true;
-       
+
               settings = {
                 allowDiscards = true;
-                bypassWorkqueues = true;
               };
-
-              extraFormatArgs = [
-                "--type" "luks2"
-                "--cipher" "aes-xts-plain64"
-                "--key-size" "512"
-                "--hash" "sha512"
-                "--pbkdf" "argon2id"
-              ];
 
               content = {
                 type = "btrfs";
-                extraArgs = [ "-f" "-L" "nixos" ];
+                extraArgs = [ "-f" ];
 
                 subvolumes = {
                   "@"          = { mountpoint = "/";           mountOptions = mountOpts; };
@@ -150,73 +237,8 @@ in
               };
             };
           };
-
         };
       };
     };
   };
 }
-
-
-# =============================================================
-# SCENARIO B — Full Disk NixOS only (no Windows)
-#   Wipes the entire drive. Creates fresh GPT with 1G EFI
-#   and the rest as LUKS2 + btrfs.
-#   To use: comment out Scenario A above and uncomment below.
-# =============================================================
-
-# {
-#   disko.devices = {
-#     disk.nvme0n1 = {
-#       type = "disk";
-#       device = "/dev/nvme0n1";
-#       content = {
-#         type = "gpt";
-#         partitions = {
-#           ESP = {
-#             name = "ESP";
-#             size = "1G";
-#             type = "EF00";
-#             content = {
-#               type = "filesystem";
-#               format = "vfat";
-#               mountpoint = "/boot";
-#               mountOptions = [ "defaults" ];
-#             };
-#           };
-#           cryptroot = {
-#             name = "cryptroot";
-#             size = "100%";
-#             content = {
-#               type = "luks";
-#               name = "cryptroot";
-#               settings = {
-#                 allowDiscards = true;
-#                 bypassWorkqueues = true;
-#               };
-#               extraFormatArgs = [
-#                 "--type" "luks2"
-#                 "--cipher" "aes-xts-plain64"
-#                 "--key-size" "512"
-#                 "--hash" "sha512"
-#                 "--pbkdf" "argon2id"
-#               ];
-#               content = {
-#                 type = "btrfs";
-#                 extraArgs = [ "-f" "-L" "nixos" ];
-#                 subvolumes = {
-#                   "@"          = { mountpoint = "/";           mountOptions = [ "compress=zstd:1" "noatime" "discard=async" "autodefrag" ]; };
-#                   "@home"      = { mountpoint = "/home";       mountOptions = [ "compress=zstd:1" "noatime" "discard=async" "autodefrag" ]; };
-#                   "@nix"       = { mountpoint = "/nix";        mountOptions = [ "compress=zstd:1" "noatime" "discard=async" "autodefrag" ]; };
-#                   "@snapshots" = { mountpoint = "/.snapshots"; mountOptions = [ "compress=zstd:1" "noatime" "discard=async" "autodefrag" ]; };
-#                   "@var-log"   = { mountpoint = "/var/log";    mountOptions = [ "compress=zstd:1" "noatime" "discard=async" "autodefrag" ]; };
-#                   "@tmp"       = { mountpoint = "/tmp";        mountOptions = [ "compress=zstd:1" "noatime" "discard=async" "autodefrag" ]; };
-#                 };
-#               };
-#             };
-#           };
-#         };
-#       };
-#     };
-#   };
-# }

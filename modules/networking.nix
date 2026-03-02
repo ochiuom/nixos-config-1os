@@ -2,16 +2,14 @@
 {
   networking.hostName = "ochinix-pc";
   networking.networkmanager.enable = true;
-
-  networking.nftables.enable = true;
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [ 22 1716 53317 ];
     allowedUDPPorts = [ 1716 53317 ];
   };
-
   services.openssh = {
     enable = true;
+    openFirewall = true;
     settings = {
       PermitRootLogin = "no";
       # To add a new client:
@@ -19,14 +17,14 @@
       # 2. Run ssh-copy-id user@192.168.31.14 from new client
       # 3. Set PasswordAuthentication = false and rebuild
       PasswordAuthentication = false;
-      MaxAuthTries = 3;
+      MaxAuthTries = 6;
       ClientAliveInterval = 300;
       ClientAliveCountMax = 2;
     };
   };
-
   services.fail2ban = {
     enable = true;
+    ignoreIP = [ "192.168.31.0/24" ];
     maxretry = 5;
     bantime = "1h";
     bantime-increment = {
@@ -46,5 +44,9 @@
         };
       };
     };
+  };
+  systemd.services.fail2ban = {
+    after = [ "firewall.service" ];
+    requires = [ "firewall.service" ];
   };
 }
