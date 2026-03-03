@@ -201,12 +201,15 @@ Proceed to [POST_INSTALL.md](./POST_INSTALL.md) for the rest of the setup.
 
 ---
 
+
 ## Key Commands
+
+These aliases are defined in `home.nix`:
 ```bash
-nos       # Rebuild and switch
-update    # Update flake inputs and rebuild
-upgrade   # Update + rebuild + garbage collect
-UP        # Full system upgrade (NixOS + Flatpak + firmware + GC)
+nos       # Rebuild and switch (via nh — recommended)
+nrs       # Rebuild and switch (via nixos-rebuild directly)
+update    # Update flake inputs + rebuild
+upgrade   # Update flake inputs + rebuild + garbage collect
 ngc       # Garbage collect (keep last 3 generations)
 unlockv   # Unlock encrypted vault
 lockv     # Lock vault
