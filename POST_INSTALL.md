@@ -253,3 +253,23 @@ flatpak install flathub com.brave.Browser com.microsoft.Edge com.opera.Opera com
 ```
 
 ---
+
+## Managing Packages & Config
+
+Once settled post-installation, clone the config into `/etc/nixos` to add packages or modify any module:
+
+```bash
+sudo git clone https://github.com/ochiuom/nixos-config-1os /etc/nixos
+sudo chown -R ochinix:users /etc/nixos
+cd /etc/nixos
+
+# Edit any .nix file as needed e.g. modules/packages.nix
+# Then rebuild — quick
+nsr
+# or with visual output and generation diff tracking
+nos
+```
+
+# If you notice any visual glitches or changes not reflected after rebuild,
+# a logout or full reboot will apply everything cleanly
+---

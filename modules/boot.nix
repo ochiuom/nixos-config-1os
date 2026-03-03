@@ -1,21 +1,11 @@
 { config, pkgs, lib, ... }:
 {
+
+  boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 3;
+
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot";
-
-  boot.loader.systemd-boot.enable = lib.mkForce false;
-  boot.lanzaboote = {
-    enable = true;
-    pkiBundle = "/var/lib/sbctl";
-  };
-
-  boot.loader.systemd-boot.extraEntries = {
-    "windows.conf" = ''
-      title Windows 11
-      efi /EFI/Microsoft/Boot/bootmgfw.efi
-    '';
-  };
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.initrd.kernelModules = [ "i915" ];

@@ -4,11 +4,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    lanzaboote = {
-      url = "github:nix-community/lanzaboote/v1.0.0";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -21,19 +16,18 @@
     };
   };
 
-  outputs = { self, nixpkgs, lanzaboote, home-manager, disko, ... }: {
+  outputs = { self, nixpkgs, home-manager, disko, ... }: {
     nixosConfigurations.ochinix-pc = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
 
       modules = [
         # 🔥 Disko must come first
         disko.nixosModules.disko
-        ./disko.nix
+        ./disko_1os.nix
 
         ./hardware-configuration.nix
         ./configuration.nix
 
-        lanzaboote.nixosModules.lanzaboote
         home-manager.nixosModules.home-manager
 
         {

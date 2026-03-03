@@ -48,7 +48,7 @@
       monospace-font-name = lib.mkForce "JetBrainsMono Nerd Font 10";
       color-scheme = "prefer-dark";
       enable-animations = true;
-      text-scaling-factor = 0.95;
+      text-scaling-factor = 1.00;
       scaling-factor = lib.hm.gvariant.mkUint32 1;
     };
 
@@ -157,8 +157,8 @@
   };
 
   home.file.".config/ghostty/config".text = ''
-    window-width = 90
-    window-height = 25
+    window-width = 105
+    window-height = 30
     window-step-resize = true
     font-family = JetBrains Mono
     font-size = 10
