@@ -53,16 +53,16 @@
     # Fonts & Symbols
     charter noto fontspec amsmath amsfonts amscls
     cm-super   # High-quality default fonts
-    physics mathtools cancel nicefrac braket siunitx bm
+    physics mathtools cancel braket siunitx
     # Graphics & Diagrams
     pgf tikz-cd circuitikz quantikz
-    adjustbox graphicx subfig subcaption
+    adjustbox  subfig 
     # Layout & Tables
-    booktabs float multirow tabularx colortbl longtable array
+    booktabs float multirow colortbl  
     geometry microtype parskip setspace ragged2e enumitem etoolbox csquotes
-    titlesec changepage caption xcolor tcolorbox empheq
+    titlesec changepage caption xcolor tcolorbox 
     # Bibliography & Meta
-    hyperref biblatex biber fancyhdr lastpage textcomp orcidlink
+    hyperref biblatex biber fancyhdr lastpage orcidlink
     babel babel-english;
     })
 
