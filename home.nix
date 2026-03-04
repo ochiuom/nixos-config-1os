@@ -171,9 +171,13 @@
     keybind = ctrl+shift+n=new_tab
   '';
 
-   home.file.".local/share/themes/Orchis-Dark-Compact".source = ./themes/Orchis-Dark-Compact;
+  # home.file.".local/share/themes/Orchis-Dark-Compact".source = ./themes/Orchis-Dark-Compact;
    home.file.".local/share/icons/Hatter-Yaru".source = ./themes/Hatter-Yaru;
-   
+
+   home.activation.refreshIconCache = lib.hm.dag.entryAfter ["writeBoundary"] ''
+  ${pkgs.gtk3}/bin/gtk-update-icon-cache -f -t ~/.local/share/icons/Hatter-Yaru || true
+  '';  
+ 
   programs.bash = {
   enable = true;
   enableCompletion = true;
@@ -529,6 +533,13 @@ systemd.user.timers.organize-downloads = {
    mkdir -p ~/Documents/Vault
    mkdir -p ~/Backups
    '';
+
+  home.activation.copyGtkTheme = lib.hm.dag.entryAfter ["writeBoundary"] ''
+  mkdir -p ~/.config/gtk-3.0
+  mkdir -p ~/.config/gtk-4.0
+  cp -rf ${./themes/Orchis-Dark-Compact/gtk-3.0}/. ~/.config/gtk-3.0/
+  cp -rf ${./themes/Orchis-Dark-Compact/gtk-4.0}/. ~/.config/gtk-4.0/
+  '';
 
   programs.home-manager.enable = true;
 }
