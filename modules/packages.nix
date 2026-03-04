@@ -16,7 +16,8 @@
     texstudio
     firefox
     kitty ghostty
-    vscode zed-editor
+    vscode
+    # zed-editor
 
     vlc mpd mpc mpv mplayer smplayer
 
@@ -78,6 +79,7 @@
     gnomeExtensions.tailscale-status
     gnomeExtensions.workspace-matrix
     gnomeExtensions.wallpaper-slideshow
+    gnomeExtensions.dash-to-panel
   ];
 
 

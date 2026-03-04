@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 {
   home.username = "ochinix";
   home.homeDirectory = "/home/ochinix";
@@ -48,7 +48,7 @@
       monospace-font-name = lib.mkForce "JetBrainsMono Nerd Font 10";
       color-scheme = "prefer-dark";
       enable-animations = true;
-      text-scaling-factor = 1.00;
+      text-scaling-factor = 1.0;
       scaling-factor = lib.hm.gvariant.mkUint32 1;
     };
 
@@ -95,6 +95,7 @@
         tailscale-status.extensionUuid
         workspace-matrix.extensionUuid
         wallpaper-slideshow.extensionUuid
+        dash-to-panel.extensionUuid
       ];
     };
 
@@ -171,7 +172,7 @@
     keybind = ctrl+shift+n=new_tab
   '';
 
-  # home.file.".local/share/themes/Orchis-Dark-Compact".source = ./themes/Orchis-Dark-Compact;
+   home.file.".local/share/themes/Orchis-Dark-Compact".source = ./themes/Orchis-Dark-Compact;
    home.file.".local/share/icons/Hatter-Yaru".source = ./themes/Hatter-Yaru;
 
    home.activation.refreshIconCache = lib.hm.dag.entryAfter ["writeBoundary"] ''
@@ -400,21 +401,25 @@
     enableBashIntegration = true;
   };
 
+#  programs.starship = {
+#    enable = true;
+#    settings = {
+#      add_newline = false;
+#      character = {
+#        success_symbol = "[❯](bold green)";
+#        error_symbol = "[❯](bold red)";
+#      };
+#      directory = {
+#        truncation_length = 3;
+#        truncate_to_repo = true;
+#      };
+#      git_branch.symbol = " ";
+#      nix_shell.symbol = " ";
+#    };
+#  };
+
   programs.starship = {
-    enable = true;
-    settings = {
-      add_newline = false;
-      character = {
-        success_symbol = "[❯](bold green)";
-        error_symbol = "[❯](bold red)";
-      };
-      directory = {
-        truncation_length = 3;
-        truncate_to_repo = true;
-      };
-      git_branch.symbol = " ";
-      nix_shell.symbol = " ";
-    };
+  enable = false;
   };
 
   programs.bat = {
@@ -534,12 +539,14 @@ systemd.user.timers.organize-downloads = {
    mkdir -p ~/Backups
    '';
 
-  home.activation.copyGtkTheme = lib.hm.dag.entryAfter ["writeBoundary"] ''
-  mkdir -p ~/.config/gtk-3.0
-  mkdir -p ~/.config/gtk-4.0
-  cp -rf ${./themes/Orchis-Dark-Compact/gtk-3.0}/. ~/.config/gtk-3.0/
-  cp -rf ${./themes/Orchis-Dark-Compact/gtk-4.0}/. ~/.config/gtk-4.0/
-  '';
+   home.activation.copyGtkTheme = lib.hm.dag.entryAfter ["writeBoundary"] ''
+   mkdir -p ~/.config/gtk-3.0
+   mkdir -p ~/.config/gtk-4.0
+   chmod -R u+w ~/.config/gtk-3.0 2>/dev/null || true
+   chmod -R u+w ~/.config/gtk-4.0 2>/dev/null || true
+   cp -rf ${./themes/Orchis-Dark-Compact/gtk-3.0}/. ~/.config/gtk-3.0/
+   cp -rf ${./themes/Orchis-Dark-Compact/gtk-4.0}/. ~/.config/gtk-4.0/
+   '';
 
   programs.home-manager.enable = true;
 }
