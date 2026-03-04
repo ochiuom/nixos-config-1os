@@ -58,6 +58,7 @@
       auto-raise = false;
       focus-mode = "click";
       num-workspaces = 4;
+      window-placement = "automatic";
     };
 
     "org/gnome/shell" = {
