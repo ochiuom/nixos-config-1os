@@ -51,7 +51,7 @@
     collection-luatex
     revtex4-1    # ← needed for \documentclass[aps,rmp,...]{revtex4-2}
     # Fonts & Symbols
-    charter noto fontspec amsmath amsfonts amssymb amsthm amscls
+    charter noto fontspec amsmath amsfonts amsthm amscls
     cm-super   # High-quality default fonts
     physics mathtools cancel nicefrac braket siunitx bm
     # Graphics & Diagrams
