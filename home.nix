@@ -37,6 +37,7 @@
       experimental-features = [ "scale-monitor-framebuffer" "xwayland-native-scaling" ];
       edge-tiling = true;
       dynamic-workspaces = true;
+      center-new-windows = false; # Set to false to allow 'smart' positioning
     };
 
     "org/gnome/desktop/interface" = {
