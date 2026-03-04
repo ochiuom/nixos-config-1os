@@ -267,7 +267,8 @@
         esac
       done
     }
-    _path_append "$HOME/.local/bin" "$HOME/.cargo/bin" "/usr/local/texlive/2025/bin/x86_64-linux"
+   # _path_append "$HOME/.local/bin" "$HOME/.cargo/bin" "/usr/local/texlive/2025/bin/x86_64-linux"
+   _path_append "$HOME/.local/bin" "$HOME/.cargo/bin"
     export PATH
 
     [ -f ~/.api_keys ] && source ~/.api_keys
@@ -348,6 +349,9 @@
     }
      
     eval "$(starship init bash)"
+   
+    # fastfetch FIRST before ble.sh
+    command -v fastfetch >/dev/null 2>&1 && fastfetch
 
     # ble.sh first
     if [ -f "${pkgs.blesh}/share/blesh/ble.sh" ]; then
@@ -373,7 +377,8 @@
       esac
     }
     bind -x '"\C-f": _fzf_cd'
-    command -v fastfetch >/dev/null 2>&1 && fastfetch
+   # command -v fastfetch >/dev/null 2>&1 && fastfetch
+   #blehook ATTACH+='command -v fastfetch >/dev/null 2>&1 && fastfetch'
 
     '';
   };
@@ -381,7 +386,7 @@
   home.sessionPath = [
     "$HOME/.local/bin"
     "$HOME/.cargo/bin"
-    "/usr/local/texlive/2025/bin/x86_64-linux"
+   # "/usr/local/texlive/2025/bin/x86_64-linux"
   ];
 
   programs.fzf = {
@@ -464,10 +469,12 @@ systemd.user.timers.organize-downloads = {
   vimAlias = true;
   };
   
- home.activation.copyKitty = lib.hm.dag.entryAfter ["writeBoundary"] ''
+  home.activation.copyKitty = lib.hm.dag.entryAfter ["writeBoundary"] ''
   mkdir -p ~/.config/kitty
+  chmod -R u+w ~/.config/kitty 2>/dev/null || true
   cp -rf ${./kitty}/. ~/.config/kitty/
- '';
+  echo "${./kitty}" > ~/.config/kitty/.nix-source
+  '';
 
   home.activation.cleanStarshipBackup = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
   rm -f ~/.config/starship.toml.backup

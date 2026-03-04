@@ -41,9 +41,30 @@
     stylua                        # lua formatter
     texlab                        # latex
     zathura 
+    
     # LaTeX
-    # texlive installed separately — full scheme via official installer
-    # default binary path added to PATH in bashrc via home.nix
+    (pkgs.texlive.combine {
+    inherit (pkgs.texlive)
+    scheme-small
+    latex-bin  # Ensure pdflatex/lualatex are linked
+    latexmk
+    collection-luatex
+    revtex4-1    # ← needed for \documentclass[aps,rmp,...]{revtex4-2}
+    # Fonts & Symbols
+    charter noto fontspec amsmath amsfonts amssymb amsthm amscls
+    cm-super   # High-quality default fonts
+    physics mathtools cancel nicefrac braket siunitx bm
+    # Graphics & Diagrams
+    pgf tikz-cd circuitikz quantikz
+    adjustbox graphicx subfig subcaption
+    # Layout & Tables
+    booktabs float multirow tabularx colortbl longtable array
+    geometry microtype parskip setspace ragged2e enumitem etoolbox csquotes
+    titlesec changepage caption xcolor tcolorbox empheq
+    # Bibliography & Meta
+    hyperref biblatex biber fancyhdr lastpage textcomp orcidlink
+    babel babel-english;
+    })
 
     gnome-tweaks gnome-extension-manager
 
