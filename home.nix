@@ -35,6 +35,7 @@
     warp-terminal
     cmus
     mc
+    yt-dlp
   ];
 
   dconf.settings = {
@@ -642,5 +643,5 @@ systemd.user.timers.organize-downloads = {
   ];
 };
 
-home.packages = with pkgs; [ yt-dlp ];
+
 }
