@@ -571,4 +571,76 @@ systemd.user.timers.organize-downloads = {
    };
 
   programs.home-manager.enable = true;
+
+   programs.mpv = {
+  enable = true;
+  package = pkgs.mpv;
+
+  config = {
+    # Video
+    profile = "gpu-hq";
+    gpu-api = "vulkan";
+    hwdec = "vaapi";           # Intel iGPU on your T480s/L14
+    vo = "gpu-next";
+
+    # Audio
+    audio-normalize-downmix = true;
+    volume = 100;
+    volume-max = 150;
+
+    # Subtitles
+    sub-auto = "fuzzy";
+    sub-font = "JetBrains Mono";
+    sub-font-size = 42;
+    sub-color = "#FFFFFF";
+    sub-border-size = 2;
+    sub-border-color = "#000000";
+
+    # UI
+    osc = false;               # disable default OSC — using modernx below
+    osd-font = "JetBrains Mono";
+    osd-font-size = 28;
+    keep-open = true;          # don't close after video ends
+    save-position-on-quit = true;
+    screenshot-format = "png";
+    screenshot-directory = "~/Pictures/Screenshots";
+
+    # YouTube via yt-dlp
+    ytdl-format = "bestvideo[height<=1080]+bestaudio/best[height<=1080]";
+  };
+
+  bindings = {
+    # Seeking
+    "l" = "seek 5";
+    "h" = "seek -5";
+    "L" = "seek 30";
+    "H" = "seek -30";
+
+    # Volume
+    "j" = "add volume -5";
+    "k" = "add volume 5";
+
+    # Speed
+    "=" = "add speed 0.1";
+    "-" = "add speed -0.1";
+    "BS" = "set speed 1.0";
+
+    # Subtitles
+    "s" = "cycle sub";
+    "S" = "cycle sub down";
+
+    # Playlist
+    ">" = "playlist-next";
+    "<" = "playlist-prev";
+  };
+
+  scripts = with pkgs.mpvScripts; [
+    modernx        # modern OSC UI
+    ytdlp          # yt-dlp integration
+    sponsorblock   # skip sponsors on YouTube
+    thumbfast       # thumbnail preview on seek bar
+  ];
+};
+
+home.packages = with pkgs; [ yt-dlp ];
 }
