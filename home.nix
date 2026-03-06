@@ -1,9 +1,5 @@
 { config, pkgs, lib, inputs, ... }:
-{
-  imports = [
-    ./modules/home/desktop-quote   # ← add this
-  ];
-  
+{  
   home.username = "ochinix";
   home.homeDirectory = "/home/ochinix";
   home.stateVersion = "26.05";
@@ -39,7 +35,10 @@
 
   dconf.settings = {
     "org/gnome/mutter" = {
-      experimental-features = [ "scale-monitor-framebuffer" "xwayland-native-scaling" ];
+      experimental-features = [
+             "scale-monitor-framebuffer"
+             "xwayland-native-scaling"  
+      ];
       edge-tiling = true;
       dynamic-workspaces = true;
       center-new-windows = false; # Set to false to allow 'smart' positioning
@@ -103,6 +102,7 @@
         #workspace-matrix.extensionUuid
         wallpaper-slideshow.extensionUuid
         dash-to-panel.extensionUuid
+        "desktop-quote@ochinix"
       ];
     };
 
