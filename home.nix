@@ -78,16 +78,16 @@
         ddterm.extensionUuid
         search-light.extensionUuid
         space-bar.extensionUuid
-        appindicator.extensionUuid
+       # appindicator.extensionUuid
         tiling-assistant.extensionUuid
-        logo-menu.extensionUuid
-        lock-guard.extensionUuid
+        #logo-menu.extensionUuid
+        #lock-guard.extensionUuid
         ip-finder.extensionUuid
         color-picker.extensionUuid
-        dash2dock-lite.extensionUuid
+        #dash2dock-lite.extensionUuid
         compact-top-bar.extensionUuid
         advanced-weather-companion.extensionUuid
-        adaptive-brightness.extensionUuid
+        #adaptive-brightness.extensionUuid
         astra-monitor.extensionUuid
         tophat.extensionUuid # astra ot top hat, suits your need
         gnome-40-ui-improvements.extensionUuid
@@ -95,7 +95,7 @@
         penguin-ai-chatbot.extensionUuid
         status-area-horizontal-spacing.extensionUuid
         tailscale-status.extensionUuid
-        workspace-matrix.extensionUuid
+        #workspace-matrix.extensionUuid
         wallpaper-slideshow.extensionUuid
         dash-to-panel.extensionUuid
       ];
@@ -556,6 +556,10 @@ systemd.user.timers.organize-downloads = {
    cp -rf ${./themes/Orchis-Dark-Compact/gtk-3.0}/. ~/.config/gtk-3.0/
    cp -rf ${./themes/Orchis-Dark-Compact/gtk-4.0}/. ~/.config/gtk-4.0/
    '';
+  
+   programs.bash.shellAliases = {
+   sage-env = "cd ~/projects/sage && nix develop";
+   };
 
   programs.home-manager.enable = true;
 }

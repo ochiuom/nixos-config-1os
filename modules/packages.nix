@@ -26,7 +26,7 @@
     yazi evince gparted baobab
     wl-color-picker localsend exfatprogs qpwgraph
 
-    pdfstudioviewer
+   # pdfstudioviewer
     strawberry
     gimp
     inkscape
@@ -81,16 +81,16 @@
     gnomeExtensions.ddterm
     gnomeExtensions.search-light
     gnomeExtensions.space-bar
-    gnomeExtensions.appindicator
+   # gnomeExtensions.appindicator
     gnomeExtensions.tiling-assistant
-    gnomeExtensions.logo-menu
-    gnomeExtensions.lock-guard
+   # gnomeExtensions.logo-menu
+   # gnomeExtensions.lock-guard
     gnomeExtensions.ip-finder
     gnomeExtensions.color-picker
-    gnomeExtensions.dash2dock-lite
+   # gnomeExtensions.dash2dock-lite
     gnomeExtensions.compact-top-bar
     gnomeExtensions.advanced-weather-companion
-    gnomeExtensions.adaptive-brightness
+   # gnomeExtensions.adaptive-brightness
     gnomeExtensions.astra-monitor
     gnomeExtensions.tophat
     gnomeExtensions.gnome-40-ui-improvements
@@ -98,7 +98,7 @@
     gnomeExtensions.penguin-ai-chatbot
     gnomeExtensions.status-area-horizontal-spacing
     gnomeExtensions.tailscale-status
-    gnomeExtensions.workspace-matrix
+   # gnomeExtensions.workspace-matrix
     gnomeExtensions.wallpaper-slideshow
     gnomeExtensions.dash-to-panel
   ];

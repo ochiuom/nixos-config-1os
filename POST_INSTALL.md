@@ -97,9 +97,28 @@ environment.systemPackages = with pkgs; [
   texlab                        # latex LSP
 
   # LaTeX
-  # LaTeX
-  # texlive installed separately — full scheme via official installer
-  # default binary path added to PATH in bashrc via home.nix
+   (pkgs.texlive.combine {
+    inherit (pkgs.texlive)
+    scheme-small
+    latex-bin  # Ensure pdflatex/lualatex are linked
+    latexmk
+    collection-luatex
+    revtex4-1    # ← needed for \documentclass[aps,rmp,...]{revtex4-2}
+    # Fonts & Symbols
+    charter noto fontspec amsmath amsfonts amscls
+    cm-super   # High-quality default fonts
+    physics mathtools cancel braket siunitx
+    # Graphics & Diagrams
+    pgf tikz-cd circuitikz quantikz
+    adjustbox  subfig 
+    # Layout & Tables
+    booktabs float multirow colortbl  
+    geometry microtype parskip setspace ragged2e enumitem etoolbox csquotes
+    titlesec changepage caption xcolor tcolorbox 
+    # Bibliography & Meta
+    hyperref biblatex biber fancyhdr lastpage orcidlink
+    babel babel-english;
+    })
 
   # PDF viewer (auto-reloads on recompile)
   zathura
@@ -219,6 +238,122 @@ backupv    # rsync encrypted .vault to ~/Backups (safe to backup encrypted)
 ```
 
 > The vault is encrypted at rest. Even if someone accesses your disk, `.vault` contents are unreadable without the password. `lockv` before suspending or leaving the machine unattended.
+
+---
+
+# SageMath on NixOS 
+
+No conda, no pip, no ISO. Just Nix.
+
+---
+
+## Prerequisites
+
+- NixOS with flakes enabled
+- `nix develop` available in your shell
+
+---
+
+## Setup
+
+### 1. Create the project folder
+
+```bash
+mkdir ~/projects/sage && cd ~/projects/sage
+```
+
+### 2. Create `flake.nix`
+
+```nix
+{
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+
+  outputs = { self, nixpkgs }: let
+    pkgs = nixpkgs.legacyPackages.x86_64-linux;
+  in {
+    devShells.x86_64-linux.default = pkgs.mkShell {
+      buildInputs = [ pkgs.sage ];
+    };
+  };
+}
+```
+
+> Uses NixOS 25.11 stable for reliability. Change to `nixos-unstable` if you need bleeding edge.
+
+### 3. Enter the environment
+
+```bash
+nix develop
+```
+
+> First run downloads ~3GB and takes a while. Every subsequent run is instant (cached).
+
+### 4. Launch Sage
+
+```bash
+# REPL
+sage
+
+# Jupyter notebook (opens in browser)
+sage -n jupyter
+```
+
+---
+
+## Daily Usage
+
+```bash
+cd ~/projects/sage
+nix develop        # activate env (every new terminal session)
+sage               # start REPL
+```
+
+Once inside `nix develop`, you can `cd` anywhere — the env stays active for that shell session.
+
+---
+
+## Quick Test
+
+Paste this in the Sage REPL to verify everything works:
+
+```python
+sage: var('x y')
+sage: plot(sin(x), (x, -2*pi, 2*pi))          # 2D plot
+sage: plot3d(sin(x^2 + y^2), (x,-3,3),(y,-3,3))  # 3D plot (opens HTML viewer)
+```
+
+For best plot rendering, use the Jupyter notebook (`sage -n jupyter`) instead of the REPL.
+
+---
+
+## Updating Packages
+
+```bash
+nix flake update   # pull latest packages for your chosen nixpkgs branch
+nix develop        # re-enter with updated env
+```
+
+---
+
+## Why Not Conda?
+
+On NixOS, Nix itself is the environment manager. Each project gets its own `flake.nix` with a pinned `flake.lock` — fully isolated, reproducible, no conflicts between projects.
+
+| Conda | NixOS |
+|---|---|
+| `conda create -n sage` | `flake.nix` in project folder |
+| `conda activate sage` | `nix develop` |
+| `conda install sage` | add to `buildInputs` |
+| `environment.yml` | `flake.nix` |
+
+---
+
+## Notes
+
+- `stateVersion` in `home.nix` is unrelated to nixpkgs version — set once, never change.
+- System flake (`~/nixos-config/flake.nix`) and project flakes are completely independent.
+- Upgrading your OS to 26.05 stable will not affect this env — it has its own `flake.lock`.
+
 
 ---
 
