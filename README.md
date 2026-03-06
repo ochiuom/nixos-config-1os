@@ -10,6 +10,12 @@ Personal NixOS flake configuration for a Lenovo ThinkPad L14 Gen1 running a pure
 
 ---
 
+![Desktop 1](./screenshots/dektop-01.png)
+![Desktop 2](./screenshots/dektop-02.png)
+
+---
+
+
 ## Hardware
 
 | Component | Detail |
