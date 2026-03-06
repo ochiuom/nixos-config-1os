@@ -43,7 +43,7 @@ export default class DesktopQuoteExtension {
             80
         );
 
-        global.window_group.get_parent().insert_child_below(_label, global.window_group);
+       Main.layoutManager.uiGroup.add_child(_label);
 
         loadQuote();
         _timeout = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, REFRESH_INTERVAL, loadQuote);
