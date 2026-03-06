@@ -39,8 +39,8 @@ export default class DesktopQuoteExtension {
         });
 
         _label.set_position(
-            global.screen_width - 420,   // ← increase this to move left
-            global.screen_height - 80   // ← bottom right
+            global.screen_width - 410,   // ← increase this to move left
+            global.screen_height - 100   // ← bottom right
         );
 
        Main.layoutManager._backgroundGroup.add_child(_label);
