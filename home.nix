@@ -1,8 +1,13 @@
 { config, pkgs, lib, inputs, ... }:
 {
+  imports = [
+    ./modules/home/desktop-quote   # ← add this
+  ];
+  
   home.username = "ochinix";
   home.homeDirectory = "/home/ochinix";
   home.stateVersion = "26.05";
+
 
   home.packages = with pkgs; [
     yaru-theme
