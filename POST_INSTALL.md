@@ -396,7 +396,9 @@ nsr
 # or with visual output and generation diff tracking
 nos
 ```
+---
 
 # If you notice any visual glitches or changes not reflected after rebuild,
 # a logout or full reboot will apply everything cleanly
+
 ---
