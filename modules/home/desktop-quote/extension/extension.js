@@ -3,8 +3,8 @@ import GLib from 'gi://GLib';
 import Clutter from 'gi://Clutter';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
-const QUOTE_FILE = `${GLib.get_home_dir()}/.cache/desktop-quote/quote.txt`;
-const REFRESH_INTERVAL = 3600; // seconds
+const QUOTE_FILE = GLib.build_filenamev([GLib.get_home_dir(), '.cache', 'desktop-quote', 'quote.txt']);
+const REFRESH_INTERVAL = 3600;
 
 let _label = null;
 let _timeout = null;
@@ -25,25 +25,24 @@ function loadQuote() {
 export default class DesktopQuoteExtension {
     enable() {
         _label = new St.Label({
-            style: `
-                font-family: "JetBrains Mono", monospace;
-                font-size: 13px;
-                font-style: italic;
-                color: rgba(255, 255, 255, 0.80);
-                background-color: rgba(30, 30, 30, 0.45);
-                border-radius: 12px;
-                padding: 16px 20px;
-            `,
+            style: [
+                'font-family: "JetBrains Mono", monospace;',
+                'font-size: 13px;',
+                'font-style: italic;',
+                'color: rgba(255, 255, 255, 0.80);',
+                'background-color: rgba(30, 30, 30, 0.45);',
+                'border-radius: 12px;',
+                'padding: 16px 20px;',
+            ].join(''),
             x_align: Clutter.ActorAlign.END,
             y_align: Clutter.ActorAlign.START,
         });
 
         _label.set_position(
-            global.screen_width - 380,   // 40px from right edge
-            80                            // 80px from top
+            global.screen_width - 380,
+            80
         );
 
-        // render behind all windows, on the desktop layer
         global.window_group.get_parent().insert_child_below(_label, global.window_group);
 
         loadQuote();
