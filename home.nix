@@ -567,7 +567,7 @@ systemd.user.timers.organize-downloads = {
    '';
   
    programs.bash.shellAliases = {
-   sage-env = "cd ~/projects/sage && nix develop";
+   sage-env = "cd ~/Projects/Sage && nix develop";
    };
 
   programs.home-manager.enable = true;
