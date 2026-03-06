@@ -636,12 +636,15 @@ systemd.user.timers.organize-downloads = {
   };
 
   scripts = with pkgs.mpvScripts; [
-    modernx        # modern OSC UI
-    ytdlp          # yt-dlp integration
-    sponsorblock   # skip sponsors on YouTube
-    thumbfast       # thumbnail preview on seek bar
+  modernx          # modern OSC UI
+  sponsorblock     # skip sponsors on YouTube
+  thumbfast        # thumbnail preview on seek bar
+  autoload         # auto-load playlist entries
+  inhibit-gnome    # prevents screen blanking in GNOME
+  quality-menu     # change YouTube quality on the fly
+  mpris            # MPRIS integration (works with your media keys)
   ];
-};
+  
 
-
-}
+  };
+ }
