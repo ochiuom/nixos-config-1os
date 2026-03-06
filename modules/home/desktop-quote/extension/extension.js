@@ -40,10 +40,10 @@ export default class DesktopQuoteExtension {
 
         _label.set_position(
             global.screen_width - 380,
-            80
+            global.screen_height - 160   // ← bottom right
         );
 
-       Main.layoutManager.uiGroup.add_child(_label);
+       Main.layoutManager._backgroundGroup.add_child(_label);
 
         loadQuote();
         _timeout = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, REFRESH_INTERVAL, loadQuote);
