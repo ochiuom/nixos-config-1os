@@ -108,4 +108,10 @@
    enable = true;
    flake = "/etc/nixos";
    };
+
+   nix.extraOptions = ''
+   keep-outputs = true
+   keep-derivations = true
+   '';
+
 }
