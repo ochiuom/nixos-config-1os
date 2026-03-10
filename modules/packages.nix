@@ -42,7 +42,7 @@
     texlab                        # latex
     zathura 
     pdfsam-basic
-    poppler_utils
+    poppler-utils
     pdfcpu
     # LaTeX
     (pkgs.texlive.combine {
