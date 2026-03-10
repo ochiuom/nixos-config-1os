@@ -30,9 +30,7 @@
     "mem_sleep_default=deep"
   ];
 
-  systemd.watchdog = {
-    runtimeTime = "30s";
-    rebootTime = "10s";
-  };
+  systemd.settings.Manager.RuntimeWatchdogSec = "30s";
+  systemd.settings.Manager.RebootWatchdogSec = "10s";
 
 }
