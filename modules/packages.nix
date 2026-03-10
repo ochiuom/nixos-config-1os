@@ -42,6 +42,8 @@
     texlab                        # latex
     zathura 
     pdfsam-basic
+    poppler_utils
+    pdfcpu
     # LaTeX
     (pkgs.texlive.combine {
     inherit (pkgs.texlive)
