@@ -655,7 +655,7 @@ systemd.user.timers.organize-downloads = {
       'font.size': 11,
       'axes.labelsize': 12,
       'figure.dpi': 300,
-      'figure.figsize': (3.5, 2.8),
+      'figure.figsize': (6.5, 4.5),
       'lines.linewidth': 1.5,
       'axes.linewidth': 0.8,
       'xtick.direction': 'in',
