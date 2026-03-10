@@ -647,4 +647,22 @@ systemd.user.timers.organize-downloads = {
   
 
   };
+
+  home.file.".sage/init.sage".text = ''
+  import matplotlib as mpl
+  mpl.rcParams.update({
+      'font.family': 'serif',
+      'font.size': 11,
+      'axes.labelsize': 12,
+      'figure.dpi': 300,
+      'figure.figsize': (3.5, 2.8),
+      'lines.linewidth': 1.5,
+      'axes.linewidth': 0.8,
+      'xtick.direction': 'in',
+      'ytick.direction': 'in',
+      'xtick.top': True,
+      'ytick.right': True,
+  })
+  '';
+
  }
