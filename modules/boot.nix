@@ -29,4 +29,10 @@
     "udev.log_priority=3"
     "mem_sleep_default=deep"
   ];
+
+  systemd.watchdog = {
+    runtimeTime = "30s";
+    rebootTime = "10s";
+  };
+
 }

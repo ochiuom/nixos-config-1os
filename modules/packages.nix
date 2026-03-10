@@ -41,7 +41,7 @@
     stylua                        # lua formatter
     texlab                        # latex
     zathura 
-    
+    pdfsam
     # LaTeX
     (pkgs.texlive.combine {
     inherit (pkgs.texlive)
