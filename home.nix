@@ -568,12 +568,14 @@ systemd.user.timers.organize-downloads = {
    '';
   
    programs.bash.shellAliases = {
-   sage-env = "cd ~/Projects/Sage && nix develop";
+   sage-env = "cd ~/Projects/Sage && nix develop --profile ~/.local/state/nix/profiles/sage";
    };
 
   programs.home-manager.enable = true;
 
-   programs.mpv = {
+  
+  
+  programs.mpv = {
   enable = true;
   package = pkgs.mpv;
 
