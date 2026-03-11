@@ -35,4 +35,5 @@
     dates = "weekly";
     options = "--delete-generations +3";
   };
+  nix.settings.auto-optimise-store = true;
 }
