@@ -36,6 +36,8 @@
     
     ymuse          # lightweight GTK, simple clean UI
     plattenalbum   # formerly mpdevil, more GNOME-native feel
+
+    gemini-cli opencode
     
     vscode-langservers-extracted  # html, css
     stylua                        # lua formatter
