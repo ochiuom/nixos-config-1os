@@ -46,4 +46,6 @@
   DefaultTimeoutStopSec = "10s";
   };
 
+  services.btrfs.autoScrub.enable = true;
+
 }
