@@ -247,6 +247,9 @@
     br  = "broot";
     nav = "navi"; 
     f = "pay-respects";
+
+    clean-cache = "rm -rf ~/.cache/mozilla/firefox/*.default/cache2 && rm -rf ~/.var/app/com.brave.Browser/cache/BraveSoftware/Brave-Browser/Default/Cache && echo 'Browser caches cleared'";
+    clean-all = "clean-cache && sudo journalctl --vacuum-time=7d && flatpak uninstall --unused -y && ngc && echo 'Full clean done'";
 };
 
   sessionVariables = {
