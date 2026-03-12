@@ -251,6 +251,7 @@
     update  = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc";
     upgrade = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc && ngc";
     nos="nh os switch --hostname ochinix-pc";
+
   };
 
   sessionVariables = {
@@ -391,6 +392,35 @@
     bind -x '"\C-f": _fzf_cd'
    # command -v fastfetch >/dev/null 2>&1 && fastfetch
    #blehook ATTACH+='command -v fastfetch >/dev/null 2>&1 && fastfetch'
+   # command -v fastfetch >/dev/null 2>&1 && fastfetch
+   #blehook ATTACH+='command -v fastfetch >/dev/null 2>&1 && fastfetch'
+
+    syncto() {
+      local src="$1" dest="$2" label="$3"
+      local BOLD='\033[1m' CYAN='\033[0;36m' GREEN='\033[0;32m'
+      local YELLOW='\033[0;33m' RED='\033[0;31m' RESET='\033[0m'
+      echo -e "\n''${BOLD}''${CYAN}╔══════════════════════════════════════╗''${RESET}"
+      echo -e "''${BOLD}''${CYAN}║  🔄  RSYNC → ''${label}''${RESET}"
+      echo -e "''${BOLD}''${CYAN}╚══════════════════════════════════════╝''${RESET}"
+      echo -e "''${YELLOW}  SRC :''${RESET} $src"
+      echo -e "''${YELLOW}  DEST:''${RESET} $dest\n"
+      rsync -avz --delete --info=progress2 --human-readable "$src" "$dest" \
+        2>&1 | while IFS= read -r line; do
+          if [[ "$line" =~ ^deleting ]]; then
+            echo -e "''${RED}  $line''${RESET}"
+          elif [[ "$line" =~ "bytes/sec"|"total size" ]]; then
+            echo -e "''${GREEN}  $line''${RESET}"
+          elif [[ "$line" =~ ^sending|^receiving ]]; then
+            echo -e "''${CYAN}  $line''${RESET}"
+          else
+            echo "  $line"
+          fi
+        done
+      echo -e "\n''${GREEN}''${BOLD}✓ Done: ''${label}''${RESET}\n"
+    }
+
+    alias syncvault='syncto /home/ochinix/Documents/Vault/ pi5:/home/ochiuom/Nixos/Vault/ "Vault"'
+    alias syncworkdir='syncto /home/ochinix/workdir/ pi5:/home/ochiuom/Nixos/workdir/ "Workdir"'
 
     '';
   };
