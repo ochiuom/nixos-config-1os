@@ -450,21 +450,23 @@
     };
   };
 
-   programs.git = {
-   enable = true;
-   delta = {
+    programs.git = {
     enable = true;
-    options = {
-      navigate = true;
-      dark = true;
-      side-by-side = true;
-      line-numbers = true;
-      syntax-theme = "TwoDark";    # matches your bat theme
-    };
-  };
-    extraConfig = {
+    settings = {
     merge.conflictstyle = "diff3";
     diff.colorMoved = "default";
+    };
+  };
+
+  programs.delta = {
+  enable = true;
+  enableGitIntegration = true;
+  options = {
+    navigate = true;
+    dark = true;
+    side-by-side = true;
+    line-numbers = true;
+    syntax-theme = "TwoDark";
     };
   };
 
