@@ -482,13 +482,15 @@
       showIcons = true;
       nerdFontsVersion = "3";
     };
-    git.pagers = {
-      diff = "delta --dark --paging=never";
-      staging = "delta --dark --paging=never";
-      mergeDiff = "delta --dark --paging=never";
-      };
-    };
-  };
+    git.pagers = [
+  {
+    diff = "delta --dark --paging=never";
+    staging = "delta --dark --paging=never";
+    mergeDiff = "delta --dark --paging=never";
+     }
+    ];
+   };
+ };
 
   programs.fzf = {
     enable = true;
