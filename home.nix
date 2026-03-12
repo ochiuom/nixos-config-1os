@@ -470,9 +470,9 @@
     };
   };
 
-   programs.lazygit = {
-   enable = true;
-   settings = {
+  programs.lazygit = {
+  enable = true;
+  settings = {
     gui = {
       theme = {
         activeBorderColor = [ "cyan" "bold" ];
@@ -482,9 +482,10 @@
       showIcons = true;
       nerdFontsVersion = "3";
     };
-    git.paging = {
-      colorArg = "always";
-      pager = "delta --dark --paging=never";
+    git.pagers = {
+      diff = "delta --dark --paging=never";
+      staging = "delta --dark --paging=never";
+      mergeDiff = "delta --dark --paging=never";
       };
     };
   };
