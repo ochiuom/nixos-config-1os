@@ -10,33 +10,9 @@
 
 
   home.packages = with pkgs; [
-    yaru-theme
-    fzf
-    zoxide
-    fd
-    ripgrep
-    bat
-    btop
-    starship
-    eza
-    pipx
-    aria2
-    fastfetch
-    rsync
-    blesh
-    easyeffects
-    weylus
-    xournalpp
-    tigervnc
-    remmina
-    audacious
-    audacious-plugins
-    audacity
-    warp-terminal
-    cmus
-    yt-dlp
-    lazygit
-    delta
+    yaru-theme fzf zoxide fd ripgrep bat btop starship eza pipx aria2 fastfetch rsync blesh
+    easyeffects weylus xournalpp tigervnc remmina audacious audacious-plugins audacity
+    warp-terminal cmus yt-dlp lazygit delta dust duf bandwhich gping
   ];
 
   dconf.settings = {
@@ -256,7 +232,18 @@
     lg  = "lazygit";
     gd  = "git diff";          # now auto-uses delta
     gds = "git diff --staged"; # delta side-by-side
-  };
+  
+    # Tmux
+    ta   = "tmux attach || tmux new-session -s main";
+    tn   = "tmux new-session -s";
+    tl   = "tmux list-sessions";
+    tk   = "tmux kill-session -t";
+
+    # Disk
+    du   = "dust";
+    df   = "duf";
+    bw   = "sudo bandwhich";
+ };
 
   sessionVariables = {
     EDITOR   = "nvim";
@@ -491,6 +478,67 @@
     ];
    };
  };
+
+   programs.tmux = {
+  enable = true;
+  clock24 = true;
+  escapeTime = 0;
+  historyLimit = 50000;
+  mouse = true;
+  terminal = "xterm-256color";
+  baseIndex = 1;
+  keyMode = "vi";
+  prefix = "C-a";
+  plugins = with pkgs.tmuxPlugins; [
+    sensible
+    yank
+    resurrect
+    continuum
+    {
+      plugin = catppuccin;
+      extraConfig = ''
+        set -g @catppuccin_flavour 'mocha'
+        set -g @catppuccin_window_default_text "#W"
+        set -g @catppuccin_window_current_text "#W"
+        set -g @catppuccin_status_modules_right "session date_time"
+        set -g @catppuccin_date_time_text "%H:%M"
+      '';
+    }
+  ];
+  extraConfig = ''
+    # True colour
+    set -ag terminal-overrides ",xterm-256color:RGB"
+
+    # Split panes with | and -
+    bind | split-window -h -c "#{pane_current_path}"
+    bind - split-window -v -c "#{pane_current_path}"
+    unbind '"'
+    unbind %
+
+    # Vim-style pane navigation
+    bind h select-pane -L
+    bind j select-pane -D
+    bind k select-pane -U
+    bind l select-pane -R
+
+    # Resize panes
+    bind -r H resize-pane -L 5
+    bind -r J resize-pane -D 5
+    bind -r K resize-pane -U 5
+    bind -r L resize-pane -R 5
+
+    # Reload config
+    bind r source-file ~/.config/tmux/tmux.conf \; display "Reloaded!"
+
+    # Auto-restore sessions
+    set -g @resurrect-capture-pane-contents 'on'
+    set -g @continuum-restore 'on'
+    set -g @continuum-save-interval '10'
+
+    # New windows open in current path
+    bind c new-window -c "#{pane_current_path}"
+   '';
+  };
 
   programs.fzf = {
     enable = true;
