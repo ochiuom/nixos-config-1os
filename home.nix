@@ -252,7 +252,10 @@
     update  = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc";
     upgrade = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc && ngc";
     nos="nh os switch --hostname ochinix-pc";
-
+  
+    lg  = "lazygit";
+    gd  = "git diff";          # now auto-uses delta
+    gds = "git diff --staged"; # delta side-by-side
   };
 
   sessionVariables = {
