@@ -12,7 +12,7 @@
   home.packages = with pkgs; [
     yaru-theme fzf zoxide fd ripgrep bat btop starship eza pipx aria2 fastfetch rsync blesh
     easyeffects weylus xournalpp tigervnc remmina audacious audacious-plugins audacity
-    warp-terminal cmus yt-dlp lazygit delta dust duf bandwhich gping
+    warp-terminal cmus yt-dlp lazygit delta dust duf bandwhich gping navi broot
   ];
 
   dconf.settings = {
@@ -243,7 +243,11 @@
     du   = "dust";
     df   = "duf";
     bw   = "sudo bandwhich";
- };
+
+    br  = "broot";
+    nav = "navi"; 
+    f = "pay-respects";
+};
 
   sessionVariables = {
     EDITOR   = "nvim";
@@ -367,9 +371,11 @@
       bleopt complete_menu_maxlines=15
       bleopt suggest_style=faint
     fi
+    
 
     # fzf after ble.sh
     eval "$(fzf --bash)"
+
     _fzf_comprun() {
       local command=$1
       shift
@@ -423,19 +429,19 @@
   ];
 
 
-  programs.atuin = {
-  enable = true;
-  enableBashIntegration = true;
-  settings = {
-    auto_sync = false;        # no cloud, local only
-    update_check = false;
-    style = "compact";
-    inline_height = 20;
-    show_preview = true;
-    filter_mode_shell_up_key_binding = "session";
-    enter_accept = true;      # press Enter directly from search
-    };
-  };
+ # programs.atuin = {
+  #enable = true;
+  #enableBashIntegration = true;
+  #settings = {
+   # auto_sync = false;        # no cloud, local only
+   # update_check = false;
+   # style = "compact";
+   # inline_height = 20;
+   # show_preview = true;
+   # filter_mode_shell_up_key_binding = "session";
+   # enter_accept = true;      # press Enter directly from search
+   # };
+  #};
 
     programs.git = {
     enable = true;
@@ -510,7 +516,7 @@
     set -ag terminal-overrides ",xterm-256color:RGB"
 
     # Split panes with | and -
-    bind | split-window -h -c "#{pane_current_path}"
+    bind \\ split-window -h -c "#{pane_current_path}"
     bind - split-window -v -c "#{pane_current_path}"
     unbind '"'
     unbind %
@@ -539,6 +545,49 @@
     bind c new-window -c "#{pane_current_path}"
    '';
   };
+
+  programs.pay-respects = {
+  enable = true;
+  enableBashIntegration = true;
+  }; 
+
+
+  programs.broot = {
+  enable = true;
+  enableBashIntegration = true;
+  settings = {
+    modal = true;
+    skin = {
+      default = "rgb(220, 220, 220) none";
+      tree = "rgb(89, 148, 220) none";
+      file = "rgb(220, 220, 220) none";
+      directory = "rgb(89, 148, 220) none Bold";
+      exe = "rgb(147, 220, 147) none";
+      link = "rgb(220, 147, 220) none";
+      pruning = "rgb(150, 150, 150) none Italic";
+      selected_line = "none rgb(40, 40, 60)";
+      char_match = "rgb(220, 220, 100) none Bold";
+      file_error = "rgb(220, 100, 100) none";
+      flag_label = "rgb(220, 220, 220) none";
+      flag_value = "rgb(220, 147, 89) none Bold";
+      input = "rgb(220, 220, 220) none";
+      status_error = "rgb(220, 100, 100) rgb(40, 40, 40)";
+      status_job = "rgb(89, 220, 220) rgb(40, 40, 40)";
+      status_normal = "rgb(220, 220, 220) rgb(40, 40, 40)";
+      status_italic = "rgb(220, 147, 89) rgb(40, 40, 40)";
+      status_bold = "rgb(220, 220, 100) rgb(40, 40, 40) Bold";
+      status_code = "rgb(147, 220, 220) rgb(40, 40, 40)";
+      status_ellipsis = "rgb(220, 220, 220) rgb(40, 40, 40)";
+      scrollbar_thumb = "rgb(89, 148, 220) none";
+      scrollbar_track = "rgb(40, 40, 40) none";
+      help_paragraph = "rgb(220, 220, 220) none";
+      help_bold = "rgb(220, 220, 100) none Bold";
+      help_italic = "rgb(220, 147, 89) none Italic";
+      help_code = "rgb(147, 220, 220) none";
+      help_headers = "rgb(89, 148, 220) none Bold";
+    };
+  };
+};
 
   programs.fzf = {
     enable = true;
