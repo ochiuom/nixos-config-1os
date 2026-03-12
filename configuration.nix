@@ -24,8 +24,4 @@
 
   system.stateVersion = "26.05";
   
-  security.pki.certificateFiles = [
-  ./certs/nextcloud.crt
-  ];
-
 }

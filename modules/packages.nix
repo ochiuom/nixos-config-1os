@@ -3,7 +3,7 @@
   environment.systemPackages = with pkgs; [
     git vim wget curl htop ffmpeg libva-utils tree ncdu ticker
     sbctl btrfs-progs cryptsetup pciutils usbutils lshw
-    networkmanagerapplet xdg-utils xdg-desktop-portal-gnome glib gpick
+    networkmanagerapplet xdg-utils xdg-desktop-portal-gnome glib glib-networking gpick
 
     nautilus-python
     gobject-introspection
@@ -37,6 +37,7 @@
     ymuse          # lightweight GTK, simple clean UI
     plattenalbum   # formerly mpdevil, more GNOME-native feel
 
+    nextcloud-client
     gemini-cli opencode
     
     vscode-langservers-extracted  # html, css
