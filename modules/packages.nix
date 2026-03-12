@@ -46,6 +46,7 @@
     pdfsam-basic
     poppler-utils
     pdfcpu
+    font-bitstream-type1
     # LaTeX
     (pkgs.texlive.combine {
     inherit (pkgs.texlive)
@@ -54,6 +55,7 @@
     latexmk
     collection-luatex
     revtex4-1    # ← needed for \documentclass[aps,rmp,...]{revtex4-2}
+    moderncv arydshln lm mathdesign
     # Fonts & Symbols
     charter noto fontspec amsmath amsfonts amscls
     cm-super   # High-quality default fonts
@@ -69,6 +71,7 @@
     hyperref biblatex biber fancyhdr lastpage orcidlink
     babel babel-english;
     })
+    
 
     gnome-tweaks gnome-extension-manager
 
