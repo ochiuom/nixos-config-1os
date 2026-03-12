@@ -34,8 +34,9 @@
     audacity
     warp-terminal
     cmus
-    mc
     yt-dlp
+    lazygit
+    delta
   ];
 
   dconf.settings = {
@@ -171,7 +172,7 @@
 
   home.file.".config/ghostty/config".text = ''
     window-width = 105
-    window-height = 30
+    window-height = 40
     window-step-resize = true
     font-family = JetBrains Mono
     font-size = 10
@@ -430,6 +431,58 @@
     "$HOME/.cargo/bin"
    # "/usr/local/texlive/2025/bin/x86_64-linux"
   ];
+
+
+  programs.atuin = {
+  enable = true;
+  enableBashIntegration = true;
+  settings = {
+    auto_sync = false;        # no cloud, local only
+    update_check = false;
+    style = "compact";
+    inline_height = 20;
+    show_preview = true;
+    filter_mode_shell_up_key_binding = "session";
+    enter_accept = true;      # press Enter directly from search
+    };
+  };
+
+   programs.git = {
+   enable = true;
+   delta = {
+    enable = true;
+    options = {
+      navigate = true;
+      dark = true;
+      side-by-side = true;
+      line-numbers = true;
+      syntax-theme = "TwoDark";    # matches your bat theme
+    };
+  };
+    extraConfig = {
+    merge.conflictstyle = "diff3";
+    diff.colorMoved = "default";
+    };
+  };
+
+   programs.lazygit = {
+   enable = true;
+   settings = {
+    gui = {
+      theme = {
+        activeBorderColor = [ "cyan" "bold" ];
+        inactiveBorderColor = [ "white" ];
+        selectedLineBgColor = [ "default" ];
+      };
+      showIcons = true;
+      nerdFontsVersion = "3";
+    };
+    git.paging = {
+      colorArg = "always";
+      pager = "delta --dark --paging=never";
+      };
+    };
+  };
 
   programs.fzf = {
     enable = true;
