@@ -77,12 +77,12 @@
   # ── DNS over TLS ─────────────────────────────────────────────────────────────
   # Note: disable services.tor.client.dns.enable in services.nix if using this
   services.resolved = {
-    enable = true;
-    dnssec = "true";
-    domains = [ "~." ];
-    fallbackDns = [ "1.1.1.1#cloudflare-dns.com" "9.9.9.9#dns.quad9.net" ];
-    extraConfig = ''
-      DNSOverTLS=yes
-    '';
-  };
+  enable = true;
+  dnssec = "true";
+  domains = [ "~." ];
+  fallbackDns = [ "1.1.1.1#cloudflare-dns.com" "9.9.9.9#dns.quad9.net" ];
+  settings = {
+    DNSOverTLS = "yes";
+   };
+ };
 }
