@@ -78,10 +78,10 @@
   # Note: disable services.tor.client.dns.enable in services.nix if using this
   services.resolved = {
   enable = true;
-  dnssec = "true";
-  domains = [ "~." ];
-  fallbackDns = [ "1.1.1.1#cloudflare-dns.com" "9.9.9.9#dns.quad9.net" ];
-  settings = {
+  settings.Resolve = {
+    DNSSEC = "true";
+    Domains = [ "~." ];
+    FallbackDNS = [ "1.1.1.1#cloudflare-dns.com" "9.9.9.9#dns.quad9.net" ];
     DNSOverTLS = "yes";
    };
  };
