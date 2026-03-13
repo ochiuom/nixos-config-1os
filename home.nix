@@ -12,7 +12,7 @@
   home.packages = with pkgs; [
     yaru-theme fzf zoxide fd ripgrep bat btop starship eza pipx aria2 fastfetch rsync blesh
     easyeffects weylus xournalpp tigervnc remmina audacious audacious-plugins audacity
-    warp-terminal cmus yt-dlp lazygit delta dust duf bandwhich gping navi broot
+    warp-terminal cmus yt-dlp lazygit delta dust duf bandwhich gping navi broot p7zip 
   ];
 
   dconf.settings = {
