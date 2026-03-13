@@ -29,6 +29,10 @@
         executable = "${lib.getBin pkgs.audacious}/bin/audacious";
         profile = "${pkgs.firejail}/etc/firejail/audacious.profile";
       };
+      vlc = {
+        executable = "${lib.getBin pkgs.vlc}/bin/vlc";
+        profile = "${pkgs.firejail}/etc/firejail/vlc.profile";
+      };
     };
   };
 
