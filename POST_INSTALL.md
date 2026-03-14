@@ -440,7 +440,7 @@ sudo fail2ban-client unban <IP>
 
 ## 19. Boot Partition Maintenance
 
-The `/boot` partition is 196M. With lanzaboote UKIs at ~60MB each and `configurationLimit = 3`, space is tight. If a rebuild fails with "no space left on device":
+If the `/boot` partition is 196M (such as for a dual boot with Windows). With lanzaboote UKIs at ~60MB each and `configurationLimit = 3`, space is tight. If a rebuild fails with "no space left on device":
 
 ```bash
 # Check what is consuming space
