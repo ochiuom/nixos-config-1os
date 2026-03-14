@@ -10,18 +10,15 @@ Personal NixOS flake configuration for a Lenovo ThinkPad L14 Gen1 running a pure
 
 ---
 
-
-![Desktop 1](./screenshots/desktop-01.png)
-![Desktop 2](./screenshots/desktop-02.png)
-
+<img src="./screenshots/desktop-01.png" width="800"/>
+<img src="./screenshots/desktop-02.png" width="800"/>
 
 ---
-
 
 ## Hardware
 
 | Component | Detail |
-| --- | --- |
+|---|---|
 | Machine | Lenovo ThinkPad L14 Gen1 |
 | CPU | Intel Core i5-10210U (CometLake-U) |
 | GPU | Intel UHD Graphics (CometLake-U GT2) |
@@ -33,6 +30,7 @@ Personal NixOS flake configuration for a Lenovo ThinkPad L14 Gen1 running a pure
 ---
 
 ## Disk Layout
+
 ```
 nvme0n1 (238.5GB NVMe — Toshiba KBG40ZNT256G)
 ├─ nvme0n1p1     1GB      /boot (EFI — systemd-boot)
@@ -56,53 +54,69 @@ zram0   7.6GB   Compressed swap (zstd, 50% RAM)
 - systemd-boot (no Secure Boot — restricted BIOS)
 - Full disk encryption with LUKS2
 - btrfs with zstd compression across all subvolumes
+- sudo-rs (memory-safe Rust replacement for sudo)
+- AppArmor with upstream profiles and kill-unconfined enabled
+- USBGuard with device whitelist — blocks unknown USB devices
+- Kernel module blacklist (amateur radio, obsolete filesystems, obscure protocols)
+- Full sysctl hardening (kptr, dmesg, ptrace, network stack, filesystem protections)
+- Core dumps disabled system-wide
+- DNS over TLS via systemd-resolved (Cloudflare malware-blocking `1.1.1.2`)
+- GNOME privacy lockdown (USB protection, no lock screen notifications, location disabled)
 - nftables firewall
 - fail2ban with incremental bans
-- Firefox sandboxed via firejail
-- SSH key-only authentication
-- Kernel hardening sysctls
+- firejail sandboxing for mpv and audacious
+- SSH key-only authentication with hardened ciphers and MACs
 
 **Power Management**
 - TLP with per-state CPU governor (performance on AC, powersave on battery)
 - thermald for thermal management
+- throttled for Intel CometLake-U power limit tuning
+- irqbalance for multi-core IRQ distribution
 - S3 deep sleep (`mem_sleep_default=deep`)
-- Battery charge thresholds for long-term health
+- Battery charge thresholds (70–80%) for long-term health
 - zram swap with zstd compression
 
 **Desktop**
 - Pure Wayland GNOME
 - GDM display manager
+- Declarative GNOME extension settings (dash-to-panel, blur-my-shell, astra-monitor, space-bar, and more)
 - Flatpak + Flathub
 - PipeWire audio with WirePlumber
 - Intel VA-API hardware video acceleration (intel-media-driver)
 - Plymouth boot splash
 
 **Networking**
+- DNS over TLS with malware/phishing blocking (Cloudflare `1.1.1.2`)
 - WireGuard VPN via NetworkManager (ProtonVPN)
 - Syncthing for file sync
-- Tor client with DNS
+- Tor client (SOCKS5 proxy for Thunderbird)
 
 ---
 
 ## Structure
+
 ```
 /etc/nixos/
-├── flake.nix                     # Inputs: nixpkgs, home-manager (no lanzaboote)
+├── flake.nix                        # Inputs: nixpkgs, home-manager, disko
 ├── flake.lock
-├── configuration.nix             # Entry point, imports all modules
-├── hardware-configuration.nix    # Auto-generated from nixos-generate-config
-├── disko_1os.nix                 # Declarative disk layout (LUKS2 + btrfs + EFI)
-├── home.nix                      # Home Manager configuration
-├── POST_INSTALL.md               # Post-install setup
+├── configuration.nix                # Entry point, imports all modules
+├── hardware-configuration.nix       # Auto-generated from nixos-generate-config
+├── disko_1os.nix                    # Declarative disk layout (LUKS2 + btrfs + EFI)
+├── home.nix                         # Home Manager configuration
+├── POST_INSTALL.md                  # Post-install manual steps
+├── TROUBLESHOOT.md                  # Chroot recovery and rescue procedures
 └── modules/
-    ├── boot.nix                  # systemd-boot, kernel, Plymouth, kernel params
-    ├── hardware.nix              # Intel iGPU, firmware, bluetooth, btrfs, zram
-    ├── networking.nix            # Hostname, firewall, SSH, fail2ban
-    ├── desktop.nix               # GNOME, GDM, Flatpak, fonts, PipeWire
-    ├── power.nix                 # TLP, thermald, sysctls
-    ├── security.nix              # firejail, sudo-rs, hardening
-    ├── packages.nix              # System packages
-    └── services.nix              # Syncthing, Tor, Nix settings, GC
+    ├── boot.nix                     # systemd-boot, kernel, Plymouth, kernel params
+    ├── hardware.nix                 # Intel iGPU, firmware, bluetooth, btrfs, zram
+    ├── networking.nix               # Hostname, firewall, SSH, fail2ban
+    ├── desktop.nix                  # GNOME, GDM, Flatpak, fonts, PipeWire
+    ├── power.nix                    # TLP, thermald, throttled, irqbalance, sysctls
+    ├── security.nix                 # sudo-rs, AppArmor, USBGuard, firejail, sysctl hardening, DNS
+    ├── packages.nix                 # System packages
+    ├── services.nix                 # Syncthing, Tor, Nix settings, GC
+    └── home/
+        ├── desktop-quote/           # Custom GNOME Shell extension (daily quote widget)
+        └── gnome-extensions.nix     # Declarative dconf settings for all GNOME extensions
 ```
 
 ---
@@ -123,11 +137,9 @@ zram0   7.6GB   Compressed swap (zstd, 50% RAM)
 ### Step 1 — Start the PXE server on the Pi 5
 
 From Termux on your Android phone (or any terminal with SSH access to the Pi):
-```bash
-# SSH into the Pi 5
-ssh pi@<pi5-ip>
 
-# Start dnsmasq with the PXE config
+```bash
+ssh pi@<pi5-ip>
 sudo dnsmasq -C pxe.conf -d
 ```
 
@@ -145,17 +157,16 @@ Go to **Startup → Boot** and check if a network/PXE boot entry exists. If not:
 2. Enable **PXE Boot** (may be listed as "Network Boot" or "IPv4/IPv6 Network Stack")
 3. Save and exit BIOS
 
-Most distros and network adapters have this option available — just needs to be enabled once.
-
 ---
 
 ### Step 3 — PXE boot into NixOS live environment
 
 Reboot the laptop. Select the network boot entry from the boot menu (`F12` on ThinkPad).
 
-The laptop will get a DHCP lease from dnsmasq on the Pi and load the netboot.xyz menu automatically. From there select the NixOS live environment.
+The laptop will get a DHCP lease from dnsmasq on the Pi and load the netboot.xyz menu. Select the NixOS live environment.
 
 Once booted into the NixOS live shell:
+
 ```bash
 nix-shell -p git
 git clone https://github.com/ochiuom/nixos-config-1os
@@ -167,6 +178,7 @@ cd nixos-config-1os
 ### Step 4 — Verify disk target
 
 > **This will wipe the entire drive.** Double check before running anything.
+
 ```bash
 lsblk
 ls -l /dev/disk/by-id/ | grep TOSHIBA
@@ -177,6 +189,7 @@ ls -l /dev/disk/by-id/ | grep TOSHIBA
 ---
 
 ### Step 5 — Format and mount
+
 ```bash
 sudo wipefs -a /dev/nvme0n1
 lsblk
@@ -188,6 +201,7 @@ sudo nix --extra-experimental-features "nix-command flakes" \
 ---
 
 ### Step 6 — Install
+
 ```bash
 sudo nix --extra-experimental-features "nix-command flakes" \
   run nixpkgs#nixos-install -- --flake .#ochinix-pc
@@ -198,6 +212,7 @@ When prompted, set the **root password**.
 ---
 
 ### Step 7 — Reboot
+
 ```bash
 reboot
 ```
@@ -209,23 +224,25 @@ Proceed to [POST_INSTALL.md](./POST_INSTALL.md) for the rest of the setup.
 
 ---
 
-
 ## Key Commands
 
-These aliases are defined in `home.nix`:
+Aliases defined in `home.nix`:
+
 ```bash
 nos       # Rebuild and switch (via nh — recommended)
 nrs       # Rebuild and switch (via nixos-rebuild directly)
 update    # Update flake inputs + rebuild
 upgrade   # Update flake inputs + rebuild + garbage collect
 ngc       # Garbage collect (keep last 3 generations)
+UP        # Full system upgrade (flake + rebuild + flatpak + firmware + gc)
 unlockv   # Unlock encrypted vault
 lockv     # Lock vault
+backupv   # Rsync encrypted vault to ~/Backups
 ```
 
 ---
 
-## Adding a Package — Workflow
+## Adding a Package
 
 One-time setup (run once as normal user):
 
@@ -233,11 +250,11 @@ One-time setup (run once as normal user):
 sudo chown -R ochinix:users /etc/nixos
 ```
 
-Daily workflow as normal user:
+Daily workflow:
 
 ```bash
 cd /etc/nixos
-# edit the relevant .nix file e.g. modules/packages.nix
+# Edit the relevant .nix file e.g. modules/packages.nix
 git add .
 git commit -m "add: packagename"
 nos
@@ -245,46 +262,38 @@ nos
 
 ---
 
-
-
 ## Heavy Packages
 
-Some packages are expensive to build from source and should only be added when needed.
+Some packages are expensive to build and are commented out by default.
 
 ### RustDesk
 
-RustDesk compiles from source (Rust + Flutter) and is very resource intensive:
+Compiles from source (Rust + Flutter):
 - ~100% CPU for the entire build
 - ~9GB RAM during compilation
 - ~10–15 minutes build time
 
-Commented out by default in `modules/packages.nix`:
-
 ```nix
-# Uncomment only when needed — expensive to build
+# Uncomment only when needed
 # rustdesk
 ```
 
-To enable, uncomment and rebuild. Subsequent rebuilds use the cached store path and are instant.
-
 ### PDFStudio Viewer
 
-PDFStudio Viewer downloads from an external server during install which can occasionally stall or fail due to server availability issues.
+Downloads from an external server during install which can stall due to server availability.
 
-It is commented out by default in `modules/packages.nix`:
 ```nix
-# Uncomment only when needed — external server can stall on download
+# Uncomment only when needed
 # pdfstudioviewer
 ```
-To enable, uncomment and rebuild.
+
+Subsequent rebuilds after either package is cached are instant.
 
 ---
 
-
-
 ## Post Installation
 
-See [POST_INSTALL.md](POST_INSTALL.md) for complete post-installation setup including fonts, Tor, Neovim, organize-tool, and Flatpak apps.
+See [POST_INSTALL.md](POST_INSTALL.md) for complete post-installation setup including USBGuard policy generation, ProtonVPN DNS fix, Tor, Neovim, SageMath, organize-tool, and Flatpak apps.
 
 ---
 
@@ -293,7 +302,6 @@ See [POST_INSTALL.md](POST_INSTALL.md) for complete post-installation setup incl
 See [TROUBLESHOOT.md](TROUBLESHOOT.md) for chroot recovery, password reset, and other system rescue procedures.
 
 ---
-
 
 ## References
 
