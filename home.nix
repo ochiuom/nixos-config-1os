@@ -2,6 +2,7 @@
 {  
   imports = [
   ./modules/home/desktop-quote
+  ./modules/home/gnome-extensions.nix
   ];
 
   home.username = "ochinix";
@@ -88,16 +89,6 @@
       ];
     };
 
-    "org/gnome/shell/extensions/user-theme" = {
-      name = "Orchis-Dark-Compact";
-    };
-
-    "org/gnome/shell/extensions/tiling-assistant" = {
-      enable-tiling-popup = true;
-      window-gap = 4;
-      maximize-with-gap = true;
-      default-wrap-mode = 0;
-    };
 
     "org/gnome/desktop/wm/keybindings" = {
       maximize = [ "<Super>Up" ];
