@@ -4,6 +4,8 @@
     git vim wget curl htop ffmpeg libva-utils tree ncdu ticker
     sbctl btrfs-progs cryptsetup pciutils usbutils lshw openssl
     networkmanagerapplet xdg-utils xdg-desktop-portal-gnome glib glib-networking gpick
+  
+    usbguard
 
     nautilus-python
     gobject-introspection
