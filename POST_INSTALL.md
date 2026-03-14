@@ -440,22 +440,14 @@ sudo fail2ban-client unban <IP>
 
 ## 19. Boot Partition Maintenance
 
-If the `/boot` partition is 196M (such as for a dual boot with Windows). With lanzaboote UKIs at ~60MB each and `configurationLimit = 3`, space is tight. If a rebuild fails with "no space left on device":
-
+If the `/boot` partition is small (such as 196M on a dual boot with Windows), space can fill up quickly. With lanzaboote UKIs at ~60MB each and `configurationLimit = 3`, a rebuild may fail with "no space left on device":
 ```bash
 # Check what is consuming space
 du -ah /boot | sort -rh | head -20
+```
 
-# Remove leftover tmp files from failed builds
-sudo rm /boot/EFI/nixos/*.tmp
-
-# Remove stale Type #1 boot entries if present
-sudo rm -f /boot/loader/entries/nixos-generation-1.conf
-sudo rm -f /boot/loader/entries/nixos-generation-2.conf
-
-# Remove old nixos EFI files if lanzaboote UKIs are in /boot/EFI/Linux/
-sudo rm /boot/EFI/nixos/*.efi
-
-# Rebuild
-nos
+Lanzaboote immediately recreates files during activation, so cleanup and rebuild must run as a single command:
+```bash
+# Remove everything and rebuild immediately — do not run separately
+sudo rm -rf /boot/EFI/nixos/* && nos
 ```
