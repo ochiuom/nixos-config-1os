@@ -49,6 +49,29 @@
       window-placement = "automatic";
     };
 
+      "org/gnome/desktop/screensaver" = {
+      lock-enabled = true;
+      lock-delay = lib.hm.gvariant.mkUint32 0;
+      };
+
+      "org/gnome/desktop/privacy" = {
+      usb-protection = true;
+      usb-protection-level = "lockscreen";
+      report-technical-problems = false;
+      send-software-usage-stats = false;
+      remove-old-trash-files = true;
+      remove-old-temp-files = true;
+      old-files-age = lib.hm.gvariant.mkUint32 7;
+      };
+
+      "org/gnome/system/location" = {
+      enabled = false;
+     };
+
+      "org/gnome/desktop/notifications" = {
+       show-in-lock-screen = false;
+      };
+
     "org/gnome/shell" = {
       disable-user-extensions = false;
       enabled-extensions = with pkgs.gnomeExtensions; [
