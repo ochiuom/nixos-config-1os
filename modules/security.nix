@@ -85,8 +85,9 @@
    settings.Resolve = {
     DNS = "1.1.1.2 1.0.0.2";        # Cloudflare malware blocking
     FallbackDNS = "9.9.9.9";        # Quad9 also blocks malware/phishing
-    DNSSEC = "allow-downgrade";
-    DNSOverTLS = "opportunistic";
+   # DNSSEC = "allow-downgrade";
+     DNSSEC = "false";  #DNSSEC false lets ProtonVPN's DNS work when connected, keeping DoT for normal browsing. 
+     DNSOverTLS = "opportunistic";
    };
  };
 
