@@ -152,13 +152,13 @@
     };
 
     # ── Compiz Windows Effect ────────────────────────────────────────────────
-    "com/github/hermes83/compiz-windows-effect" = {
+    "org/gnome/shell/extensions/com/github/hermes83/compiz-windows-effect" = {
       preset = "R";
       resize-effect = true;
     };
 
     # ── Compiz Magic Lamp ────────────────────────────────────────────────────
-    "ncom/github/hermes83/compiz-alike-magic-lamp-effect" = {
+    "org/gnome/shell/extensions/ncom/github/hermes83/compiz-alike-magic-lamp-effect" = {
       effect = "sine";
     };
 
