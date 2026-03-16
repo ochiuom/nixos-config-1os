@@ -1,6 +1,12 @@
 { config, pkgs, lib, ... }:
 {
-  environment.systemPackages = with pkgs; [
+
+   fonts.packages = with pkgs; [
+    libertinus
+   ];
+
+
+   environment.systemPackages = with pkgs; [
     git vim wget curl htop ffmpeg libva-utils tree ncdu ticker
     sbctl btrfs-progs cryptsetup pciutils usbutils lshw openssl
     networkmanagerapplet xdg-utils xdg-desktop-portal-gnome glib glib-networking gpick
@@ -50,31 +56,44 @@
     poppler-utils
     pdfcpu
     font-bitstream-type1
+    
     # LaTeX
     (pkgs.texlive.combine {
-    inherit (pkgs.texlive)
+  inherit (pkgs.texlive)
     scheme-small
-    latex-bin  # Ensure pdflatex/lualatex are linked
+    latex-bin
     latexmk
     collection-luatex
-    revtex4-1    # ← needed for \documentclass[aps,rmp,...]{revtex4-2}
+
+    # ADD THESE
+    collection-fontsrecommended
+    collection-latexextra
+    collection-bibtexextra
+
+    revtex4-1
     moderncv arydshln lm mathdesign
+    mdframed zref needspace tikzfill pdfcol abstract
+
+    libertinus libertinus-type1  newtx dblfloatfix
+
     # Fonts & Symbols
     charter noto fontspec amsmath amsfonts amscls
-    cm-super   # High-quality default fonts
+    cm-super
     physics mathtools cancel braket siunitx
-    # Graphics & Diagrams
+
+    # Graphics
     pgf tikz-cd circuitikz quantikz
-    adjustbox  subfig 
-    # Layout & Tables
-    booktabs float multirow colortbl  
+    adjustbox subfig
+
+    # Layout
+    booktabs float multirow colortbl
     geometry microtype parskip setspace ragged2e enumitem etoolbox csquotes
-    titlesec changepage caption xcolor tcolorbox 
-    # Bibliography & Meta
+    titlesec changepage caption xcolor tcolorbox
+
+    # Bibliography
     hyperref biblatex biber fancyhdr lastpage orcidlink
     babel babel-english;
-    })
-    
+    })    
 
     gnome-tweaks gnome-extension-manager
 
