@@ -12,6 +12,7 @@
     networkmanagerapplet xdg-utils xdg-desktop-portal-gnome glib glib-networking gpick
   
     usbguard
+    tailscale
 
     nautilus-python
     gobject-introspection

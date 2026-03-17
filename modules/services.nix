@@ -34,6 +34,8 @@
     ];
   };
 
+  services.tailscale.enable = true;
+
   nix.gc = {
     automatic = true;
     dates = "weekly";
