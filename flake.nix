@@ -10,18 +10,6 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    orchis-theme = {
-      url   = "github:vinceliuice/Orchis-theme";
-      flake = false;
-    };
-    hatter = {
-      url   = "github:Mibea/Hatter";
-      flake = false;
-    };
-    neuwaita = {
-      url   = "github:RusticBard/Neuwaita";
-      flake = false;
-    };
   };
 
   outputs = inputs@{ self, nixpkgs, home-manager, disko, ... }:
