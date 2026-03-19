@@ -9,6 +9,7 @@
     ./modules/security.nix
     ./modules/packages.nix
     ./modules/services.nix
+    ./modules/nixos/gdm.nix
   ];
 
   # ── Locale ───────────────────────────────────────────────────────────────────
