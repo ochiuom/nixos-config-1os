@@ -7,16 +7,32 @@
         ]
       },
       "locked": {
-        "lastModified": 1773506317,
-        "narHash": "sha256-qWKbLUJpavIpvOdX1fhHYm0WGerytFHRoh9lVck6Bh0=",
+        "lastModified": 1773889306,
+        "narHash": "sha256-PAqwnsBSI9SVC2QugvQ3xeYCB0otOwCacB1ueQj2tgw=",
         "owner": "nix-community",
         "repo": "disko",
-        "rev": "878ec37d6a8f52c6c801d0e2a2ad554c75b9353c",
+        "rev": "5ad85c82cc52264f4beddc934ba57f3789f28347",
         "type": "github"
       },
       "original": {
         "owner": "nix-community",
         "repo": "disko",
+        "type": "github"
+      }
+    },
+    "hatter": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1773864880,
+        "narHash": "sha256-KN7rHV/Ak5qIJkwu6qvV5dwZnMjAriT6tfcRJBzYUfI=",
+        "owner": "Mibea",
+        "repo": "Hatter",
+        "rev": "3e940440d20b8be7a9e02b3c5d546308b3ed084d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Mibea",
+        "repo": "Hatter",
         "type": "github"
       }
     },
@@ -27,11 +43,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1773681856,
-        "narHash": "sha256-+bRqxoFCJFO9ZTFhcCkzNXbDT3b8AEk88fyjB7Is6eo=",
+        "lastModified": 1773810247,
+        "narHash": "sha256-6Vz1Thy/1s7z+Rq5OfkWOBAdV4eD+OrvDs10yH6xJzQ=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "57d5560ee92a424fb71fde800acd6ed2c725dfce",
+        "rev": "d47357a4c806d18a3e853ad2699eaec3c01622e7",
         "type": "github"
       },
       "original": {
@@ -40,13 +56,29 @@
         "type": "github"
       }
     },
+    "neuwaita": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1773853522,
+        "narHash": "sha256-A4yfcB+L1IwHGKhg32gq/E9qMoBF84zsnfl8fvWhYag=",
+        "owner": "RusticBard",
+        "repo": "Neuwaita",
+        "rev": "112525b2a97226bb3e8ef4433c039bc514bc2973",
+        "type": "github"
+      },
+      "original": {
+        "owner": "RusticBard",
+        "repo": "Neuwaita",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1773646010,
-        "narHash": "sha256-iYrs97hS7p5u4lQzuNWzuALGIOdkPXvjz7bviiBjUu8=",
+        "lastModified": 1773821835,
+        "narHash": "sha256-TJ3lSQtW0E2JrznGVm8hOQGVpXjJyXY2guAxku2O9A4=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "5b2c2d84341b2afb5647081c1386a80d7a8d8605",
+        "rev": "b40629efe5d6ec48dd1efba650c797ddbd39ace0",
         "type": "github"
       },
       "original": {
@@ -56,11 +88,30 @@
         "type": "github"
       }
     },
+    "orchis-theme": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1763815534,
+        "narHash": "sha256-iyGDFc3ZGDWgTrgK3dqfVaLckjiTmG5fz8dMn9/9rRw=",
+        "owner": "vinceliuice",
+        "repo": "Orchis-theme",
+        "rev": "ff798aa9af2548d395ee95bbdab5fa54603c8588",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vinceliuice",
+        "repo": "Orchis-theme",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "disko": "disko",
+        "hatter": "hatter",
         "home-manager": "home-manager",
-        "nixpkgs": "nixpkgs"
+        "neuwaita": "neuwaita",
+        "nixpkgs": "nixpkgs",
+        "orchis-theme": "orchis-theme"
       }
     }
   },

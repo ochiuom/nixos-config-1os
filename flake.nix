@@ -1,6 +1,5 @@
 {
   description = "ochinix-pc NixOS configuration";
-
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {
@@ -10,6 +9,18 @@
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    orchis-theme = {
+      url   = "github:vinceliuice/Orchis-theme";
+      flake = false;
+    };
+    hatter = {
+      url   = "github:Mibea/Hatter";
+      flake = false;
+    };
+    neuwaita = {
+      url   = "github:RusticBard/Neuwaita";
+      flake = false;
     };
   };
 

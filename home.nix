@@ -3,6 +3,7 @@
   imports = [
   ./modules/home/desktop-quote
   ./modules/home/gnome-extensions.nix
+  ./modules/home/themes.nix
   ];
 
   home.username = "ochinix";
@@ -11,7 +12,7 @@
 
 
   home.packages = with pkgs; [
-    yaru-theme fzf zoxide fd ripgrep bat btop starship eza pipx aria2 fastfetch rsync blesh
+    fzf zoxide fd ripgrep bat btop starship eza pipx aria2 fastfetch rsync blesh
     easyeffects weylus xournalpp tigervnc remmina audacious audacious-plugins audacity
     warp-terminal cmus yt-dlp lazygit delta dust duf bandwhich gping navi broot p7zip 
     zed-editor 
@@ -25,13 +26,10 @@
       ];
       edge-tiling = true;
       dynamic-workspaces = true;
-      center-new-windows = false; # Set to false to allow 'smart' positioning
+      center-new-windows = false;
     };
 
     "org/gnome/desktop/interface" = {
-      gtk-theme = lib.mkForce "Orchis-Dark-Compact";
-      icon-theme = lib.mkForce "Hatter-Yaru";
-      cursor-theme = "Yaru";
       font-name = lib.mkForce "Inter 11";
       document-font-name = lib.mkForce "Noto Sans 11";
       monospace-font-name = lib.mkForce "JetBrainsMono Nerd Font 10";
@@ -100,7 +98,7 @@
         advanced-weather-companion.extensionUuid
         #adaptive-brightness.extensionUuid
         astra-monitor.extensionUuid
-        tophat.extensionUuid # astra ot top hat, suits your need
+        tophat.extensionUuid
         gnome-40-ui-improvements.extensionUuid
         fuzzy-app-search.extensionUuid
         penguin-ai-chatbot.extensionUuid
@@ -153,14 +151,6 @@
     };
   };
 
-  gtk = {
-    enable = true;
-    theme = { name = "Orchis-Dark-Compact"; };
-    iconTheme = { name = "Hatter-Yaru"; };
-    cursorTheme = { name = "Yaru"; package = pkgs.yaru-theme; };
-    font = { name = "Inter"; size = 11; };
-  };
-
   home.file.".config/ghostty/config".text = ''
     window-width = 105
     window-height = 40
@@ -176,13 +166,6 @@
     keybind = ctrl+shift+n=new_tab
   '';
 
-   home.file.".local/share/themes/Orchis-Dark-Compact".source = ./themes/Orchis-Dark-Compact;
-   home.file.".local/share/icons/Hatter-Yaru".source = ./themes/Hatter-Yaru;
-
-   home.activation.refreshIconCache = lib.hm.dag.entryAfter ["writeBoundary"] ''
-  ${pkgs.gtk3}/bin/gtk-update-icon-cache -f -t ~/.local/share/icons/Hatter-Yaru || true
-  '';  
- 
   programs.bash = {
   enable = true;
   enableCompletion = true;
@@ -245,8 +228,8 @@
     nos="nh os switch --hostname ochinix-pc";
   
     lg  = "lazygit";
-    gd  = "git diff";          # now auto-uses delta
-    gds = "git diff --staged"; # delta side-by-side
+    gd  = "git diff";
+    gds = "git diff --staged";
   
     # Tmux
     ta   = "tmux attach || tmux new-session -s main";
@@ -265,6 +248,8 @@
 
     clean-cache = "rm -rf ~/.cache/mozilla/firefox/*.default/cache2 && rm -rf ~/.var/app/com.brave.Browser/cache/BraveSoftware/Brave-Browser/Default/Cache && echo 'Browser caches cleared'";
     clean-all = "clean-cache && sudo journalctl --vacuum-time=7d && flatpak uninstall --unused -y && ngc && echo 'Full clean done'";
+
+    sage-env = "cd ~/Projects/Sage && nix develop --profile ~/.local/state/nix/profiles/sage";
 };
 
   sessionVariables = {
@@ -293,14 +278,12 @@
         esac
       done
     }
-   # _path_append "$HOME/.local/bin" "$HOME/.cargo/bin" "/usr/local/texlive/2025/bin/x86_64-linux"
    _path_append "$HOME/.local/bin" "$HOME/.cargo/bin"
     export PATH
 
     [ -f ~/.api_keys ] && source ~/.api_keys
 
     shopt -s checkwinsize histappend globstar
-   # PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
     PROMPT_COMMAND="history -a; history -c; history -r"
     bind "set bell-style none" 2>/dev/null
     bind "set completion-ignore-case on" 2>/dev/null
@@ -405,10 +388,6 @@
       esac
     }
     bind -x '"\C-f": _fzf_cd'
-   # command -v fastfetch >/dev/null 2>&1 && fastfetch
-   #blehook ATTACH+='command -v fastfetch >/dev/null 2>&1 && fastfetch'
-   # command -v fastfetch >/dev/null 2>&1 && fastfetch
-   #blehook ATTACH+='command -v fastfetch >/dev/null 2>&1 && fastfetch'
 
     syncto() {
       local src="$1" dest="$2" label="$3"
@@ -443,23 +422,7 @@
   home.sessionPath = [
     "$HOME/.local/bin"
     "$HOME/.cargo/bin"
-   # "/usr/local/texlive/2025/bin/x86_64-linux"
   ];
-
-
- # programs.atuin = {
-  #enable = true;
-  #enableBashIntegration = true;
-  #settings = {
-   # auto_sync = false;        # no cloud, local only
-   # update_check = false;
-   # style = "compact";
-   # inline_height = 20;
-   # show_preview = true;
-   # filter_mode_shell_up_key_binding = "session";
-   # enter_accept = true;      # press Enter directly from search
-   # };
-  #};
 
     programs.git = {
     enable = true;
@@ -618,28 +581,10 @@
     ];
   };
 
-
    programs.zoxide = {
     enable = true;
     enableBashIntegration = true;
   };
-
-#  programs.starship = {
-#    enable = true;
-#    settings = {
-#      add_newline = false;
-#      character = {
-#        success_symbol = "[❯](bold green)";
-#        error_symbol = "[❯](bold red)";
-#      };
-#      directory = {
-#        truncation_length = 3;
-#        truncate_to_repo = true;
-#      };
-#      git_branch.symbol = " ";
-#      nix_shell.symbol = " ";
-#    };
-#  };
 
   programs.starship = {
   enable = false;
@@ -677,9 +622,7 @@ systemd.user.timers.organize-downloads = {
   };
   Install.WantedBy = [ "timers.target" ];
 };
- 
-  #Neovim declare then install via github
-  # git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
+
   programs.neovim = {
   enable = true;
   defaultEditor = true;
@@ -713,7 +656,7 @@ systemd.user.timers.organize-downloads = {
    
    services.easyeffects = {
     enable = true;
-    preset = "C+Cry+BE+Max"; # optional, name of your saved preset
+    preset = "C+Cry+BE+Max";
    };
 
    home.activation.copyMPD = lib.hm.dag.entryAfter ["writeBoundary"] ''
@@ -740,19 +683,13 @@ systemd.user.timers.organize-downloads = {
     '';
     
     home.activation.copyNvchadCustom = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    # Only run if NvChad is installed
     if [ -d ~/.local/share/nvim/lazy/NvChad ]; then
 
     mkdir -p ~/.config/nvim/lua/plugins
     mkdir -p ~/.config/nvim/lua/configs
 
-    # Copy plugins 1:1
     cp -rf ${./nvchad-lua/plugins}/. ~/.config/nvim/lua/plugins/
-
-    # Overwrite autocmds.lua
     cp -f ${./nvchad-lua/autocmds.lua} ~/.config/nvim/lua/autocmds.lua
- 
-    # LSP config (your new file)
     cp -f ${./nvchad-lua/configs/lspconfig.lua} ~/.config/nvim/lua/configs/lspconfig.lua
 
     fi
@@ -764,96 +701,61 @@ systemd.user.timers.organize-downloads = {
    mkdir -p ~/Backups
    '';
 
-   home.activation.copyGtkTheme = lib.hm.dag.entryAfter ["writeBoundary"] ''
-   mkdir -p ~/.config/gtk-3.0
-   mkdir -p ~/.config/gtk-4.0
-   chmod -R u+w ~/.config/gtk-3.0 2>/dev/null || true
-   chmod -R u+w ~/.config/gtk-4.0 2>/dev/null || true
-   cp -rf ${./themes/Orchis-Dark-Compact/gtk-3.0}/. ~/.config/gtk-3.0/
-   cp -rf ${./themes/Orchis-Dark-Compact/gtk-4.0}/. ~/.config/gtk-4.0/
-   '';
-  
-   programs.bash.shellAliases = {
-   sage-env = "cd ~/Projects/Sage && nix develop --profile ~/.local/state/nix/profiles/sage";
-   };
-
   programs.home-manager.enable = true;
 
-  
-  
   programs.mpv = {
   enable = true;
   package = pkgs.mpv;
 
   config = {
-    # Video
     profile = "gpu-hq";
     gpu-api = "vulkan";
-    hwdec = "vaapi";           # Intel iGPU on your T480s/L14
+    hwdec = "vaapi";
     vo = "gpu-next";
-
-    # Audio
     audio-normalize-downmix = true;
     volume = 100;
     volume-max = 150;
-
-    # Subtitles
     sub-auto = "fuzzy";
     sub-font = "JetBrains Mono";
     sub-font-size = 42;
     sub-color = "#FFFFFF";
     sub-border-size = 2;
     sub-border-color = "#000000";
-
-    # UI
-    osc = false;               # disable default OSC — using modernx below
+    osc = false;
     osd-font = "JetBrains Mono";
     osd-font-size = 28;
-    keep-open = true;          # don't close after video ends
+    keep-open = true;
     save-position-on-quit = true;
     screenshot-format = "png";
     screenshot-directory = "~/Pictures/Screenshots";
-
-    # YouTube via yt-dlp
     ytdl-format = "bestvideo[height<=1080]+bestaudio/best[height<=1080]";
   };
 
   bindings = {
-    # Seeking
     "l" = "seek 5";
     "h" = "seek -5";
     "L" = "seek 30";
     "H" = "seek -30";
-
-    # Volume
     "j" = "add volume -5";
     "k" = "add volume 5";
-
-    # Speed
     "=" = "add speed 0.1";
     "-" = "add speed -0.1";
     "BS" = "set speed 1.0";
-
-    # Subtitles
     "s" = "cycle sub";
     "S" = "cycle sub down";
-
-    # Playlist
     ">" = "playlist-next";
     "<" = "playlist-prev";
   };
 
   scripts = with pkgs.mpvScripts; [
-  modernx          # modern OSC UI
-  sponsorblock     # skip sponsors on YouTube
-  thumbfast        # thumbnail preview on seek bar
-  autoload         # auto-load playlist entries
-  inhibit-gnome    # prevents screen blanking in GNOME
-  quality-menu     # change YouTube quality on the fly
-  mpris            # MPRIS integration (works with your media keys)
+  modernx
+  sponsorblock
+  thumbfast
+  autoload
+  inhibit-gnome
+  quality-menu
+  mpris
   ];
-  
-
   };
 
   home.file.".sage/init.sage".text = ''
