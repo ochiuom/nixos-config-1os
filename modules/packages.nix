@@ -113,11 +113,11 @@
     gnomeExtensions.space-bar
    # gnomeExtensions.appindicator
     gnomeExtensions.tiling-assistant
-   # gnomeExtensions.logo-menu
+    gnomeExtensions.logo-menu
    # gnomeExtensions.lock-guard
     gnomeExtensions.ip-finder
     gnomeExtensions.color-picker
-   # gnomeExtensions.dash2dock-lite
+    gnomeExtensions.dash2dock-lite
     gnomeExtensions.compact-top-bar
     gnomeExtensions.advanced-weather-companion
    # gnomeExtensions.adaptive-brightness
@@ -131,6 +131,10 @@
    # gnomeExtensions.workspace-matrix
     gnomeExtensions.wallpaper-slideshow
     gnomeExtensions.dash-to-panel
+    gnomeExtensions.open-bar
+    gnomeExtensions.top-bar-organizer
+    gnomeExtensions.vitals
+    gnomeExtensions.weather-or-not
   ];
 
 

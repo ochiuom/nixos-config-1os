@@ -1,22 +1,129 @@
 { config, pkgs, lib, inputs, ... }:
-{  
+{
   imports = [
     ./modules/home/desktop-quote
     ./modules/home/gnome-extensions.nix
     ./modules/home/themes.nix
   ];
 
-  home.username = "ochinix";
+  # ── Identity ──────────────────────────────────────────────────────────────
+  home.username      = "ochinix";
   home.homeDirectory = "/home/ochinix";
-  home.stateVersion = "26.05";
+  home.stateVersion  = "26.05";
 
+  # ── Packages ──────────────────────────────────────────────────────────────
+  # Programs that have their own programs.* block below are NOT listed here.
+  # Everything here is a plain binary with no HM config needed.
   home.packages = with pkgs; [
-    fzf zoxide fd ripgrep bat btop starship eza pipx aria2 fastfetch rsync blesh
-    easyeffects weylus xournalpp tigervnc remmina audacious audacious-plugins audacity
-    warp-terminal cmus yt-dlp lazygit delta dust duf bandwhich gping navi broot p7zip
-    zed-editor carapace papers
+    # Shell utilities
+    fd ripgrep eza dust duf bandwhich gping aria2 rsync p7zip
+    fastfetch blesh pipx
+
+    # TUI / interactive
+    btop navi broot lazygit delta
+
+    # Media
+    easyeffects weylus xournalpp audacious audacious-plugins audacity
+    cmus yt-dlp
+
+    # Desktop / GUI
+    warp-terminal tigervnc remmina zed-editor carapace
   ];
 
+  # ── Declarative config files ───────────────────────────────────────────────
+  # Using home.file instead of activation cp scripts so HM tracks changes
+  # and rolls them back with generations.
+
+  home.file.".config/kitty" = {
+    source    = ./kitty;
+    recursive = true;
+  };
+
+  home.file.".config/starship.toml".source = ./starship/starship.toml;
+
+  home.file.".config/easyeffects/output" = {
+    source    = ./easyeffects/output;
+    recursive = true;
+  };
+
+  home.file.".config/easyeffects/irs" = {
+    source    = ./easyeffects/irs;
+    recursive = true;
+  };
+
+  home.file.".config/mpd/mpd.conf".source = ./mpd/mpd.conf;
+
+  home.file.".config/organize/config.yaml".source = ./organize/config.yaml;
+
+  home.file.".local/share/fonts" = {
+    source    = ./fonts;
+    recursive = true;
+  };
+
+  home.file.".sage/init.sage".text = ''
+    import matplotlib as mpl
+    mpl.rcParams.update({
+        'font.family': 'serif',
+        'font.size': 11,
+        'axes.labelsize': 12,
+        'figure.dpi': 300,
+        'figure.figsize': (6.5, 4.5),
+        'lines.linewidth': 1.5,
+        'axes.linewidth': 0.8,
+        'xtick.direction': 'in',
+        'ytick.direction': 'in',
+        'xtick.top': True,
+        'ytick.right': True,
+    })
+  '';
+
+  # Ghostty — kept as home.file since ghostty has no HM module yet
+  home.file.".config/ghostty/config".text = ''
+    window-width = 105
+    window-height = 40
+    window-step-resize = true
+    font-family = JetBrains Mono
+    font-size = 10
+    cursor-style = block
+    cursor-style-blink = true
+    shell-integration = bash
+    gtk-single-instance = true
+    background = #2c2c2c
+    keybind = ctrl+shift+e=new_window
+    keybind = ctrl+shift+n=new_tab
+  '';
+
+  # ── Vault / working dirs ───────────────────────────────────────────────────
+  home.activation.createVaultDirs = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    mkdir -p ~/Documents/.vault
+    mkdir -p ~/Documents/Vault
+    mkdir -p ~/Backups
+  '';
+
+  # ── NvChad custom lua ─────────────────────────────────────────────────────
+  # Only copies if NvChad is already bootstrapped (lazy-installed externally).
+  home.activation.copyNvchadCustom = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    if [ -d ~/.local/share/nvim/lazy/NvChad ]; then
+      mkdir -p ~/.config/nvim/lua/plugins
+      mkdir -p ~/.config/nvim/lua/configs
+      cp -rf ${./nvchad-lua/plugins}/. ~/.config/nvim/lua/plugins/
+      cp -f ${./nvchad-lua/autocmds.lua}             ~/.config/nvim/lua/autocmds.lua
+      cp -f ${./nvchad-lua/configs/lspconfig.lua}    ~/.config/nvim/lua/configs/lspconfig.lua
+    fi
+  '';
+
+  # ── Font cache ────────────────────────────────────────────────────────────
+  home.activation.refreshFontCache = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    ${pkgs.fontconfig}/bin/fc-cache -f
+  '';
+
+  # ── Path ──────────────────────────────────────────────────────────────────
+  home.sessionPath = [
+    "$HOME/.local/bin"
+    "$HOME/.cargo/bin"
+  ];
+
+  # ── GNOME dconf ───────────────────────────────────────────────────────────
   dconf.settings = {
     "org/gnome/mutter" = {
       experimental-features = [
@@ -53,22 +160,18 @@
     };
 
     "org/gnome/desktop/privacy" = {
-      usb-protection           = true;
-      usb-protection-level     = "lockscreen";
+      usb-protection            = true;
+      usb-protection-level      = "lockscreen";
       report-technical-problems = false;
       send-software-usage-stats = false;
-      remove-old-trash-files   = true;
-      remove-old-temp-files    = true;
-      old-files-age            = lib.hm.gvariant.mkUint32 7;
+      remove-old-trash-files    = true;
+      remove-old-temp-files     = true;
+      old-files-age             = lib.hm.gvariant.mkUint32 7;
     };
 
-    "org/gnome/system/location" = {
-      enabled = false;
-    };
+    "org/gnome/system/location".enabled = false;
 
-    "org/gnome/desktop/notifications" = {
-      show-in-lock-screen = false;
-    };
+    "org/gnome/desktop/notifications".show-in-lock-screen = false;
 
     "org/gnome/shell" = {
       disable-user-extensions = false;
@@ -101,29 +204,33 @@
         wallpaper-slideshow.extensionUuid
         dash-to-panel.extensionUuid
         rounded-window-corners-reborn.extensionUuid
+        open-bar.extensionUuid
+        top-bar-organizer.extensionUuid
+        vitals.extensionUuid
+        weather-or-not.extensionUuid
+        logo-menu.extensionUuid
+        dash2dock-lite.extensionUuid
         "desktop-quote@ochinix"
       ];
     };
 
     "org/gnome/desktop/wm/keybindings" = {
-      maximize             = [ "<Super>Up" ];
-      unmaximize           = [ "<Super>Down" ];
-      tile-left            = [ "<Super>Left" ];
-      tile-right           = [ "<Super>Right" ];
+      maximize              = [ "<Super>Up" ];
+      unmaximize            = [ "<Super>Down" ];
+      tile-left             = [ "<Super>Left" ];
+      tile-right            = [ "<Super>Right" ];
       switch-to-workspace-1 = [ "<Super>1" ];
       switch-to-workspace-2 = [ "<Super>2" ];
       switch-to-workspace-3 = [ "<Super>3" ];
       switch-to-workspace-4 = [ "<Super>4" ];
-      move-to-workspace-1  = [ "<Super><Shift>1" ];
-      move-to-workspace-2  = [ "<Super><Shift>2" ];
-      move-to-workspace-3  = [ "<Super><Shift>3" ];
-      move-to-workspace-4  = [ "<Super><Shift>4" ];
-      close                = [ "<Super>q" ];
+      move-to-workspace-1   = [ "<Super><Shift>1" ];
+      move-to-workspace-2   = [ "<Super><Shift>2" ];
+      move-to-workspace-3   = [ "<Super><Shift>3" ];
+      move-to-workspace-4   = [ "<Super><Shift>4" ];
+      close                 = [ "<Super>q" ];
     };
 
-    "org/gnome/shell/keybindings" = {
-      toggle-overview = [ "<Super>s" ];
-    };
+    "org/gnome/shell/keybindings".toggle-overview = [ "<Super>s" ];
 
     "org/gnome/desktop/peripherals/touchpad" = {
       tap-to-click               = true;
@@ -139,26 +246,300 @@
       ambient-enabled                = false;
     };
 
-    "org/gnome/desktop/session" = {
-      idle-delay = lib.hm.gvariant.mkUint32 0;
+    "org/gnome/desktop/session".idle-delay = lib.hm.gvariant.mkUint32 0;
+  };
+
+  # ── Services ──────────────────────────────────────────────────────────────
+  services.easyeffects = {
+    enable = true;
+    preset = "C+Cry+BE+Max";
+  };
+
+  services.mpd = {
+    enable         = true;
+    musicDirectory = "/home/ochinix/Music";
+    # mpd.conf is managed via home.file above — do not also declare
+    # extraConfig here or the two will conflict.
+  };
+
+  # Downloads organiser — runs hourly via systemd user timer
+  systemd.user.services.organize-downloads = {
+    Unit.Description = "Organize Downloads folder";
+    Service = {
+      Type      = "oneshot";
+      ExecStart = "${pkgs.bash}/bin/bash -c '${config.home.homeDirectory}/.local/bin/organize run'";
     };
   };
 
-  home.file.".config/ghostty/config".text = ''
-    window-width = 105
-    window-height = 40
-    window-step-resize = true
-    font-family = JetBrains Mono
-    font-size = 10
-    cursor-style = block
-    cursor-style-blink = true
-    shell-integration = bash
-    gtk-single-instance = true
-    background = #2c2c2c
-    keybind = ctrl+shift+e=new_window
-    keybind = ctrl+shift+n=new_tab
-  '';
+  systemd.user.timers.organize-downloads = {
+    Unit.Description = "Run organize-downloads hourly";
+    Timer = {
+      OnCalendar = "hourly";
+      Persistent = true;
+    };
+    Install.WantedBy = [ "timers.target" ];
+  };
 
+  # ── Programs ──────────────────────────────────────────────────────────────
+
+  programs.home-manager.enable = true;
+
+  programs.neovim = {
+    enable        = true;
+    defaultEditor = true;
+    viAlias       = true;
+    vimAlias      = true;
+  };
+
+  programs.direnv = {
+    enable                = true;
+    enableBashIntegration = true;
+    nix-direnv.enable     = true;
+  };
+
+  programs.git = {
+    enable   = true;
+    settings = {
+      merge.conflictstyle = "diff3";
+      diff.colorMoved     = "default";
+    };
+  };
+
+  programs.delta = {
+    enable               = true;
+    enableGitIntegration = true;
+    options = {
+      navigate     = true;
+      dark         = true;
+      side-by-side = true;
+      line-numbers = true;
+      syntax-theme = "TwoDark";
+    };
+  };
+
+  programs.lazygit = {
+    enable = true;
+    settings = {
+      gui = {
+        theme = {
+          activeBorderColor   = [ "cyan" "bold" ];
+          inactiveBorderColor = [ "white" ];
+          selectedLineBgColor = [ "default" ];
+        };
+        showIcons        = true;
+        nerdFontsVersion = "3";
+      };
+      git.pagers = [{
+        diff      = "delta --dark --paging=never";
+        staging   = "delta --dark --paging=never";
+        mergeDiff = "delta --dark --paging=never";
+      }];
+    };
+  };
+
+  programs.fzf = {
+    enable               = true;
+    enableBashIntegration = true;
+    defaultOptions = [
+      "--height 40%"
+      "--layout=reverse"
+      "--border"
+      "--color=dark"
+    ];
+  };
+
+  programs.zoxide = {
+    enable               = true;
+    enableBashIntegration = true;
+  };
+
+  programs.bat = {
+    enable = true;
+    config = {
+      theme       = "TwoDark";
+      italic-text = "always";
+    };
+  };
+
+  programs.btop = {
+    enable = true;
+    settings = {
+      color_theme = "dracula";
+      vim_keys    = true;
+    };
+  };
+
+  programs.starship = {
+    enable               = true;
+    enableBashIntegration = true;
+    # Config is managed via home.file above (starship/starship.toml)
+    # so we don't declare settings here — starship will pick up the file.
+  };
+
+  programs.pay-respects = {
+    enable               = true;
+    enableBashIntegration = true;
+  };
+
+  programs.carapace = {
+    enable               = true;
+    enableBashIntegration = false; # manual load after ble.sh in initExtra
+  };
+
+  programs.broot = {
+    enable               = true;
+    enableBashIntegration = true;
+    settings = {
+      modal = true;
+      skin = {
+        default         = "rgb(220, 220, 220) none";
+        tree            = "rgb(89, 148, 220) none";
+        file            = "rgb(220, 220, 220) none";
+        directory       = "rgb(89, 148, 220) none Bold";
+        exe             = "rgb(147, 220, 147) none";
+        link            = "rgb(220, 147, 220) none";
+        pruning         = "rgb(150, 150, 150) none Italic";
+        selected_line   = "none rgb(40, 40, 60)";
+        char_match      = "rgb(220, 220, 100) none Bold";
+        file_error      = "rgb(220, 100, 100) none";
+        flag_label      = "rgb(220, 220, 220) none";
+        flag_value      = "rgb(220, 147, 89) none Bold";
+        input           = "rgb(220, 220, 220) none";
+        status_error    = "rgb(220, 100, 100) rgb(40, 40, 40)";
+        status_job      = "rgb(89, 220, 220) rgb(40, 40, 40)";
+        status_normal   = "rgb(220, 220, 220) rgb(40, 40, 40)";
+        status_italic   = "rgb(220, 147, 89) rgb(40, 40, 40)";
+        status_bold     = "rgb(220, 220, 100) rgb(40, 40, 40) Bold";
+        status_code     = "rgb(147, 220, 220) rgb(40, 40, 40)";
+        status_ellipsis = "rgb(220, 220, 220) rgb(40, 40, 40)";
+        scrollbar_thumb = "rgb(89, 148, 220) none";
+        scrollbar_track = "rgb(40, 40, 40) none";
+        help_paragraph  = "rgb(220, 220, 220) none";
+        help_bold       = "rgb(220, 220, 100) none Bold";
+        help_italic     = "rgb(220, 147, 89) none Italic";
+        help_code       = "rgb(147, 220, 220) none";
+        help_headers    = "rgb(89, 148, 220) none Bold";
+      };
+    };
+  };
+
+  # ── tmux ──────────────────────────────────────────────────────────────────
+  # Set as the default shell command so every new terminal opens tmux.
+  programs.tmux = {
+    enable        = true;
+    clock24       = true;
+    escapeTime    = 0;
+    historyLimit  = 50000;
+    mouse         = true;
+    # tmux-256color is the correct value for default-terminal inside tmux;
+    # the xterm-256color:RGB override below keeps true-colour working.
+    terminal      = "tmux-256color";
+    baseIndex     = 1;
+    keyMode       = "vi";
+    prefix        = "C-a";
+    plugins = with pkgs.tmuxPlugins; [
+      sensible
+      yank
+      resurrect
+      continuum
+      {
+        plugin = catppuccin;
+        extraConfig = ''
+          set -g @catppuccin_flavour 'mocha'
+          set -g @catppuccin_window_default_text "#W"
+          set -g @catppuccin_window_current_text "#W"
+          set -g @catppuccin_status_modules_right "session date_time"
+          set -g @catppuccin_date_time_text "%H:%M"
+        '';
+      }
+    ];
+    extraConfig = ''
+      set -ag terminal-overrides ",xterm-256color:RGB"
+
+      # ── Pane splits (keep cwd) ─────────────────────────────────────────
+      bind \\ split-window -h -c "#{pane_current_path}"
+      bind -  split-window -v -c "#{pane_current_path}"
+      unbind '"'
+      unbind %
+
+      # ── Pane navigation (vim-style) ────────────────────────────────────
+      bind h select-pane -L
+      bind j select-pane -D
+      bind k select-pane -U
+      bind l select-pane -R
+
+      # ── Pane resize ───────────────────────────────────────────────────
+      bind -r H resize-pane -L 5
+      bind -r J resize-pane -D 5
+      bind -r K resize-pane -U 5
+      bind -r L resize-pane -R 5
+
+      # ── New window keeps cwd ──────────────────────────────────────────
+      bind c new-window -c "#{pane_current_path}"
+
+      # ── Reload config ─────────────────────────────────────────────────
+      bind r source-file ~/.config/tmux/tmux.conf \; display "Reloaded!"
+
+      # ── Resurrect / continuum ─────────────────────────────────────────
+      set -g @resurrect-capture-pane-contents 'on'
+      set -g @continuum-restore 'on'
+      set -g @continuum-save-interval '10'
+    '';
+  };
+
+  programs.mpv = {
+    enable  = true;
+    package = pkgs.mpv;
+    config = {
+      profile                 = "gpu-hq";
+      gpu-api                 = "vulkan";
+      hwdec                   = "vaapi";
+      vo                      = "gpu-next";
+      audio-normalize-downmix = true;
+      volume                  = 100;
+      volume-max              = 150;
+      sub-auto                = "fuzzy";
+      sub-font                = "JetBrains Mono";
+      sub-font-size           = 42;
+      sub-color               = "#FFFFFF";
+      sub-border-size         = 2;
+      sub-border-color        = "#000000";
+      osc                     = false;
+      osd-font                = "JetBrains Mono";
+      osd-font-size           = 28;
+      keep-open               = true;
+      save-position-on-quit   = true;
+      screenshot-format       = "png";
+      screenshot-directory    = "~/Pictures/Screenshots";
+      ytdl-format             = "bestvideo[height<=1080]+bestaudio/best[height<=1080]";
+    };
+    bindings = {
+      "l"  = "seek 5";
+      "h"  = "seek -5";
+      "L"  = "seek 30";
+      "H"  = "seek -30";
+      "j"  = "add volume -5";
+      "k"  = "add volume 5";
+      "="  = "add speed 0.1";
+      "-"  = "add speed -0.1";
+      "BS" = "set speed 1.0";
+      "s"  = "cycle sub";
+      "S"  = "cycle sub down";
+      ">"  = "playlist-next";
+      "<"  = "playlist-prev";
+    };
+    scripts = with pkgs.mpvScripts; [
+      modernx
+      sponsorblock
+      thumbfast
+      autoload
+      inhibit-gnome
+      quality-menu
+      mpris
+    ];
+  };
+
+  # ── Bash ──────────────────────────────────────────────────────────────────
   programs.bash = {
     enable           = true;
     enableCompletion = true;
@@ -192,10 +573,13 @@
       a2   = "aria2c -x 16 -s 16 -k 1M";
 
       # Git
-      gs = "git status";
-      ga = "git add .";
-      gc = "git commit -m";
-      gp = "git push";
+      gs  = "git status";
+      ga  = "git add .";
+      gc  = "git commit -m";
+      gp  = "git push";
+      lg  = "lazygit";
+      gd  = "git diff";
+      gds = "git diff --staged";
 
       # System
       cleanram      = "sudo sync; echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null && echo 'RAM cleared'";
@@ -213,16 +597,12 @@
       lockv   = "fusermount -u -z ~/Documents/Vault";
       backupv = "mkdir -p ~/Backups && rsync -av --delete ~/Documents/.vault ~/Backups/Vault_Encrypted_Backup/";
 
-      # NixOS
-      nrs     = "sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc";
-      ngc     = "sudo nix-env --delete-generations +3 --profile /nix/var/nix/profiles/system && sudo nix-store --gc";
-      update  = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc";
-      upgrade = "cd /etc/nixos && sudo nix flake update && sudo nixos-rebuild switch --flake /etc/nixos#ochinix-pc && ngc";
+      # NixOS — use nh as the canonical rebuild command (shows diffs via nvd)
       nos     = "nh os switch --hostname ochinix-pc";
-
-      lg  = "lazygit";
-      gd  = "git diff";
-      gds = "git diff --staged";
+      nrs     = "nh os switch --hostname ochinix-pc";   # alias for muscle memory
+      ngc     = "sudo nix-env --delete-generations +3 --profile /nix/var/nix/profiles/system && sudo nix-store --gc";
+      update  = "cd /etc/nixos && sudo nix flake update && nh os switch --hostname ochinix-pc";
+      upgrade = "cd /etc/nixos && sudo nix flake update && nh os switch --hostname ochinix-pc && ngc";
 
       # Tmux
       ta = "tmux attach || tmux new-session -s main";
@@ -239,9 +619,9 @@
       nav = "navi";
       f   = "pay-respects";
 
+      sage-env    = "cd ~/Projects/Sage && nix develop --profile ~/.local/state/nix/profiles/sage";
       clean-cache = "rm -rf ~/.cache/mozilla/firefox/*.default/cache2 && rm -rf ~/.var/app/com.brave.Browser/cache/BraveSoftware/Brave-Browser/Default/Cache && echo 'Browser caches cleared'";
       clean-all   = "clean-cache && sudo journalctl --vacuum-time=7d && flatpak uninstall --unused -y && ngc && echo 'Full clean done'";
-      sage-env    = "cd ~/Projects/Sage && nix develop --profile ~/.local/state/nix/profiles/sage";
     };
 
     sessionVariables = {
@@ -261,27 +641,20 @@
     initExtra = ''
       export TERM=xterm-256color
 
-      # Path
-      _path_append() {
-        for arg do
-          case ":$PATH:" in
-            *:"$arg":*) ;;
-            *) PATH="''${PATH:+$PATH:}$arg" ;;
-          esac
-        done
-      }
-      _path_append "$HOME/.local/bin" "$HOME/.cargo/bin"
-      export PATH
-
-      [ -f ~/.api_keys ] && source ~/.api_keys
-
       shopt -s checkwinsize histappend globstar
       PROMPT_COMMAND="history -a; history -c; history -r"
-      bind "set bell-style none" 2>/dev/null
+      bind "set bell-style none"        2>/dev/null
       bind "set completion-ignore-case on" 2>/dev/null
-
       bind -x '"\ec": "zi\n"'
 
+      # ── tmux auto-attach ──────────────────────────────────────────────────
+      # Start or reattach to tmux automatically when opening any terminal,
+      # except when already inside tmux, in a tty, or in a dumb terminal.
+      if [ -z "$TMUX" ] && [ "$TERM" != "dumb" ] && [ -t 1 ]; then
+        exec tmux new-session -A -s main
+      fi
+
+      # ── UP: full system upgrade ───────────────────────────────────────────
       UP() {
         local start_time=$(date +%s)
         local failed=()
@@ -325,6 +698,7 @@
         fi
       }
 
+      # ── fzf helpers ───────────────────────────────────────────────────────
       fif() {
         rg --files-with-matches --no-messages "$1" \
           | fzf --preview "rg --ignore-case --pretty --context 10 '$1' {}" \
@@ -337,30 +711,6 @@
         [ -n "$dir" ] && cd "$dir"
       }
 
-      eval "$(starship init bash)"
-
-      # fastfetch FIRST before ble.sh
-      command -v fastfetch >/dev/null 2>&1 && fastfetch
-
-      # ble.sh
-      if [ -f "${pkgs.blesh}/share/blesh/ble.sh" ]; then
-        source "${pkgs.blesh}/share/blesh/ble.sh" --noattach
-        ble-attach
-        bleopt complete_style=menu
-        bleopt complete_ambiguous=menu
-        bleopt complete_menu_style=desc
-        bleopt complete_menu_maxlines=15
-        bleopt suggest_style=faint
-      fi
-
-      # carapace completions — must load after ble.sh
-      if command -v carapace >/dev/null 2>&1; then
-        source <(carapace _carapace bash)
-      fi
-
-      # fzf after ble.sh
-      eval "$(fzf --bash)"
-
       _fzf_comprun() {
         local command=$1
         shift
@@ -371,8 +721,10 @@
           *)            fzf --preview 'bat -n --color=always {}' "$@" ;;
         esac
       }
+
       bind -x '"\C-f": _fzf_cd'
 
+      # ── syncto helper ─────────────────────────────────────────────────────
       syncto() {
         local src="$1" dest="$2" label="$3"
         local BOLD='\033[1m' CYAN='\033[0;36m' GREEN='\033[0;32m'
@@ -399,349 +751,28 @@
 
       alias syncvault='syncto /home/ochinix/Documents/Vault/ pi5:/home/ochiuom/Nixos/Vault/ "Vault"'
       alias syncworkdir='syncto /home/ochinix/workdir/ pi5:/home/ochiuom/Nixos/workdir/ "Workdir"'
+
+      # ── ble.sh ────────────────────────────────────────────────────────────
+      # fastfetch before ble.sh so the banner renders cleanly
+      command -v fastfetch >/dev/null 2>&1 && fastfetch
+
+      if [ -f "${pkgs.blesh}/share/blesh/ble.sh" ]; then
+        source "${pkgs.blesh}/share/blesh/ble.sh" --noattach
+        ble-attach
+        bleopt complete_style=menu
+        bleopt complete_ambiguous=menu
+        bleopt complete_menu_style=desc
+        bleopt complete_menu_maxlines=15
+        bleopt suggest_style=faint
+      fi
+
+      # carapace — load after ble.sh attaches, inside ble hook
+      if command -v carapace >/dev/null 2>&1; then
+      blehook ATTACH+='source <(carapace _carapace bash)'
+      fi
+
+      # fzf keybindings — after ble.sh
+      eval "$(fzf --bash)"
     '';
   };
-
-  home.sessionPath = [
-    "$HOME/.local/bin"
-    "$HOME/.cargo/bin"
-  ];
-
-  programs.git = {
-    enable = true;
-    settings = {
-      merge.conflictstyle = "diff3";
-      diff.colorMoved     = "default";
-    };
-  };
-
-  programs.delta = {
-    enable               = true;
-    enableGitIntegration = true;
-    options = {
-      navigate     = true;
-      dark         = true;
-      side-by-side = true;
-      line-numbers = true;
-      syntax-theme = "TwoDark";
-    };
-  };
-
-  programs.lazygit = {
-    enable = true;
-    settings = {
-      gui = {
-        theme = {
-          activeBorderColor   = [ "cyan" "bold" ];
-          inactiveBorderColor = [ "white" ];
-          selectedLineBgColor = [ "default" ];
-        };
-        showIcons        = true;
-        nerdFontsVersion = "3";
-      };
-      git.pagers = [{
-        diff      = "delta --dark --paging=never";
-        staging   = "delta --dark --paging=never";
-        mergeDiff = "delta --dark --paging=never";
-      }];
-    };
-  };
-
-  programs.tmux = {
-    enable       = true;
-    clock24      = true;
-    escapeTime   = 0;
-    historyLimit = 50000;
-    mouse        = true;
-    terminal     = "xterm-256color";
-    baseIndex    = 1;
-    keyMode      = "vi";
-    prefix       = "C-a";
-    plugins = with pkgs.tmuxPlugins; [
-      sensible
-      yank
-      resurrect
-      continuum
-      {
-        plugin = catppuccin;
-        extraConfig = ''
-          set -g @catppuccin_flavour 'mocha'
-          set -g @catppuccin_window_default_text "#W"
-          set -g @catppuccin_window_current_text "#W"
-          set -g @catppuccin_status_modules_right "session date_time"
-          set -g @catppuccin_date_time_text "%H:%M"
-        '';
-      }
-    ];
-    extraConfig = ''
-      set -ag terminal-overrides ",xterm-256color:RGB"
-
-      bind \\ split-window -h -c "#{pane_current_path}"
-      bind - split-window -v -c "#{pane_current_path}"
-      unbind '"'
-      unbind %
-
-      bind h select-pane -L
-      bind j select-pane -D
-      bind k select-pane -U
-      bind l select-pane -R
-
-      bind -r H resize-pane -L 5
-      bind -r J resize-pane -D 5
-      bind -r K resize-pane -U 5
-      bind -r L resize-pane -R 5
-
-      bind r source-file ~/.config/tmux/tmux.conf \; display "Reloaded!"
-
-      set -g @resurrect-capture-pane-contents 'on'
-      set -g @continuum-restore 'on'
-      set -g @continuum-save-interval '10'
-
-      bind c new-window -c "#{pane_current_path}"
-    '';
-  };
-
-  programs.pay-respects = {
-    enable               = true;
-    enableBashIntegration = true;
-  };
-
-  programs.carapace = {
-    enable               = true;
-    enableBashIntegration = false; # manual load after ble.sh in initExtra
-  };
-
-  programs.broot = {
-    enable               = true;
-    enableBashIntegration = true;
-    settings = {
-      modal = true;
-      skin = {
-        default        = "rgb(220, 220, 220) none";
-        tree           = "rgb(89, 148, 220) none";
-        file           = "rgb(220, 220, 220) none";
-        directory      = "rgb(89, 148, 220) none Bold";
-        exe            = "rgb(147, 220, 147) none";
-        link           = "rgb(220, 147, 220) none";
-        pruning        = "rgb(150, 150, 150) none Italic";
-        selected_line  = "none rgb(40, 40, 60)";
-        char_match     = "rgb(220, 220, 100) none Bold";
-        file_error     = "rgb(220, 100, 100) none";
-        flag_label     = "rgb(220, 220, 220) none";
-        flag_value     = "rgb(220, 147, 89) none Bold";
-        input          = "rgb(220, 220, 220) none";
-        status_error   = "rgb(220, 100, 100) rgb(40, 40, 40)";
-        status_job     = "rgb(89, 220, 220) rgb(40, 40, 40)";
-        status_normal  = "rgb(220, 220, 220) rgb(40, 40, 40)";
-        status_italic  = "rgb(220, 147, 89) rgb(40, 40, 40)";
-        status_bold    = "rgb(220, 220, 100) rgb(40, 40, 40) Bold";
-        status_code    = "rgb(147, 220, 220) rgb(40, 40, 40)";
-        status_ellipsis = "rgb(220, 220, 220) rgb(40, 40, 40)";
-        scrollbar_thumb = "rgb(89, 148, 220) none";
-        scrollbar_track = "rgb(40, 40, 40) none";
-        help_paragraph  = "rgb(220, 220, 220) none";
-        help_bold       = "rgb(220, 220, 100) none Bold";
-        help_italic     = "rgb(220, 147, 89) none Italic";
-        help_code       = "rgb(147, 220, 220) none";
-        help_headers    = "rgb(89, 148, 220) none Bold";
-      };
-    };
-  };
-
-  programs.fzf = {
-    enable               = true;
-    enableBashIntegration = true;
-    defaultOptions = [
-      "--height 40%"
-      "--layout=reverse"
-      "--border"
-      "--color=dark"
-    ];
-  };
-
-  programs.zoxide = {
-    enable               = true;
-    enableBashIntegration = true;
-  };
-
-  programs.starship = {
-    enable = false;
-  };
-
-  programs.bat = {
-    enable = true;
-    config = {
-      theme       = "TwoDark";
-      italic-text = "always";
-    };
-  };
-
-  programs.btop = {
-    enable = true;
-    settings = {
-      color_theme = "dracula";
-      vim_keys    = true;
-    };
-  };
-
-  systemd.user.services.organize-downloads = {
-    Unit.Description = "Organize Downloads folder";
-    Service = {
-      Type      = "oneshot";
-      ExecStart = "${pkgs.bash}/bin/bash -c '${config.home.homeDirectory}/.local/bin/organize run'";
-    };
-  };
-
-  systemd.user.timers.organize-downloads = {
-    Unit.Description = "Run organize-downloads hourly";
-    Timer = {
-      OnCalendar = "hourly";
-      Persistent = true;
-    };
-    Install.WantedBy = [ "timers.target" ];
-  };
-
-  programs.neovim = {
-    enable        = true;
-    defaultEditor = true;
-    viAlias       = true;
-    vimAlias      = true;
-  };
-
-  home.activation.copyKitty = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    mkdir -p ~/.config/kitty
-    chmod -R u+w ~/.config/kitty 2>/dev/null || true
-    cp -rf ${./kitty}/. ~/.config/kitty/
-    echo "${./kitty}" > ~/.config/kitty/.nix-source
-  '';
-
-  home.activation.cleanStarshipBackup = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
-    rm -f ~/.config/starship.toml.backup
-    rm -f ~/.config/starship.toml.bak
-  '';
-
-  home.activation.copyStarship = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    cp -f ${./starship/starship.toml} ~/.config/starship.toml
-  '';
-
-  home.activation.copyEasyEffects = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    mkdir -p ~/.config/easyeffects/output
-    mkdir -p ~/.config/easyeffects/irs
-    cp -rf ${./easyeffects}/output/. ~/.config/easyeffects/output/
-    cp -rf ${./easyeffects}/irs/.    ~/.config/easyeffects/irs/
-  '';
-
-  services.easyeffects = {
-    enable = true;
-    preset = "C+Cry+BE+Max";
-  };
-
-  home.activation.copyMPD = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    mkdir -p ~/.config/mpd
-    mkdir -p ~/.config/mpd/playlists
-    cp -f ${./mpd/mpd.conf} ~/.config/mpd/mpd.conf
-  '';
-
-  services.mpd = {
-    enable       = true;
-    musicDirectory = "/home/ochinix/Music";
-  };
-
-  home.activation.copyOrganize = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    mkdir -p ~/.config/organize
-    cp -f ${./organize/config.yaml} ~/.config/organize/config.yaml
-  '';
-
-  home.activation.copyFonts = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    mkdir -p ~/.local/share/fonts
-    cp -rf ${./fonts}/. ~/.local/share/fonts/
-    ${pkgs.fontconfig}/bin/fc-cache -f
-  '';
-
-  home.activation.copyNvchadCustom = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    if [ -d ~/.local/share/nvim/lazy/NvChad ]; then
-      mkdir -p ~/.config/nvim/lua/plugins
-      mkdir -p ~/.config/nvim/lua/configs
-      cp -rf ${./nvchad-lua/plugins}/. ~/.config/nvim/lua/plugins/
-      cp -f ${./nvchad-lua/autocmds.lua} ~/.config/nvim/lua/autocmds.lua
-      cp -f ${./nvchad-lua/configs/lspconfig.lua} ~/.config/nvim/lua/configs/lspconfig.lua
-    fi
-  '';
-
-  home.activation.createVaultDirs = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    mkdir -p ~/Documents/.vault
-    mkdir -p ~/Documents/Vault
-    mkdir -p ~/Backups
-  '';
-
-  programs.home-manager.enable = true;
-
-  programs.mpv = {
-    enable  = true;
-    package = pkgs.mpv;
-    config = {
-      profile                = "gpu-hq";
-      gpu-api                = "vulkan";
-      hwdec                  = "vaapi";
-      vo                     = "gpu-next";
-      audio-normalize-downmix = true;
-      volume                 = 100;
-      volume-max             = 150;
-      sub-auto               = "fuzzy";
-      sub-font               = "JetBrains Mono";
-      sub-font-size          = 42;
-      sub-color              = "#FFFFFF";
-      sub-border-size        = 2;
-      sub-border-color       = "#000000";
-      osc                    = false;
-      osd-font               = "JetBrains Mono";
-      osd-font-size          = 28;
-      keep-open              = true;
-      save-position-on-quit  = true;
-      screenshot-format      = "png";
-      screenshot-directory   = "~/Pictures/Screenshots";
-      ytdl-format            = "bestvideo[height<=1080]+bestaudio/best[height<=1080]";
-    };
-    bindings = {
-      "l"  = "seek 5";
-      "h"  = "seek -5";
-      "L"  = "seek 30";
-      "H"  = "seek -30";
-      "j"  = "add volume -5";
-      "k"  = "add volume 5";
-      "="  = "add speed 0.1";
-      "-"  = "add speed -0.1";
-      "BS" = "set speed 1.0";
-      "s"  = "cycle sub";
-      "S"  = "cycle sub down";
-      ">"  = "playlist-next";
-      "<"  = "playlist-prev";
-    };
-    scripts = with pkgs.mpvScripts; [
-      modernx
-      sponsorblock
-      thumbfast
-      autoload
-      inhibit-gnome
-      quality-menu
-      mpris
-    ];
-  };
-
-  home.file.".sage/init.sage".text = ''
-    import matplotlib as mpl
-    mpl.rcParams.update({
-        'font.family': 'serif',
-        'font.size': 11,
-        'axes.labelsize': 12,
-        'figure.dpi': 300,
-        'figure.figsize': (6.5, 4.5),
-        'lines.linewidth': 1.5,
-        'axes.linewidth': 0.8,
-        'xtick.direction': 'in',
-        'ytick.direction': 'in',
-        'xtick.top': True,
-        'ytick.right': True,
-    })
-  '';
 }

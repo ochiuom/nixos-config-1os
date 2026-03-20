@@ -5,7 +5,7 @@
 
   environment.gnome.excludePackages = with pkgs; [
     gnome-tour gnome-connections geary epiphany totem
-    gnome-maps gnome-music gnome-weather gnome-contacts
+    gnome-maps gnome-music  gnome-contacts
     gnome-clocks gnome-calendar gnome-logs gnome-software 
   ];
   
