@@ -1,11 +1,11 @@
 { config, pkgs, lib, ... }:
 {
-  boot.loader.systemd-boot.enable          = true;
+  boot.loader.systemd-boot.enable             = true;
   boot.loader.systemd-boot.configurationLimit = 3;
-  boot.loader.efi.canTouchEfiVariables     = true;
-  boot.loader.efi.efiSysMountPoint         = "/boot";
+  boot.loader.efi.canTouchEfiVariables        = true;
+  boot.loader.efi.efiSysMountPoint            = "/boot";
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages       = pkgs.linuxPackages_latest;
   boot.initrd.kernelModules = [ "i915" ];
 
   boot.plymouth = {
@@ -31,14 +31,7 @@
     "vm.dirty_writeback_centisecs=1500"
   ];
 
-  # ── Faster LUKS decrypt via AES-NI bypass ────────────────────────────
-  boot.initrd.luks.devices = lib.mapAttrs (_: _: {
-    bypassWorkqueues = true;
-  }) config.boot.initrd.luks.devices;
-
   # ── Move home-manager out of critical boot path ───────────────────────
-  # Prevents 16s block between LUKS unlock and login screen.
-  # Desktop may snap in 2-3s after login — acceptable tradeoff.
   systemd.services.home-manager-ochinix = {
     after    = lib.mkForce [ "network.target" ];
     wantedBy = lib.mkForce [ "multi-user.target" ];
