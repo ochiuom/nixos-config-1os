@@ -3,8 +3,8 @@
 
 let
   # ── Change this one line to switch themes ─────────────────────────────
-  activeTheme = "Orchis-Red-Dark-Compact";
-  # activeTheme = "Tokyonight-B-MB-Dark";
+  # activeTheme = "Orchis-Red-Dark-Compact";
+   activeTheme = "Tokyonight-B-MB-Dark";
 
 in
 {
@@ -134,7 +134,7 @@ in
   };
 
   dconf.settings."org/gnome/shell/extensions/user-theme" = {
-    name = lib.mkForce activeTheme;
+    name = lib.mkForce "Orchis-Red-Dark-Compact";
   };
 
   dconf.settings."org/gnome/shell/extensions/rounded-window-corners-reborn" = {
