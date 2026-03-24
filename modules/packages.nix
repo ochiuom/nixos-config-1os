@@ -7,7 +7,7 @@
 
 
    environment.systemPackages = with pkgs; [
-    git vim wget curl htop ffmpeg libva-utils tree ncdu ticker
+    git vim wget curl htop ffmpeg libva-utils tree ncdu ticker nvd
     sbctl btrfs-progs cryptsetup pciutils usbutils lshw openssl
     networkmanagerapplet xdg-utils xdg-desktop-portal-gnome glib glib-networking gpick
   
@@ -60,7 +60,7 @@
     
     # LaTeX
     (pkgs.texlive.combine {
-  inherit (pkgs.texlive)
+    inherit (pkgs.texlive)
     scheme-small
     latex-bin
     latexmk
@@ -93,7 +93,10 @@
 
     # Bibliography
     hyperref biblatex biber fancyhdr lastpage orcidlink
-    babel babel-english;
+    babel babel-english
+
+    #beamer-package
+    dingbat bbm bbm-macros;
     })    
 
     gnome-tweaks gnome-extension-manager
@@ -135,6 +138,9 @@
     gnomeExtensions.top-bar-organizer
     gnomeExtensions.vitals
     gnomeExtensions.weather-or-not
+    gnomeExtensions.dash-to-dock
+    gnomeExtensions.app-menu-is-back
+    gnomeExtensions.media-controls
   ];
 
 

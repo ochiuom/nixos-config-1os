@@ -28,7 +28,8 @@
 
     # Desktop / GUI
     warp-terminal tigervnc remmina zed-editor carapace
-  ];
+   	 
+ ];
 
   # ── Declarative config files ───────────────────────────────────────────────
   # Using home.file instead of activation cp scripts so HM tracks changes
@@ -210,6 +211,9 @@
         weather-or-not.extensionUuid
         logo-menu.extensionUuid
         dash2dock-lite.extensionUuid
+        dash-to-dock.extensionUuid
+        app-menu-is-back.extensionUuid
+        media-controls.extensionUuid
         "desktop-quote@ochinix"
       ];
     };
@@ -650,9 +654,9 @@
       # ── tmux auto-attach ──────────────────────────────────────────────────
       # Start or reattach to tmux automatically when opening any terminal,
       # except when already inside tmux, in a tty, or in a dumb terminal.
-      if [ -z "$TMUX" ] && [ "$TERM" != "dumb" ] && [ -t 1 ]; then
-        exec tmux new-session -A -s main
-      fi
+     # if [ -z "$TMUX" ] && [ "$TERM" != "dumb" ] && [ -t 1 ]; then
+      #  exec tmux new-session -A -s main
+      #fi
 
       # ── UP: full system upgrade ───────────────────────────────────────────
       UP() {
