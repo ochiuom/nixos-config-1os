@@ -87,7 +87,7 @@
     font-size = 10
     cursor-style = block
     cursor-style-blink = true
-    shell-integration = bash
+    shell-integration = none #bash
     gtk-single-instance = true
     background = #2c2c2c
     keybind = ctrl+shift+e=new_window
