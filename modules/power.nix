@@ -1,8 +1,6 @@
 { config, pkgs, lib, ... }:
 {
-  services.throttled.enable = true;
-  services.power-profiles-daemon.enable = false;
-
+  # Using TLP for power management - throttled is redundant
   services.tlp = {
     enable = true;
     settings = {
@@ -31,8 +29,6 @@
       WIFI_PWR_ON_AC  = "off";
       WIFI_PWR_ON_BAT = "on";
       WOL_DISABLE = "Y";
-      PLATFORM_PROFILE_ON_AC  = "performance";
-      PLATFORM_PROFILE_ON_BAT = "low-power";
     };
   };
 

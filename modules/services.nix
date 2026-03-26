@@ -39,6 +39,6 @@
   nix.gc = {
     automatic = true;
     dates = "weekly";
-    options = "--delete-generations +1";
+    options = "--delete-generations +2";
   };
 }

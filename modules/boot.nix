@@ -1,11 +1,11 @@
 { config, pkgs, lib, ... }:
 {
   boot.loader.systemd-boot.enable             = true;
-  boot.loader.systemd-boot.configurationLimit = 1;
+  boot.loader.systemd-boot.configurationLimit = 2;
   boot.loader.efi.canTouchEfiVariables        = true;
   boot.loader.efi.efiSysMountPoint            = "/boot";
 
-  boot.kernelPackages       = pkgs.linuxPackages_latest;
+  boot.kernelPackages       =  pkgs.linuxPackages_latest;
   boot.initrd.kernelModules = [ "i915" ];
 
   boot.plymouth = {
