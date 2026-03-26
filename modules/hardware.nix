@@ -16,6 +16,7 @@
 
   environment.sessionVariables = {
     LIBVA_DRIVER_NAME = "iHD";
+    CLUTTER_BACKEND = "wayland";
     NIXOS_OZONE_WL = "1";
   };
 

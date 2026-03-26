@@ -120,12 +120,12 @@
    # gnomeExtensions.lock-guard
     gnomeExtensions.ip-finder
     gnomeExtensions.color-picker
-    gnomeExtensions.dash2dock-lite
+   # gnomeExtensions.dash2dock-lite
     gnomeExtensions.compact-top-bar
-    gnomeExtensions.advanced-weather-companion
+    #gnomeExtensions.advanced-weather-companion
    # gnomeExtensions.adaptive-brightness
-    gnomeExtensions.astra-monitor
-    gnomeExtensions.tophat
+    #gnomeExtensions.astra-monitor
+    #gnomeExtensions.tophat
     gnomeExtensions.gnome-40-ui-improvements
     gnomeExtensions.fuzzy-app-search
     gnomeExtensions.penguin-ai-chatbot
@@ -133,7 +133,7 @@
     gnomeExtensions.tailscale-status
    # gnomeExtensions.workspace-matrix
     gnomeExtensions.wallpaper-slideshow
-    gnomeExtensions.dash-to-panel
+    #gnomeExtensions.dash-to-panel
     gnomeExtensions.open-bar
     gnomeExtensions.top-bar-organizer
     gnomeExtensions.vitals

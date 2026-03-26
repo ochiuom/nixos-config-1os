@@ -3,8 +3,8 @@
 
 let
   # ── Change this one line to switch themes ─────────────────────────────
-  # activeTheme = "Orchis-Red-Dark-Compact";
-   activeTheme = "Tokyonight-B-MB-Dark";
+   activeTheme = "Orchis-Red-Dark-Compact";
+  # activeTheme = "Tokyonight-B-MB-Dark";
 
 in
 {

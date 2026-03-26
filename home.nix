@@ -194,23 +194,23 @@
         ip-finder.extensionUuid
         color-picker.extensionUuid
         compact-top-bar.extensionUuid
-        advanced-weather-companion.extensionUuid
-        astra-monitor.extensionUuid
-        tophat.extensionUuid
+        #advanced-weather-companion.extensionUuid
+        #astra-monitor.extensionUuid
+        #tophat.extensionUuid
         gnome-40-ui-improvements.extensionUuid
         fuzzy-app-search.extensionUuid
         penguin-ai-chatbot.extensionUuid
         status-area-horizontal-spacing.extensionUuid
         tailscale-status.extensionUuid
         wallpaper-slideshow.extensionUuid
-        dash-to-panel.extensionUuid
+        #dash-to-panel.extensionUuid
         rounded-window-corners-reborn.extensionUuid
         open-bar.extensionUuid
         top-bar-organizer.extensionUuid
         vitals.extensionUuid
         weather-or-not.extensionUuid
         logo-menu.extensionUuid
-        dash2dock-lite.extensionUuid
+       # dash2dock-lite.extensionUuid
         dash-to-dock.extensionUuid
         app-menu-is-back.extensionUuid
         media-controls.extensionUuid

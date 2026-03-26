@@ -7,27 +7,39 @@
     # ── Blur My Shell ─────────────────────────────────────────────────
     "org/gnome/shell/extensions/blur-my-shell" = {
       settings-version = 2;
+      brightness       = 0.75;
+      sigma            = 30;
     };
 
     "org/gnome/shell/extensions/blur-my-shell/applications" = {
-      blur            = true;
+      blur             = true;
       blur-on-overview = true;
-      dynamic-opacity = true;
-      enable-all      = true;
-      opacity         = 200;
-      sigma           = 10;
+      dynamic-opacity  = true;
+      enable-all       = true;
+      opacity          = 200;
+      sigma            = 10;
     };
 
     "org/gnome/shell/extensions/blur-my-shell/panel" = {
-      blur         = false;
-      sigma        = 0;
-      static-blur  = false;
+      blur        = true;
+      brightness  = 0.6;
+      sigma       = 20;
+      static-blur = true;
+    };
+
+    "org/gnome/shell/extensions/blur-my-shell/overview" = {
+      blur             = true;
+      style-components = 3;
+    };
+
+    "org/gnome/shell/extensions/blur-my-shell/appfolder" = {
+      blur = true;
     };
 
     "org/gnome/shell/extensions/blur-my-shell/dash-to-dock" = {
-      blur         = true;
-      pipeline     = "pipeline_default_rounded";
-      static-blur  = true;
+      blur               = true;
+      pipeline           = "pipeline_default_rounded";
+      static-blur        = true;
       style-dash-to-dock = 0;
     };
 
@@ -67,12 +79,12 @@
       panel-lengths           = ''{"BOE-0x00000000":100}'';
       panel-positions         = ''{"BOE-0x00000000":"TOP"}'';
       panel-sizes             = ''{"BOE-0x00000000":29}'';
-      show-favorites-all-monitors = false;
-      trans-panel-opacity     = 0.0;
-      trans-use-border        = true;
-      trans-use-custom-bg     = false;
-      trans-use-custom-gradient = false;
-      trans-use-custom-opacity  = true;
+      show-favorites-all-monitors   = false;
+      trans-panel-opacity           = 0.0;
+      trans-use-border              = true;
+      trans-use-custom-bg           = false;
+      trans-use-custom-gradient     = false;
+      trans-use-custom-opacity      = true;
       window-preview-title-position = "TOP";
     };
 
@@ -83,10 +95,10 @@
 
     # ── Rounded Window Corners ────────────────────────────────────────
     "org/gnome/shell/extensions/rounded-window-corners-reborn" = {
-      border-radius        = 8;
-      keep-rounded-corners = false;
+      border-radius        = 12;
+      smoothing            = 1;
+      keep-rounded-corners = true;
       skip-libadwaita-app  = true;
-      smoothing            = 0;
     };
 
     # ── Search Light ──────────────────────────────────────────────────
@@ -105,12 +117,12 @@
 
     # ── Space Bar ─────────────────────────────────────────────────────
     "org/gnome/shell/extensions/space-bar/behavior" = {
-      always-show-numbers  = true;
-      position             = "center";
-      scroll-wheel         = "panel";
+      always-show-numbers   = true;
+      position              = "center";
+      scroll-wheel          = "panel";
       show-empty-workspaces = true;
       smart-workspace-names = true;
-      toggle-overview      = false;
+      toggle-overview       = false;
     };
 
     "org/gnome/shell/extensions/space-bar/appearance" = {
@@ -162,22 +174,22 @@
 
     # ── Tiling Assistant ──────────────────────────────────────────────
     "org/gnome/shell/extensions/tiling-assistant" = {
-      default-move-mode         = 0;
-      default-wrap-mode         = 0;
+      default-move-mode           = 0;
+      default-wrap-mode           = 0;
       dynamic-keybinding-behavior = 0;
-      enable-tiling-popup       = true;
-      maximize-with-gap         = true;
-      restore-window            = [ "<Super>Down" ];
-      tile-left-half            = [ "<Super>Left" "<Super>KP_4" ];
-      tile-right-half           = [ "<Super>Right" "<Super>KP_6" ];
-      tile-maximize             = [ "<Super>Up" "<Super>KP_5" ];
-      tile-bottom-half          = [ "<Super>KP_2" ];
-      tile-top-half             = [ "<Super>KP_8" ];
-      tile-bottomleft-quarter   = [ "<Super>KP_1" ];
-      tile-bottomright-quarter  = [ "<Super>KP_3" ];
-      tile-topleft-quarter      = [ "<Super>KP_7" ];
-      tile-topright-quarter     = [ "<Super>KP_9" ];
-      window-gap                = 4;
+      enable-tiling-popup         = true;
+      maximize-with-gap           = true;
+      restore-window              = [ "<Super>Down" ];
+      tile-left-half              = [ "<Super>Left" "<Super>KP_4" ];
+      tile-right-half             = [ "<Super>Right" "<Super>KP_6" ];
+      tile-maximize               = [ "<Super>Up" "<Super>KP_5" ];
+      tile-bottom-half            = [ "<Super>KP_2" ];
+      tile-top-half               = [ "<Super>KP_8" ];
+      tile-bottomleft-quarter     = [ "<Super>KP_1" ];
+      tile-bottomright-quarter    = [ "<Super>KP_3" ];
+      tile-topleft-quarter        = [ "<Super>KP_7" ];
+      tile-topright-quarter       = [ "<Super>KP_9" ];
+      window-gap                  = 4;
     };
 
     # ── TopHat ────────────────────────────────────────────────────────
@@ -198,16 +210,16 @@
       network-header-icon     = false;
       network-header-io       = true;
       network-indicators-order = ''["icon","IO bar","IO graph","IO speed"]'';
-      processor-header-graph       = false;
-      processor-header-icon        = false;
-      processor-header-percentage  = true;
-      processor-indicators-order   = ''["icon","bar","graph","percentage","frequency"]'';
-      sensors-header-show          = false;
-      sensors-indicators-order     = ''["icon","value"]'';
-      storage-header-show          = false;
-      storage-indicators-order     = ''["icon","bar","percentage","value","free","IO bar","IO graph","IO speed"]'';
-      storage-main                 = "name-cryptroot";
-      gpu-indicators-order         = ''["icon","activity bar","activity graph","activity percentage","memory bar","memory graph","memory percentage","memory value"]'';
+      processor-header-graph      = false;
+      processor-header-icon       = false;
+      processor-header-percentage = true;
+      processor-indicators-order  = ''["icon","bar","graph","percentage","frequency"]'';
+      sensors-header-show         = false;
+      sensors-indicators-order    = ''["icon","value"]'';
+      storage-header-show         = false;
+      storage-indicators-order    = ''["icon","bar","percentage","value","free","IO bar","IO graph","IO speed"]'';
+      storage-main                = "name-cryptroot";
+      gpu-indicators-order        = ''["icon","activity bar","activity graph","activity percentage","memory bar","memory graph","memory percentage","memory value"]'';
     };
 
     # ── Burn My Windows ───────────────────────────────────────────────
@@ -234,14 +246,14 @@
 
     # ── Wallpaper Slideshow ───────────────────────────────────────────
     "org/gnome/shell/extensions/azwallpaper" = {
-      bing-download-directory     = "/home/ochinix/Pictures/WP-2026/Bing2025";
+      bing-download-directory      = "/home/ochinix/Pictures/WP-2026/Bing2025";
       slideshow-change-slide-event = 0;
-      slideshow-directory         = "/home/ochinix/Pictures/WP-2026/BING Wallpapers (from November 2021) 1920x1080";
-      slideshow-pause             = true;
-      slideshow-queue-reshuffle-on-complete = false;
-      slideshow-queue-sort-type   = "Newest";
-      slideshow-show-quick-settings-entry = true;
-      slideshow-use-absolute-time-for-duration = false;
+      slideshow-directory          = "/home/ochinix/Pictures/WP-2026/BING Wallpapers (from November 2021) 1920x1080";
+      slideshow-pause              = false;
+      slideshow-queue-reshuffle-on-complete        = false;
+      slideshow-queue-sort-type                    = "Newest";
+      slideshow-show-quick-settings-entry          = true;
+      slideshow-use-absolute-time-for-duration     = false;
     };
 
     # ── GSConnect ─────────────────────────────────────────────────────
