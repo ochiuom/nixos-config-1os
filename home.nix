@@ -627,13 +627,33 @@
       sage-env    = "cd ~/Projects/Sage && nix develop --profile ~/.local/state/nix/profiles/sage";
 
       usage = ''
-        echo '=== DISK OVERVIEW ===' && duf &&
-  	echo '=== NIX STORE + HOME TOP 15 ===' && dust /nix/store ~ -d 1 -n 15 &&
-  	echo '=== FLATPAK APPS ===' && dust ~/.var/app -d 1 -n 10 &&
-  	echo '=== NIX GENERATIONS ===' && sudo nix-env --list-generations --profile /nix/var/nix/profiles/system | tail -5 &&
-  	echo '=== HOME-MANAGER GENERATIONS ===' && nix-env --list-generations --profile ~/.local/state/nix/profiles/home-manager | tail -5
+  	echo "" &&
+  	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" &&
+  	echo "  💽  DISK" &&
+  	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" &&
+  	duf --only local &&
+  	echo "" &&
+  	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" &&
+  	echo "  📦  NIX STORE  (top 15)" &&
+  	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" &&
+  	dust /nix/store -d 1 -n 15 -x &&
+  	echo "" &&
+  	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" &&
+  	echo "  🏠  HOME  (top 15)" &&
+  	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" &&
+  	dust ~ -d 1 -n 15 -x &&
+  	echo "" &&
+  	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" &&
+  	echo "  📱  FLATPAK APPS" &&
+  	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" &&
+  	dust ~/.var/app -d 1 -n 10 -x &&
+  	echo "" &&
+  	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" &&
+  	echo "  🔄  NIX GENERATIONS" &&
+  	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" &&
+  	sudo nix-env --list-generations --profile /nix/var/nix/profiles/system | tail -5 &&
+  	echo ""
 	'';
-
        clean-all = ''
  	echo '🧹 Starting full system clean...' &&
     	rm -rf ~/.cache/mozilla/firefox/*.default/cache2 &&
@@ -643,7 +663,7 @@
   	echo '✔ Journal vacuumed' &&
   	flatpak uninstall --unused -y &&
   	echo '✔ Flatpak orphans removed' &&
-  	nh clean all --keep 3 --keep-since 3d &&
+  	nh clean all --keep 1 --keep-since 1d &&
   	echo '✔ Nix generations cleaned' &&
   	sudo nix-store --optimise &&
   	echo '✔ Nix store optimised' &&
