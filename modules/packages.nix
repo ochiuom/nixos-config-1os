@@ -141,6 +141,7 @@
     gnomeExtensions.dash-to-dock
     gnomeExtensions.app-menu-is-back
     gnomeExtensions.media-controls
+    gnomeExtensions.app-grid-wizard
   ];
 
 

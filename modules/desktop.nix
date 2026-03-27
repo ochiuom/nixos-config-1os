@@ -29,7 +29,8 @@
     nerd-fonts.fira-code
     nerd-fonts.hack
     font-awesome
-    atkinson-hyperlegible
+    atkinson-hyperlegible-next
+    atkinson-hyperlegible-mono
   ];
   fontconfig = {
     enable = true;
@@ -56,7 +57,7 @@
       "context.properties" = {
         "default.clock.rate" = 48000;
         "default.clock.allowed-rates" = [ 44100 48000 96000 192000 ];
-        "default.clock.quantum" =  256 #1024;
+        "default.clock.quantum" =  256;  #1024;
         "default.clock.min-quantum" = 32;
         "default.clock.max-quantum" = 8192;
       };

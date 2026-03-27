@@ -137,12 +137,12 @@ in
     name = lib.mkForce "Orchis-Red-Dark-Compact";
   };
 
-  dconf.settings."org/gnome/shell/extensions/rounded-window-corners-reborn" = {
-    border-radius        = 8;
-    smoothing            = 0;
-    keep-rounded-corners = false;
-    skip-libadwaita-app  = true;
-  };
+  #dconf.settings."org/gnome/shell/extensions/rounded-window-corners-reborn" = {
+    #border-radius        = 8;
+   # smoothing            = 0;
+  #  keep-rounded-corners = false;
+ #   skip-libadwaita-app  = true;
+#  };
 
   dconf.settings."org/gtk/settings/file-chooser" = {
     sort-directories-first = true;

@@ -137,7 +137,7 @@
     };
 
     "org/gnome/desktop/interface" = {
-      font-name           = lib.mkForce "Inter 11";
+      font-name           = lib.mkForce "Inter 12";
       document-font-name  = lib.mkForce "Noto Sans 11";
       monospace-font-name = lib.mkForce "JetBrainsMono Nerd Font 10";
       color-scheme        = "prefer-dark";
@@ -214,6 +214,7 @@
         dash-to-dock.extensionUuid
         app-menu-is-back.extensionUuid
         media-controls.extensionUuid
+        app-grid-wizard.extensionUuid
         "desktop-quote@ochinix"
       ];
     };
@@ -779,4 +780,15 @@
       eval "$(fzf --bash)"
     '';
   };
+
+  programs.vscode = {
+  enable = true;
+  package = pkgs.vscode.fhs; # wiki recommends fhs for extension compatibility
+  profiles.default.extensions = with pkgs.vscode-extensions; [
+    mkhl.direnv
+    ms-toolsai.jupyter
+    ms-python.python
+    ];
+  };
+
 }

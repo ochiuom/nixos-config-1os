@@ -21,7 +21,7 @@
     };
 
     "org/gnome/shell/extensions/blur-my-shell/panel" = {
-      blur        = true;
+      blur        = false; 
       brightness  = 0.6;
       sigma       = 20;
       static-blur = true;
