@@ -625,9 +625,32 @@
       f   = "pay-respects";
 
       sage-env    = "cd ~/Projects/Sage && nix develop --profile ~/.local/state/nix/profiles/sage";
-      clean-cache = "rm -rf ~/.cache/mozilla/firefox/*.default/cache2 && rm -rf ~/.var/app/com.brave.Browser/cache/BraveSoftware/Brave-Browser/Default/Cache && echo 'Browser caches cleared'";
-      clean-all   = "clean-cache && sudo journalctl --vacuum-time=7d && flatpak uninstall --unused -y && ngc && echo 'Full clean done'";
-    };
+
+      usage = ''
+        echo '=== DISK OVERVIEW ===' && duf &&
+  	echo '=== NIX STORE + HOME TOP 15 ===' && dust /nix/store ~ -d 1 -n 15 &&
+  	echo '=== FLATPAK APPS ===' && dust ~/.var/app -d 1 -n 10 &&
+  	echo '=== NIX GENERATIONS ===' && sudo nix-env --list-generations --profile /nix/var/nix/profiles/system | tail -5 &&
+  	echo '=== HOME-MANAGER GENERATIONS ===' && nix-env --list-generations --profile ~/.local/state/nix/profiles/home-manager | tail -5
+	'';
+
+       clean-all = ''
+ 	echo '🧹 Starting full system clean...' &&
+    	rm -rf ~/.cache/mozilla/firefox/*.default/cache2 &&
+ 	rm -rf ~/.var/app/com.brave.Browser/cache/BraveSoftware/Brave-Browser/Default/Cache &&
+ 	echo '✔ Browser caches cleared' &&
+  	sudo journalctl --vacuum-time=7d &&
+  	echo '✔ Journal vacuumed' &&
+  	flatpak uninstall --unused -y &&
+  	echo '✔ Flatpak orphans removed' &&
+  	nh clean all --keep 3 --keep-since 3d &&
+  	echo '✔ Nix generations cleaned' &&
+  	sudo nix-store --optimise &&
+  	echo '✔ Nix store optimised' &&
+  	echo '✅ Full clean done'
+	'';
+
+ };
 
     sessionVariables = {
       EDITOR   = "nvim";
