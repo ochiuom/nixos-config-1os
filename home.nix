@@ -791,4 +791,16 @@
     ];
   };
 
+  home.activation.createSageProject = lib.hm.dag.entryAfter ["writeBoundary"] ''
+  mkdir -p ~/Projects/Sage
+  cp -n ${./Sage/flake.nix} ~/Projects/Sage/flake.nix
+  cp -n ${./Sage/.envrc} ~/Projects/Sage/.envrc
+
+  mkdir -p ~/.local/share/jupyter/kernels/sagemath
+  cp -f ${./vscode/kernel.json} ~/.local/share/jupyter/kernels/sagemath/kernel.json
+
+  mkdir -p ~/.vscode
+  cp -f ${./vscode/settings.json} ~/.vscode/settings.json
+  '';  
+
 }

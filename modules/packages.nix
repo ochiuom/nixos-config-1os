@@ -27,6 +27,7 @@
     kitty ghostty
     vscode
     # zed-editor
+    sublime4
 
     vlc mpd mpc mpv mplayer smplayer
 

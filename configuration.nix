@@ -33,6 +33,15 @@
   # ── Nix ──────────────────────────────────────────────────────────────────────
   nix.settings.trusted-users = [ "root" "ochinix" ];
 
+  # ── Unfree packages whitelist ─────────────────────────────────────────────
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "sublime4"
+  ];
+
+  nixpkgs.config.permittedInsecurePackages = [
+  "openssl-1.1.1w"
+  ];
+
   # ── Environment ──────────────────────────────────────────────────────────────
   # environment.defaultPackages = []; # remove implicit nano, perl, strace etc.
   environment.defaultPackages = lib.mkForce [ pkgs.nano ];
