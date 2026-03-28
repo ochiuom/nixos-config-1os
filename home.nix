@@ -978,22 +978,5 @@
     gradient-color-3 = #34d399
   '';
 
-  # ─── 3. GNOME Extensions (dconf) ───────────────────────────
-  # Dynamic Music Pill → top bar center
-  dconf.settings = {
-    "org/gnome/shell" = {
-      enabled-extensions = [
-        "dynamic-music-pill@neuromorph"
-        "rounded-window-corners@fxgn"
-      ];
-    };
-
-    "org/gnome/shell/extensions/dynamic-music-pill" = {
-      container-target = "panel-center-box";   # top bar center ✅
-      visualizer-mode = "real-time";
-      corner-radius = 24;
-      auto-colors = true;                       # album art adaptive color
-    };
-  };
 
 }
