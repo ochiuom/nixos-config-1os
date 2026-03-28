@@ -30,7 +30,8 @@
     
 
     vlc mpd mpc mpv mplayer smplayer audacious audacious-plugins audacity
-    syncthing tor gocryptfs fuse
+    cava cavalier
+     syncthing tor gocryptfs fuse
 
     yazi evince gparted baobab
     wl-color-picker localsend exfatprogs qpwgraph
