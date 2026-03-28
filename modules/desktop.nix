@@ -64,5 +64,10 @@
     };
   };
 
+  environment.sessionVariables = {
+  XDG_DATA_DIRS = [
+    "${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}"
+   ];
+ };
 
 }

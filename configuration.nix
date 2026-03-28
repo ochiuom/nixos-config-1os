@@ -10,6 +10,7 @@
     ./modules/packages.nix
     ./modules/services.nix
     ./modules/nixos/gdm.nix
+    ./audio-visual.nix
   ];
 
   # ── Locale ───────────────────────────────────────────────────────────────────

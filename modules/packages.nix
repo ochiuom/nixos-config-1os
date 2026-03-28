@@ -26,11 +26,11 @@
     firefox
     kitty ghostty
     vscode
-    # zed-editor
     sublime4
+    
 
-    vlc mpd mpc mpv mplayer smplayer
-
+    vlc mpd mpc mpv mplayer smplayer audacious audacious-plugins audacity cava
+    cavalier
     syncthing tor gocryptfs fuse
 
     yazi evince gparted baobab
@@ -85,7 +85,7 @@
 
     # Graphics
     pgf tikz-cd circuitikz quantikz
-    adjustbox subfig
+    adjustbox subfig dvipng
 
     # Layout
     booktabs float multirow colortbl
@@ -141,8 +141,9 @@
     gnomeExtensions.weather-or-not
     gnomeExtensions.dash-to-dock
     gnomeExtensions.app-menu-is-back
-    gnomeExtensions.media-controls
+    #gnomeExtensions.media-controls
     gnomeExtensions.app-grid-wizard
+    gnomeExtensions.dynamic-music-pill
   ];
 
 

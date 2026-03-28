@@ -23,13 +23,15 @@
     btop navi broot lazygit delta
 
     # Media
-    easyeffects weylus xournalpp audacious audacious-plugins audacity
+    easyeffects weylus xournalpp 
     cmus yt-dlp
 
     # Desktop / GUI
     warp-terminal tigervnc remmina zed-editor carapace
    	 
  ];
+
+
 
   # ── Declarative config files ───────────────────────────────────────────────
   # Using home.file instead of activation cp scripts so HM tracks changes
@@ -167,13 +169,6 @@
   ''; 
 
 
-  home.file.".ipython/profile_default/startup/00-startup.py".text = ''
-  import numpy as np
-  import matplotlib.pyplot as plt
-  import matplotlib
-  matplotlib.rcParams['text.usetex'] = False
-  get_ipython().run_line_magic('matplotlib', 'inline')
-  '';
 
   # Ghostty — kept as home.file since ghostty has no HM module yet
   home.file.".config/ghostty/config".text = ''
@@ -310,8 +305,9 @@
        # dash2dock-lite.extensionUuid
         dash-to-dock.extensionUuid
         app-menu-is-back.extensionUuid
-        media-controls.extensionUuid
+       # media-controls.extensionUuid
         app-grid-wizard.extensionUuid
+        dynamic-music-pill.extensionUuid
         "desktop-quote@ochinix"
       ];
     };
@@ -937,5 +933,67 @@
   mkdir -p ~/.vscode
   cp -f ${./vscode/settings.json} ~/.vscode/settings.json
   '';  
+
+    # ─── 1. CAVA config (~/.config/cava/config) ────────────────
+    xdg.configFile."cava/config".text = ''
+    [general]
+    bars = 24
+    sensitivity = 100
+    framerate = 60
+
+    [smoothing]
+    noise_reduction = 77
+
+    [input]
+    method = pipewire
+    source = auto
+
+    [color]
+    gradient = 1
+    gradient_count = 3
+    gradient_color_1 = '#a78bfa'
+    gradient_color_2 = '#60a5fa'
+    gradient_color_3 = '#34d399'
+  '';
+
+    # ─── 2. CAVALIER config (~/.config/cavalier/config) ────────
+    xdg.configFile."cavalier/config".text = ''
+    [window]
+    transparent = true
+    decorated = false
+    width = 400
+    height = 120
+
+    [general]
+    mode = wave
+    rounded-corners = true
+    border = false
+    margin = 12
+    framerate = 60
+
+    [colors]
+    use-gradient = true
+    gradient-color-1 = #a78bfa
+    gradient-color-2 = #60a5fa
+    gradient-color-3 = #34d399
+  '';
+
+  # ─── 3. GNOME Extensions (dconf) ───────────────────────────
+  # Dynamic Music Pill → top bar center
+  dconf.settings = {
+    "org/gnome/shell" = {
+      enabled-extensions = [
+        "dynamic-music-pill@neuromorph"
+        "rounded-window-corners@fxgn"
+      ];
+    };
+
+    "org/gnome/shell/extensions/dynamic-music-pill" = {
+      container-target = "panel-center-box";   # top bar center ✅
+      visualizer-mode = "real-time";
+      corner-radius = 24;
+      auto-colors = true;                       # album art adaptive color
+    };
+  };
 
 }
