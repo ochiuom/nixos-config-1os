@@ -70,48 +70,5 @@
    ];
  };
 
-    # ─── 1. CAVA config (~/.config/cava/config) ────────────────
-    xdg.configFile."cava/config".text = ''
-    [general]
-    bars = 24
-    sensitivity = 100
-    framerate = 60
-
-    [smoothing]
-    noise_reduction = 77
-
-    [input]
-    method = pipewire
-    source = auto
-
-    [color]
-    gradient = 1
-    gradient_count = 3
-    gradient_color_1 = '#a78bfa'
-    gradient_color_2 = '#60a5fa'
-    gradient_color_3 = '#34d399'
-   '';
-
-    # ─── 2. CAVALIER config (~/.config/cavalier/config) ────────
-    xdg.configFile."cavalier/config".text = ''
-    [window]
-    transparent = true
-    decorated = false
-    width = 400
-    height = 120
-
-    [general]
-    mode = wave
-    rounded-corners = true
-    border = false
-    margin = 12
-    framerate = 60
-
-    [colors]
-    use-gradient = true
-    gradient-color-1 = #a78bfa
-    gradient-color-2 = #60a5fa
-    gradient-color-3 = #34d399
-  '';
 
 }
