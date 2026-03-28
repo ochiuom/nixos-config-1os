@@ -29,8 +29,7 @@
     sublime4
     
 
-    vlc mpd mpc mpv mplayer smplayer audacious audacious-plugins audacity cava
-    cavalier
+    vlc mpd mpc mpv mplayer smplayer audacious audacious-plugins audacity
     syncthing tor gocryptfs fuse
 
     yazi evince gparted baobab

@@ -46,5 +46,14 @@
   # ── Environment ──────────────────────────────────────────────────────────────
   # environment.defaultPackages = []; # remove implicit nano, perl, strace etc.
   environment.defaultPackages = lib.mkForce [ pkgs.nano ];
+
+  environment.systemPackages = with pkgs; [
+  cavalier
+  cava
+  ];
+
+  services.dbus.packages = with pkgs; [ cavalier ];
+
   system.stateVersion = "26.05";
+
 }
