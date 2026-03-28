@@ -346,26 +346,6 @@
 
     "org/gnome/desktop/session".idle-delay = lib.hm.gvariant.mkUint32 0;
   
-    "io/github/fsobolev/Cavalier" = {
-    drawing-mode = lib.hm.gvariant.mkUint32 1;
-    bars-number = lib.hm.gvariant.mkUint32 16;
-    bar-height = lib.hm.gvariant.mkUint32 120;
-    rounded-corners = true;
-    draw-border = false;
-    widgets-below = true;
-    offset = lib.hm.gvariant.mkUint32 3;
-    margin = lib.hm.gvariant.mkUint32 14;
-    framerate = lib.hm.gvariant.mkUint32 60;
-    noise-reduction = lib.hm.gvariant.mkUint32 88;
-
-    bg-colors = [ (lib.hm.gvariant.mkTuple [ 0.0 0.0 0.0 0.0 ]) ];
-
-    fg-colors = [
-      (lib.hm.gvariant.mkTuple [ 0.655 0.545 0.980 1.0 ])
-      (lib.hm.gvariant.mkTuple [ 0.376 0.647 0.980 1.0 ])
-      (lib.hm.gvariant.mkTuple [ 0.204 0.827 0.600 1.0 ])
-    ];
-  };
 
 #dconf end here
   };
@@ -957,5 +937,28 @@
   cp -f ${./vscode/settings.json} ~/.vscode/settings.json
   '';  
 
+ # cava config — this one actually works
+  xdg.configFile."cava/config".text = ''
+  [general]
+  bars = 16
+  sensitivity = 80
+  framerate = 60
+
+  [smoothing]
+  noise_reduction = 88
+
+  [input]
+  method = pipewire
+  source = auto
+
+  [color]
+  gradient = 1
+  gradient_count = 5
+  gradient_color_1 = '#a78bfa'
+  gradient_color_2 = '#9b7ef0'
+  gradient_color_3 = '#7c5dd0'
+  gradient_color_4 = '#60a5fa'
+  gradient_color_5 = '#34d399'
+  '';
 
 }
