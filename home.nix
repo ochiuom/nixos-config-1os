@@ -186,12 +186,15 @@
     keybind = ctrl+shift+n=new_tab
   '';
 
-  # ── Vault / working dirs ───────────────────────────────────────────────────
+   # ── Vault / working dirs ───────────────────────────────────────────────────
   home.activation.createVaultDirs = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    mkdir -p ~/Documents/.vault
-    mkdir -p ~/Documents/Vault
-    mkdir -p ~/Backups
-  '';
+  mkdir -p ~/Documents/.vault
+  mkdir -p ~/Documents/Vault
+  mkdir -p ~/Backups
+  mkdir -p ~/Videos/.Fragments-vault
+  mkdir -p ~/Videos/Fragments
+  '';   
+
 
   # ── NvChad custom lua ─────────────────────────────────────────────────────
   # Only copies if NvChad is already bootstrapped (lazy-installed externally).
@@ -588,57 +591,113 @@
     '';
   };
 
-  programs.mpv = {
-    enable  = true;
-    package = pkgs.mpv;
-    config = {
-      profile                 = "gpu-hq";
-      gpu-api                 = "vulkan";
-      hwdec                   = "vaapi";
-      vo                      = "gpu-next";
-      audio-normalize-downmix = true;
-      volume                  = 100;
-      volume-max              = 150;
-      sub-auto                = "fuzzy";
-      sub-font                = "JetBrains Mono";
-      sub-font-size           = 42;
-      sub-color               = "#FFFFFF";
-      sub-border-size         = 2;
-      sub-border-color        = "#000000";
-      osc                     = false;
-      osd-font                = "JetBrains Mono";
-      osd-font-size           = 28;
-      keep-open               = true;
-      save-position-on-quit   = true;
-      screenshot-format       = "png";
-      screenshot-directory    = "~/Pictures/Screenshots";
-      ytdl-format             = "bestvideo[height<=1080]+bestaudio/best[height<=1080]";
-    };
-    bindings = {
-      "l"  = "seek 5";
-      "h"  = "seek -5";
-      "L"  = "seek 30";
-      "H"  = "seek -30";
-      "j"  = "add volume -5";
-      "k"  = "add volume 5";
-      "="  = "add speed 0.1";
-      "-"  = "add speed -0.1";
-      "BS" = "set speed 1.0";
-      "s"  = "cycle sub";
-      "S"  = "cycle sub down";
-      ">"  = "playlist-next";
-      "<"  = "playlist-prev";
-    };
-    scripts = with pkgs.mpvScripts; [
-      modernx
-      sponsorblock
-      thumbfast
-      autoload
-      inhibit-gnome
-      quality-menu
-      mpris
-    ];
+   
+   programs.mpv = {
+  enable  = true;
+  package = pkgs.mpv;
+  config = {
+    # ── Video ──────────────────────────────────────────────────────────────
+    profile                    = "gpu-hq";
+    gpu-api                    = "vulkan";
+    hwdec                      = "vaapi";
+    vo                         = "gpu-next";
+    deband                     = true;
+    deband-iterations          = 4;
+    dither-depth               = "auto";
+    correct-downscaling        = true;
+    linear-downscaling         = true;
+    sigmoid-upscaling          = true;
+    scale                      = "ewa_lanczossharp";
+    cscale                     = "ewa_lanczossharp";
+
+    # ── Audio ───────────────────────────────────────────────────────────────
+    audio-normalize-downmix    = true;
+    audio-pitch-correction     = true;
+    af                         = "acompressor";
+    volume                     = 100;
+    volume-max                 = 150;
+
+    # ── Subtitles ───────────────────────────────────────────────────────────
+    sub-auto                   = "fuzzy";
+    sub-font                   = "JetBrains Mono";
+    sub-font-size              = 42;
+    sub-color                  = "#FFFFFF";
+    sub-border-size            = 2;
+    sub-border-color           = "#000000";
+    sub-shadow-offset          = 2;
+    sub-shadow-color           = "#000000";
+    sub-ass-override           = "force";
+
+    # ── Window ──────────────────────────────────────────────────────────────
+    osc                        = false;
+    osd-font                   = "JetBrains Mono";
+    osd-font-size              = 28;
+    autofit-larger             = "40%x40%";
+    autofit-smaller            = "30%x30%";
+    geometry                   = "30%:30%";
+    force-window               = true;
+    # ── Playback ────────────────────────────────────────────────────────────
+    keep-open                  = true;
+    save-position-on-quit      = true;
+
+    # ── Screenshots ─────────────────────────────────────────────────────────
+    screenshot-format          = "png";
+    screenshot-directory       = "~/Pictures/Screenshots";
+    screenshot-png-compression = 4;
+    screenshot-tag-colorspace  = true;
+
+    # ── YouTube ─────────────────────────────────────────────────────────────
+    ytdl-format                = "bestvideo[height<=1080]+bestaudio/best[height<=1080]";
   };
+
+  bindings = {
+    # ── Seeking ─────────────────────────────────────────────────────────────
+    "l"      = "seek 5";
+    "h"      = "seek -5";
+    "L"      = "seek 30";
+    "H"      = "seek -30";
+
+    # ── Volume ──────────────────────────────────────────────────────────────
+    "j"      = "add volume -5";
+    "k"      = "add volume 5";
+    "m"      = "cycle mute";
+
+    # ── Speed ───────────────────────────────────────────────────────────────
+    "="      = "add speed 0.1";
+    "-"      = "add speed -0.1";
+    "BS"     = "set speed 1.0";
+
+    # ── Subtitles ───────────────────────────────────────────────────────────
+    "s"      = "cycle sub";
+    "S"      = "cycle sub down";
+
+    # ── Playlist ────────────────────────────────────────────────────────────
+    ">"      = "playlist-next";
+    "<"      = "playlist-prev";
+
+    # ── Window ──────────────────────────────────────────────────────────────
+    "f"      = "cycle fullscreen";
+
+    # ── Screenshots ─────────────────────────────────────────────────────────
+    "ctrl+s" = "screenshot video";
+    "ctrl+S" = "screenshot";
+
+    # ── Info ────────────────────────────────────────────────────────────────
+    "i"      = "script-binding stats/display-stats-toggle";
+    "A"      = "cycle-values video-aspect-override 16:9 4:3 2.35:1 -1";
+  };
+
+  scripts = with pkgs.mpvScripts; [
+    uosc           # modern UI (replaces modernx)
+    sponsorblock
+    thumbfast
+    autoload
+    inhibit-gnome
+    quality-menu
+    mpris
+    videoclip
+  ];
+};
 
   # ── Bash ──────────────────────────────────────────────────────────────────
   programs.bash = {
@@ -759,13 +818,17 @@
   	echo '✔ Journal vacuumed' &&
   	flatpak uninstall --unused -y &&
   	echo '✔ Flatpak orphans removed' &&
-  	nh clean all --keep 1 --keep-since 1d &&
+  	nh clean all --keep 0 --keep-since 1d &&
   	echo '✔ Nix generations cleaned' &&
   	sudo nix-store --optimise &&
   	echo '✔ Nix store optimised' &&
   	echo '✅ Full clean done'
 	'';
 
+    torrent-open  = "gocryptfs ~/Videos/.Fragments-vault ~/Videos/Fragments";
+    torrent-play  = "gocryptfs ~/Videos/.Fragments-vault ~/Videos/Fragments && mpv ~/Videos/Fragments";
+    torrent-close = "fusermount -u ~/Videos/Fragments";
+  
  };
 
     sessionVariables = {
@@ -937,28 +1000,5 @@
   cp -f ${./vscode/settings.json} ~/.vscode/settings.json
   '';  
 
- # cava config — this one actually works
-  xdg.configFile."cava/config".text = ''
-  [general]
-  bars = 16
-  sensitivity = 80
-  framerate = 60
-
-  [smoothing]
-  noise_reduction = 88
-
-  [input]
-  method = pipewire
-  source = auto
-
-  [color]
-  gradient = 1
-  gradient_count = 5
-  gradient_color_1 = '#a78bfa'
-  gradient_color_2 = '#9b7ef0'
-  gradient_color_3 = '#7c5dd0'
-  gradient_color_4 = '#60a5fa'
-  gradient_color_5 = '#34d399'
-  '';
 
 }

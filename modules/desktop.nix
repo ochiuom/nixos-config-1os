@@ -9,6 +9,7 @@
     gnome-clocks gnome-calendar gnome-logs gnome-software 
   ];
   
+  services.tumbler.enable = true;  # GNOME thumbnail service
 
   services.flatpak.enable = true;
   xdg.portal = {

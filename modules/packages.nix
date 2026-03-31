@@ -13,6 +13,7 @@
   
     usbguard
     tailscale
+    ffmpegthumbnailer
 
     nautilus-python
     gobject-introspection
@@ -21,7 +22,8 @@
     libreoffice-fresh
     hunspell
     hunspellDicts.en_US
-
+    fragments      # GNOME native, pretty
+    qbittorrent    # most powerful
     texstudio
     firefox
     kitty ghostty

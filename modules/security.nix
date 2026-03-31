@@ -33,6 +33,10 @@
         executable = "${lib.getBin pkgs.vlc}/bin/vlc";
         profile = "${pkgs.firejail}/etc/firejail/vlc.profile";
       };
+      fragments = {
+      executable = "${lib.getBin pkgs.fragments}/bin/fragments";
+      profile = "${pkgs.firejail}/etc/firejail/transmission-gtk.profile";  # closest match
+      };
     };
   };
 
