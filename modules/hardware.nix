@@ -2,7 +2,7 @@
 {
   hardware.enableRedistributableFirmware = true;
   hardware.cpu.intel.updateMicrocode = true;
-  services.fwupd.enable = true;
+  services.fwupd.enable = false;
 
   hardware.graphics = {
     enable = true;
@@ -21,6 +21,12 @@
   };
 
   services.xserver.videoDrivers = [ "modesetting" ];
+  services.xserver = {
+    enable = true;
+    xkb.layout = "gb";
+  };
+
+  services.fprintd.enable = true;
   services.fstrim.enable = true;
 
   services.btrfs.autoScrub = {
