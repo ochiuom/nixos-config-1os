@@ -11,19 +11,27 @@
       c      = "clear";
       reload = "source ~/.bashrc";
       j      = "zi";
+
+      # Safety
       cp = "cp -i";
       mv = "mv -i";
       rm = "rm -i";
+
+      # eza
       ls = "eza -a --icons --group-directories-first";
       ll = "eza -l --icons --group-directories-first --time-style=long-iso";
       lt = "eza -T --level=2 --icons";
       la = "eza -A --icons";
       l  = "eza --icons";
+
+      # Modern replacements
       cat  = "bat";
       grep = "rg";
       top  = "btop";
       find = "fd";
       a2   = "aria2c -x 16 -s 16 -k 1M";
+
+      # Git
       gs  = "git status";
       ga  = "git add .";
       gc  = "git commit -m";
@@ -31,22 +39,51 @@
       lg  = "lazygit";
       gd  = "git diff";
       gds = "git diff --staged";
+
+      # System
+      cleanram      = "sudo sync; echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null && echo 'RAM cleared'";
+      clean-journal = "sudo journalctl --vacuum-time=7d";
+      big           = "sudo du -ahx / | sort -rh | head -n 20";
+      lsblk         = "lsblk -e7";
+      bootload      = "systemd-analyze blame | head -n 10";
+      zstat         = "zramctl";
+      ssd           = "sudo compsize -x /";
+      battery       = "upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep -E 'state|to empty|percentage'";
+      watts         = "upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep energy-rate";
+
+      # Vault
+      unlockv = "gocryptfs -allow_other ~/Documents/.vault ~/Documents/Vault";
+      lockv   = "fusermount -u -z ~/Documents/Vault";
+      backupv = "mkdir -p ~/Backups && rsync -av --delete ~/Documents/.vault ~/Backups/Vault_Encrypted_Backup/";
+
+      # NixOS — use nh as the canonical rebuild command (shows diffs via nvd)
       nos     = "nh os switch --hostname ochinix-pc";
-      nrs     = "nh os switch --hostname ochinix-pc";
+      nrs     = "nh os switch --hostname ochinix-pc";   # alias for muscle memory
       ngc     = "sudo nix-env --delete-generations +3 --profile /nix/var/nix/profiles/system && sudo nix-store --gc";
       update  = "cd /etc/nixos && sudo nix flake update && nh os switch --hostname ochinix-pc";
       upgrade = "cd /etc/nixos && sudo nix flake update && nh os switch --hostname ochinix-pc && ngc";
+
+      # Tmux
       ta = "tmux attach || tmux new-session -s main";
       tn = "tmux new-session -s";
       tl = "tmux list-sessions";
       tk = "tmux kill-session -t";
+
+      # Disk
       du = "dust";
       df = "duf";
       bw = "sudo bandwhich";
+
       br  = "broot";
       nav = "navi";
       f   = "pay-respects";
-    };
+
+    sage-env    = "cd ~/Projects/Sage && nix develop --profile ~/.local/state/nix/profiles/sage";     
+    torrent-open  = "gocryptfs ~/Videos/.Fragments-vault ~/Videos/Fragments";
+    torrent-play  = "gocryptfs ~/Videos/.Fragments-vault ~/Videos/Fragments && mpv ~/Videos/Fragments";
+    torrent-close = "fusermount -u ~/Videos/Fragments";
+    
+  };
 
     initExtra = ''
       export TERM=xterm-256color
