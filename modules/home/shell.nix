@@ -83,9 +83,7 @@
       torrent-play  = "gocryptfs ~/Videos/.Fragments-vault ~/Videos/Fragments && mpv ~/Videos/Fragments";
       torrent-close = "fusermount -u ~/Videos/Fragments";
 
-      syncvault='syncto /home/ochinix/Documents/Vault/ pi5:/home/ochiuom/Nixos/Vault/ "Vault"'
-      syncworkdir='syncto /home/ochinix/workdir/ pi5:/home/ochiuom/Nixos/workdir/ "Workdir"'
-    
+         
         usage = ''
   	echo "" &&
   	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" &&
@@ -167,7 +165,7 @@
         # ...
       }
 
-            # ── fzf helpers ───────────────────────────────────────────────────────
+     # ── fzf helpers ───────────────────────────────────────────────────────
       fif() {
         rg --files-with-matches --no-messages "$1" \
           | fzf --preview "rg --ignore-case --pretty --context 10 '$1' {}" \
@@ -218,6 +216,13 @@
         echo -e "\n''${GREEN}''${BOLD}✓ Done: ''${label}''${RESET}\n"
       }
 
+      alias syncvault='syncto /home/ochinix/Documents/Vault/ pi5:/home/ochiuom/Nixos/Vault/ "Vault"'
+      alias syncworkdir='syncto /home/ochinix/workdir/ pi5:/home/ochiuom/Nixos/workdir/ "Workdir"'
+
+      # fastfetch before ble.sh so the banner renders cleanly
+      #command -v fastfetch >/dev/null 2>&1 && fastfetch
+
+     # ── ble.sh ────────────────────────────────────────────────────────────
       if [ -f "${pkgs.blesh}/share/blesh/ble.sh" ]; then
         source "${pkgs.blesh}/share/blesh/ble.sh" --noattach
         ble-attach
