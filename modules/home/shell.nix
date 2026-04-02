@@ -78,18 +78,68 @@
       nav = "navi";
       f   = "pay-respects";
 
-    sage-env    = "cd ~/Projects/Sage && nix develop --profile ~/.local/state/nix/profiles/sage";     
-    torrent-open  = "gocryptfs ~/Videos/.Fragments-vault ~/Videos/Fragments";
-    torrent-play  = "gocryptfs ~/Videos/.Fragments-vault ~/Videos/Fragments && mpv ~/Videos/Fragments";
-    torrent-close = "fusermount -u ~/Videos/Fragments";
+      sage-env    = "cd ~/Projects/Sage && nix develop --profile ~/.local/state/nix/profiles/sage";     
+      torrent-open  = "gocryptfs ~/Videos/.Fragments-vault ~/Videos/Fragments";
+      torrent-play  = "gocryptfs ~/Videos/.Fragments-vault ~/Videos/Fragments && mpv ~/Videos/Fragments";
+      torrent-close = "fusermount -u ~/Videos/Fragments";
+
+      syncvault='syncto /home/ochinix/Documents/Vault/ pi5:/home/ochiuom/Nixos/Vault/ "Vault"'
+      syncworkdir='syncto /home/ochinix/workdir/ pi5:/home/ochiuom/Nixos/workdir/ "Workdir"'
     
+        usage = ''
+  	echo "" &&
+  	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" &&
+  	echo "  💽  DISK" &&
+  	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" &&
+  	duf --only local &&
+  	echo "" &&
+  	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" &&
+  	echo "  📦  NIX STORE  (top 15)" &&
+  	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" &&
+  	dust /nix/store -d 1 -n 15 -x &&
+  	echo "" &&
+  	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" &&
+  	echo "  🏠  HOME  (top 15)" &&
+  	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" &&
+  	dust ~ -d 1 -n 15 -x &&
+  	echo "" &&
+  	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" &&
+  	echo "  📱  FLATPAK APPS" &&
+  	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" &&
+  	dust ~/.var/app -d 1 -n 10 -x &&
+  	echo "" &&
+  	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" &&
+  	echo "  🔄  NIX GENERATIONS" &&
+  	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" &&
+  	sudo nix-env --list-generations --profile /nix/var/nix/profiles/system | tail -5 &&
+  	echo ""
+	'';
+       clean-all = ''
+ 	echo '🧹 Starting full system clean...' &&
+    	rm -rf ~/.cache/mozilla/firefox/*.default/cache2 &&
+ 	rm -rf ~/.var/app/com.brave.Browser/cache/BraveSoftware/Brave-Browser/Default/Cache &&
+ 	echo '✔ Browser caches cleared' &&
+  	sudo journalctl --vacuum-time=7d &&
+  	echo '✔ Journal vacuumed' &&
+  	flatpak uninstall --unused -y &&
+  	echo '✔ Flatpak orphans removed' &&
+  	nh clean all --keep 0 --keep-since 1d &&
+  	echo '✔ Nix generations cleaned' &&
+  	sudo nix-store --optimise &&
+  	echo '✔ Nix store optimised' &&
+  	echo '✅ Full clean done'
+	'';
+
   };
 
     initExtra = ''
       export TERM=xterm-256color
       shopt -s checkwinsize histappend globstar
       PROMPT_COMMAND="history -a; history -c; history -r"
-      
+      bind "set bell-style none"        2>/dev/null
+      bind "set completion-ignore-case on" 2>/dev/null
+      bind -x '"\ec": "zi\n"'
+
       # ── UP: full system upgrade ───────────────────────────────────────────
       UP() {
         # ... (rest of UP function)
@@ -117,16 +167,73 @@
         # ...
       }
 
+            # ── fzf helpers ───────────────────────────────────────────────────────
+      fif() {
+        rg --files-with-matches --no-messages "$1" \
+          | fzf --preview "rg --ignore-case --pretty --context 10 '$1' {}" \
+          | xargs -r nvim
+      }
+
+      _fzf_cd() {
+        local dir
+        dir=$(fd -t d | fzf --preview 'eza --tree --level=2 --icons {}' --preview-window=right:50%)
+        [ -n "$dir" ] && cd "$dir"
+      }
+
+      _fzf_comprun() {
+        local command=$1
+        shift
+        case "$command" in
+          cd)           fzf --preview 'eza --tree --level=2 --icons {}' "$@" ;;
+          export|unset) fzf --preview "eval 'echo \$'{}" "$@" ;;
+          ssh)          fzf --preview 'dig {}' "$@" ;;
+          *)            fzf --preview 'bat -n --color=always {}' "$@" ;;
+        esac
+      }
+
+      bind -x '"\C-f": _fzf_cd'
+
+      # ── syncto helper ─────────────────────────────────────────────────────
+      syncto() {
+        local src="$1" dest="$2" label="$3"
+        local BOLD='\033[1m' CYAN='\033[0;36m' GREEN='\033[0;32m'
+        local YELLOW='\033[0;33m' RED='\033[0;31m' RESET='\033[0m'
+        echo -e "\n''${BOLD}''${CYAN}╔══════════════════════════════════════╗''${RESET}"
+        echo -e "''${BOLD}''${CYAN}║  🔄  RSYNC → ''${label}''${RESET}"
+        echo -e "''${BOLD}''${CYAN}╚══════════════════════════════════════╝''${RESET}"
+        echo -e "''${YELLOW}  SRC :''${RESET} $src"
+        echo -e "''${YELLOW}  DEST:''${RESET} $dest\n"
+        rsync -avz --delete --info=progress2 --human-readable "$src" "$dest" \
+          2>&1 | while IFS= read -r line; do
+            if [[ "$line" =~ ^deleting ]]; then
+              echo -e "''${RED}  $line''${RESET}"
+            elif [[ "$line" =~ "bytes/sec"|"total size" ]]; then
+              echo -e "''${GREEN}  $line''${RESET}"
+            elif [[ "$line" =~ ^sending|^receiving ]]; then
+              echo -e "''${CYAN}  $line''${RESET}"
+            else
+              echo "  $line"
+            fi
+          done
+        echo -e "\n''${GREEN}''${BOLD}✓ Done: ''${label}''${RESET}\n"
+      }
+
       if [ -f "${pkgs.blesh}/share/blesh/ble.sh" ]; then
         source "${pkgs.blesh}/share/blesh/ble.sh" --noattach
         ble-attach
         bleopt complete_style=menu
+        bleopt complete_ambiguous=menu
+        bleopt complete_menu_style=desc
+        bleopt complete_menu_maxlines=15
         bleopt suggest_style=faint
       fi
-      
+     
+      # carapace — load after ble.sh attaches, inside ble hook
       if command -v carapace >/dev/null 2>&1; then
       blehook ATTACH+='source <(carapace _carapace bash)'
       fi
+     
+      # fzf keybindings — after ble.sh
       eval "$(fzf --bash)"
     '';
   };
@@ -140,4 +247,43 @@
   programs.btop = { enable = true; settings.vim_keys = true; };
   programs.carapace = { enable = true; enableBashIntegration = false; };
   programs.broot = { enable = true; enableBashIntegration = true; };
+  programs.vscode = { enable = true; package = pkgs.vscode.fhs; };
+  programs.broot = {
+    enable               = true;
+    enableBashIntegration = true;
+    settings = {
+      modal = true;
+      skin = {
+        default         = "rgb(220, 220, 220) none";
+        tree            = "rgb(89, 148, 220) none";
+        file            = "rgb(220, 220, 220) none";
+        directory       = "rgb(89, 148, 220) none Bold";
+        exe             = "rgb(147, 220, 147) none";
+        link            = "rgb(220, 147, 220) none";
+        pruning         = "rgb(150, 150, 150) none Italic";
+        selected_line   = "none rgb(40, 40, 60)";
+        char_match      = "rgb(220, 220, 100) none Bold";
+        file_error      = "rgb(220, 100, 100) none";
+        flag_label      = "rgb(220, 220, 220) none";
+        flag_value      = "rgb(220, 147, 89) none Bold";
+        input           = "rgb(220, 220, 220) none";
+        status_error    = "rgb(220, 100, 100) rgb(40, 40, 40)";
+        status_job      = "rgb(89, 220, 220) rgb(40, 40, 40)";
+        status_normal   = "rgb(220, 220, 220) rgb(40, 40, 40)";
+        status_italic   = "rgb(220, 147, 89) rgb(40, 40, 40)";
+        status_bold     = "rgb(220, 220, 100) rgb(40, 40, 40) Bold";
+        status_code     = "rgb(147, 220, 220) rgb(40, 40, 40)";
+        status_ellipsis = "rgb(220, 220, 220) rgb(40, 40, 40)";
+        scrollbar_thumb = "rgb(89, 148, 220) none";
+        scrollbar_track = "rgb(40, 40, 40) none";
+        help_paragraph  = "rgb(220, 220, 220) none";
+        help_bold       = "rgb(220, 220, 100) none Bold";
+        help_italic     = "rgb(220, 147, 89) none Italic";
+        help_code       = "rgb(147, 220, 220) none";
+        help_headers    = "rgb(89, 148, 220) none Bold";
+      };
+    };
+  };
+
+
 }
