@@ -349,6 +349,7 @@
 
     "org/gnome/desktop/session".idle-delay = lib.hm.gvariant.mkUint32 0;
   
+  
 
 #dconf end here
   };
@@ -999,6 +1000,5 @@
   mkdir -p ~/.vscode
   cp -f ${./vscode/settings.json} ~/.vscode/settings.json
   '';  
-
 
 }
