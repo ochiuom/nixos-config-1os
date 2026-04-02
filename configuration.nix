@@ -34,10 +34,9 @@
   # ── Nix ──────────────────────────────────────────────────────────────────────
   nix.settings.trusted-users = [ "root" "ochinix" ];
 
+  
   # ── Unfree packages whitelist ─────────────────────────────────────────────
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "sublime4"
-  ];
+  nixpkgs.config.allowUnfree = true;  
 
   nixpkgs.config.permittedInsecurePackages = [
   "openssl-1.1.1w"
