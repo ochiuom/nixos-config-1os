@@ -3,7 +3,7 @@
   environment.systemPackages = with pkgs.gnomeExtensions; [
     user-themes
     caffeine
-    places-status-indicator
+   # places-status-indicator
     blur-my-shell
     gsconnect
     desktop-cube
@@ -13,25 +13,27 @@
     compiz-alike-magic-lamp-effect
     ddterm
     search-light
-    space-bar
+    #space-bar
     tiling-assistant
     logo-menu
     ip-finder
-    color-picker
+    #color-picker
     compact-top-bar
     gnome-40-ui-improvements
     fuzzy-app-search
     penguin-ai-chatbot
     status-area-horizontal-spacing
     tailscale-status
-    wallpaper-slideshow
+    #wallpaper-slideshow
     open-bar
     top-bar-organizer
     vitals
     weather-or-not
     dash-to-dock
-    app-menu-is-back
+    #app-menu-is-back
     app-grid-wizard
     dynamic-music-pill
+    pip-on-top
+    soundbar
   ];
 }

@@ -66,7 +66,6 @@
   };
 
 
-  };
 
   # Kitty and Ghostty are managed via home.file in files.nix or here
   home.file.".config/ghostty/config".text = ''
@@ -83,4 +82,5 @@
     keybind = ctrl+shift+e=new_window
     keybind = ctrl+shift+n=new_tab
   '';
+
 }

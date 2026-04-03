@@ -38,18 +38,6 @@
     "$HOME/.cargo/bin"
   ];
   
-  home.sessionVariables = {
-    EDITOR   = "nvim";
-    VISUAL   = "nvim";
-    CLICOLOR = "1";
-    LESS     = "-RFMX";
-    HISTSIZE              = "50000";
-    HISTFILESIZE          = "200000";
-    HISTCONTROL           = "ignoredups:erasedups:ignorespace";
-    HISTTIMEFORMAT        = "%F %T ";
-    HISTIGNORE            = "ls:ll:la:cd:pwd:exit:clear";
-    FZF_DEFAULT_OPTS      = "--height 40% --layout=reverse --border --inline-info --color=header:italic";
-    FZF_COMPLETION_TRIGGER = "**";
+ 
 
-  };
 }

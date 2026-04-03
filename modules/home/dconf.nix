@@ -55,7 +55,7 @@
       enabled-extensions = with pkgs.gnomeExtensions; [
         user-themes.extensionUuid
         caffeine.extensionUuid
-        places-status-indicator.extensionUuid
+       # places-status-indicator.extensionUuid
         blur-my-shell.extensionUuid
         gsconnect.extensionUuid
         desktop-cube.extensionUuid
@@ -65,10 +65,10 @@
         compiz-alike-magic-lamp-effect.extensionUuid
         ddterm.extensionUuid
         search-light.extensionUuid
-        space-bar.extensionUuid
+        #space-bar.extensionUuid
         tiling-assistant.extensionUuid
         ip-finder.extensionUuid
-        color-picker.extensionUuid
+        #color-picker.extensionUuid
         compact-top-bar.extensionUuid
         #advanced-weather-companion.extensionUuid
         #astra-monitor.extensionUuid
@@ -78,7 +78,7 @@
         penguin-ai-chatbot.extensionUuid
         status-area-horizontal-spacing.extensionUuid
         tailscale-status.extensionUuid
-        wallpaper-slideshow.extensionUuid
+        #wallpaper-slideshow.extensionUuid
         #dash-to-panel.extensionUuid
         rounded-window-corners-reborn.extensionUuid
         open-bar.extensionUuid
@@ -88,10 +88,12 @@
         logo-menu.extensionUuid
        # dash2dock-lite.extensionUuid
         dash-to-dock.extensionUuid
-        app-menu-is-back.extensionUuid
+        #app-menu-is-back.extensionUuid
        # media-controls.extensionUuid
         app-grid-wizard.extensionUuid
         dynamic-music-pill.extensionUuid
+        pip-on-top.extensionUuid
+        soundbar.extensionUuid
         "desktop-quote@ochinix"
       ];
     };

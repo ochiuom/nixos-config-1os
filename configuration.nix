@@ -47,4 +47,6 @@
   environment.defaultPackages = lib.mkForce [ pkgs.nano ];
   system.stateVersion = "26.05";
 
+  #programs.nautilus-open-any-terminal = { enable   = true; terminal = "ghostty";  };
+
 }
