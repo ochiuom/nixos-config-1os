@@ -35,6 +35,7 @@
     "org/gnome/desktop/screensaver" = {
       lock-enabled = true;
       lock-delay   = lib.hm.gvariant.mkUint32 0;
+      idle-activation-enabled = false;
     };
 
     "org/gnome/desktop/privacy" = {
@@ -129,6 +130,7 @@
       sleep-inactive-battery-timeout = 900;
       power-button-action            = "suspend";
       ambient-enabled                = false;
+      idle-dim                       = false;
     };
 
     "org/gnome/desktop/session".idle-delay = lib.hm.gvariant.mkUint32 0;

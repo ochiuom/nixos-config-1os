@@ -11,6 +11,7 @@
     tree
     xdg-utils
     fwupd
+    gnupg
 
     # ── Modern CLI Replacements ───────────────────────────────────────────
     fd                           # find
@@ -66,5 +67,17 @@
     # ── Finance ───────────────────────────────────────────────────────────
     ticker                       # stock ticker CLI
 
-  ];
+] ++ (with pkgs.gst_all_1; [
+  gstreamer
+  gst-plugins-base
+  gst-plugins-good
+  gst-plugins-bad
+  gst-plugins-ugly
+  gst-libav
+  gst-plugins-rs          # ← this has gtk4paintablesink
+]) ++ [
+  pkgs.gst_all_1.gst-vaapi
+];
+
+
 }

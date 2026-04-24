@@ -10,7 +10,8 @@
 
   # ── AppArmor ─────────────────────────────────────────────────────────────────
   security.apparmor = {
-    enable = true;
+    enable = false;  # upstream nixpkgs bug, re-enable after next flake update
+   # enable = true;
     enableCache = true;
     killUnconfinedConfinables = true;
     packages = [ pkgs.apparmor-profiles ];

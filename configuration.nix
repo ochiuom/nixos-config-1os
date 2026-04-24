@@ -49,4 +49,8 @@
 
   #programs.nautilus-open-any-terminal = { enable   = true; terminal = "ghostty";  };
 
+  environment.variables = {
+  GST_PLUGIN_PATH = "/run/current-system/sw/lib/gstreamer-1.0/";
+  };
+
 }

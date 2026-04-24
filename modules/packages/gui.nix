@@ -70,5 +70,8 @@
     opencode
     fragments                    # Torrent client (GNOME)
 
+    # ── Pi5 Server ────────────────────────────────────────────────────
+    joplin-desktop
+
   ];
 }

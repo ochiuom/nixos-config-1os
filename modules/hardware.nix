@@ -2,7 +2,7 @@
 {
   hardware.enableRedistributableFirmware = true;
   hardware.cpu.intel.updateMicrocode = true;
-  services.fwupd.enable = false;
+  services.fwupd.enable = true;
 
   hardware.graphics = {
     enable = true;
