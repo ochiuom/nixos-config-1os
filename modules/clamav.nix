@@ -34,7 +34,7 @@ with lib;
 
     # ClamAV daemon hardening
     systemd.services."clamav-daemon".serviceConfig = {
-      PrivateTmp = true;
+      PrivateTmp = mkForce true;
       ProtectSystem = "strict";
       ProtectHome = "read-only";
       ReadWritePaths = [
