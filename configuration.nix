@@ -30,29 +30,39 @@
     isNormalUser = true;
     description  = "ochinix";
     extraGroups  = [ "wheel" "networkmanager" "video" "render" "audio" ];
-    initialPassword = "changeme"; # replace with hashedPasswordFile + sops post first deploy
+    initialPassword = "changeme";
   };
 
   # ── Nix ──────────────────────────────────────────────────────────────────────
-  nix.settings.trusted-users = [ "root" "ochinix" ];
+  nix.settings = {
+  trusted-users = lib.mkForce [ "root" "ochinix" ];
+  sandbox = true;
+  require-sigs = true;
+  auto-optimise-store = true;
+  substituters = lib.mkForce [
+    "https://cache.nixos.org/"
+    "https://nix-community.cachix.org"
+  ];
+  trusted-public-keys = lib.mkForce [
+    "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+  };
 
-  
-  # ── Unfree packages whitelist ─────────────────────────────────────────────
-  nixpkgs.config.allowUnfree = true;  
-
+  # ── Unfree packages ───────────────────────────────────────────────────────────
+  nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [
-  "openssl-1.1.1w"
+    "openssl-1.1.1w"
   ];
 
   # ── Environment ──────────────────────────────────────────────────────────────
-  # environment.defaultPackages = []; # remove implicit nano, perl, strace etc.
   environment.defaultPackages = lib.mkForce [ pkgs.nano ];
+  environment.variables = {
+    GST_PLUGIN_PATH = "/run/current-system/sw/lib/gstreamer-1.0/";
+  };
+
   system.stateVersion = "26.05";
 
-  #programs.nautilus-open-any-terminal = { enable   = true; terminal = "ghostty";  };
-
-  environment.variables = {
-  GST_PLUGIN_PATH = "/run/current-system/sw/lib/gstreamer-1.0/";
-  };
+  # ── Custom options ────────────────────────────────────────────────────────────
   kernelcore.security.clamav.enable = true;
 }
