@@ -6,6 +6,7 @@ with lib;
     kernelcore.security.clamav.enable = mkEnableOption "Enable ClamAV antivirus scanning";
   };
 
+
   config = mkIf config.kernelcore.security.clamav.enable {
     ##########################################################################
     # 🦠 ClamAV Antivirus
@@ -16,6 +17,11 @@ with lib;
       updater.interval = "daily";
       updater.frequency = 12;
     };
+
+
+    systemd.tmpfiles.rules = [
+      "d /var/log/clamav 0755 clamav clamav -"
+     ];
 
     # Allow users in wheel group to run clamscan without password
     security.sudo.extraRules = [

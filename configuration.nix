@@ -6,11 +6,12 @@
     ./modules/networking.nix
     ./modules/desktop.nix
     ./modules/power.nix
-    ./modules/security.nix
     ./modules/packages.nix
     ./modules/services.nix
     ./modules/nixos/gdm.nix
-    ./modules/clamav.nix
+    ./modules/security/security.nix
+    ./modules/security/clamav.nix
+    ./modules/security/audit.nix
     ./audio-visual.nix
   ];
 
