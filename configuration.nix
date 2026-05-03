@@ -53,5 +53,5 @@
   environment.variables = {
   GST_PLUGIN_PATH = "/run/current-system/sw/lib/gstreamer-1.0/";
   };
-
+  kernelcore.security.clamav.enable = true;
 }
