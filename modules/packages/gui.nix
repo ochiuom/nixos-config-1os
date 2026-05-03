@@ -14,7 +14,7 @@
     ghostty
     vscode
     sublime4
-
+    nemo
     # ── Documents & Office ────────────────────────────────────────────────
     libreoffice-fresh
     hunspell

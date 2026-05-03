@@ -12,7 +12,7 @@
     xdg-utils
     fwupd
     gnupg
-    organize-tool
+    
     # ── Modern CLI Replacements ───────────────────────────────────────────
     fd                           # find
     ripgrep                      # grep
