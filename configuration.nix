@@ -11,7 +11,7 @@
     ./modules/nixos/gdm.nix
     ./modules/security/security.nix
     ./modules/security/clamav.nix
-    ./modules/security/audit.nix
+   # ./modules/security/audit.nix
     ./audio-visual.nix
   ];
 

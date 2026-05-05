@@ -26,13 +26,22 @@
   };
 
 
+  
+  # 1. The Recursive Folder (like easyeffects)
   home.file.".config/gnuplot" = {
-  source    = ./../../gnuplot;
-  recursive = true;
+    source = ./gnuplot;
+    recursive = true;
   };
 
+  # 2. The Init File (Forced to overwrite any junk)
+  home.file.".gnuplot" = {
+    text = "load 'style_publication.gp'";
+    force = true;
+  };
+
+  # 3. The Path Logic
   home.sessionVariables.GNUPLOT_LIB = "$HOME/.config/gnuplot/lib:$HOME/.config/gnuplot/templates";
-  home.file.".gnuplot".text = "load 'style_publication.gp'";
+  
 
   # Activation scripts
   home.activation.createVaultDirs = lib.hm.dag.entryAfter ["writeBoundary"] ''
