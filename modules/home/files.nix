@@ -25,6 +25,15 @@
     recursive = true;
   };
 
+
+  home.file.".config/gnuplot" = {
+  source    = ./../../gnuplot;
+  recursive = true;
+  };
+
+  home.sessionVariables.GNUPLOT_LIB = "$HOME/.config/gnuplot/lib:$HOME/.config/gnuplot/templates";
+  home.file.".gnuplot".text = "load 'style_publication.gp'";
+
   # Activation scripts
   home.activation.createVaultDirs = lib.hm.dag.entryAfter ["writeBoundary"] ''
     mkdir -p ~/Documents/.vault
