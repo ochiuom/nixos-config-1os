@@ -3,7 +3,8 @@
 
 let
   # ── Change this one line to switch themes ─────────────────────────────
-   activeTheme = "Orchis-Red-Dark-Compact";
+  activeTheme = "Cyber-Dusk-Rounded-Glass";
+  # activeTheme = "Orchis-Red-Dark-Compact";
   # activeTheme = "Tokyonight-B-MB-Dark";
 
 in
@@ -20,6 +21,7 @@ in
     rm -rf ~/.local/share/icons/Yaru
     rm -rf ~/.local/share/themes/Orchis-Red-Dark-Compact
     rm -rf ~/.local/share/themes/Tokyonight-B-MB-Dark
+    rm -rf ~/.local/share/themes/Cyber-Dusk-Rounded-Glass
 
     ln -sfn /etc/nixos/themes/Neuwaita \
       ~/.local/share/icons/Neuwaita
@@ -31,25 +33,38 @@ in
       ~/.local/share/themes/Orchis-Red-Dark-Compact
     ln -sfn /etc/nixos/themes/Tokyonight-B-MB-Dark \
       ~/.local/share/themes/Tokyonight-B-MB-Dark
+
+    mkdir -p ~/.local/share/themes/Cyber-Dusk-Rounded-Glass
+    ln -sfn /etc/nixos/themes/Cyber-Dusk-Rounded-Glass/gnome-shell \
+      ~/.local/share/themes/Cyber-Dusk-Rounded-Glass/gnome-shell
+    ln -sfn /etc/nixos/themes/Cyber-Dusk-Rounded-Glass/index.theme \
+      ~/.local/share/themes/Cyber-Dusk-Rounded-Glass/index.theme
   '';
 
   # ── GTK 3 ─────────────────────────────────────────────────────────────
   home.file.".config/gtk-3.0/gtk.css".source =
-    ../../themes/${activeTheme}/gtk-3.0/gtk.css;
+    if activeTheme == "Cyber-Dusk-Rounded-Glass"
+    then ../../themes/Cyber-Dusk-Rounded-Glass/gtk-3.0/gtk.css
+    else ../../themes/${activeTheme}/gtk-3.0/gtk.css;
 
-  home.file.".config/gtk-3.0/assets" = {
+
+  home.file.".config/gtk-3.0/assets" = lib.mkIf (activeTheme != "Cyber-Dusk-Rounded-Glass") {
     source    = ../../themes/${activeTheme}/gtk-3.0/assets;
     recursive = true;
   };
 
-  # ── GTK 4 libadwaita fix ─────────────────────────────────────────────
+  # ── GTK 4 ─────────────────────────────────────────────────────────────
   home.file.".config/gtk-4.0/gtk.css".source =
-    ../../themes/${activeTheme}/gtk-4.0/gtk.css;
+    if activeTheme == "Cyber-Dusk-Rounded-Glass"
+    then ../../themes/Cyber-Dusk-Rounded-Glass/gtk-4.0/gtk.css
+    else ../../themes/${activeTheme}/gtk-4.0/gtk.css;
 
-  home.file.".config/gtk-4.0/gtk-dark.css".source =
-    ../../themes/${activeTheme}/gtk-4.0/gtk-dark.css;
 
-  home.file.".config/gtk-4.0/assets" = {
+  home.file.".config/gtk-4.0/gtk-dark.css" = lib.mkIf (activeTheme != "Cyber-Dusk-Rounded-Glass") {
+    source = ../../themes/${activeTheme}/gtk-4.0/gtk-dark.css;
+  };
+
+  home.file.".config/gtk-4.0/assets" = lib.mkIf (activeTheme != "Cyber-Dusk-Rounded-Glass") {
     source    = ../../themes/${activeTheme}/gtk-4.0/assets;
     recursive = true;
   };
@@ -77,7 +92,7 @@ in
     fi
   '';
 
-  # ── Icon cache refresh — runs after login, not blocking boot ──────────
+  # ── Icon cache refresh ────────────────────────────────────────────────
   systemd.user.services.refresh-icon-caches = {
     Unit = {
       Description = "Refresh GTK icon caches";
@@ -102,7 +117,7 @@ in
   home.packages = [
     pkgs.yaru-theme
     pkgs.bibata-cursors
-    pkgs.gnomeExtensions.rounded-window-corners-reborn
+   # pkgs.gnomeExtensions.rounded-window-corners-reborn
   ];
 
   # ── GTK declaration ───────────────────────────────────────────────────
@@ -134,15 +149,8 @@ in
   };
 
   dconf.settings."org/gnome/shell/extensions/user-theme" = {
-    name = lib.mkForce "Orchis-Red-Dark-Compact";
+    name = lib.mkForce activeTheme;
   };
-
-  #dconf.settings."org/gnome/shell/extensions/rounded-window-corners-reborn" = {
-    #border-radius        = 8;
-   # smoothing            = 0;
-  #  keep-rounded-corners = false;
- #   skip-libadwaita-app  = true;
-#  };
 
   dconf.settings."org/gtk/settings/file-chooser" = {
     sort-directories-first = true;
