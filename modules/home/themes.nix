@@ -149,7 +149,8 @@ in
   };
 
   dconf.settings."org/gnome/shell/extensions/user-theme" = {
-    name = lib.mkForce activeTheme;
+     name = lib.mkForce "Orchis-Red-Dark-Compact";
+   # name = lib.mkForce activeTheme;
   };
 
   dconf.settings."org/gtk/settings/file-chooser" = {

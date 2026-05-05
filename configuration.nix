@@ -64,5 +64,5 @@
   system.stateVersion = "26.05";
 
   # ── Custom options ────────────────────────────────────────────────────────────
-  kernelcore.security.clamav.enable = true;
+ # kernelcore.security.clamav.enable = true;
 }

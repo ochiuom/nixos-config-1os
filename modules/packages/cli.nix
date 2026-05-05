@@ -66,6 +66,9 @@
 
     # ── Finance ───────────────────────────────────────────────────────────
     ticker                       # stock ticker CLI
+    
+    #plot
+    gnuplot
 
 ] ++ (with pkgs.gst_all_1; [
   gstreamer
