@@ -67,8 +67,9 @@
     # ── Finance ───────────────────────────────────────────────────────────
     ticker                       # stock ticker CLI
     
-    #plot
-    gnuplot
+    #Install Gnuplot with high-quality terminal support
+    (gnuplot.override { withQt = true; withWxGTK = true; })
+    ghostscript # Required for EPS/PDF processing
 
 ] ++ (with pkgs.gst_all_1; [
   gstreamer
