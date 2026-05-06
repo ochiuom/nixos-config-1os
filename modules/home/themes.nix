@@ -3,7 +3,8 @@
 
 let
   # ── Change this one line to switch themes ─────────────────────────────
-  activeTheme = "Cyber-Dusk-Rounded-Glass";
+  activeTheme="WhiteSur-Dark";
+  # activeTheme = "Cyber-Dusk-Rounded-Glass";
   # activeTheme = "Orchis-Red-Dark-Compact";
   # activeTheme = "Tokyonight-B-MB-Dark";
 
@@ -40,6 +41,15 @@ in
     ln -sfn /etc/nixos/themes/Cyber-Dusk-Rounded-Glass/index.theme \
       ~/.local/share/themes/Cyber-Dusk-Rounded-Glass/index.theme
   '';
+
+    # ── GTK 2 ─────────────────────────────────────────────────────────────
+  home.file.".config/gtk-2.0/gtk.css".source =
+    ../../themes/${activeTheme}/gtk-2.0/gtk.css;
+
+  home.file.".config/gtk-2.0/assets" = {
+    source    = ../../themes/${activeTheme}/gtk-2.0/assets;
+    recursive = true;
+  };
 
   # ── GTK 3 ─────────────────────────────────────────────────────────────
   home.file.".config/gtk-3.0/gtk.css".source =
@@ -124,7 +134,8 @@ in
   gtk = {
     enable    = true;
     theme     = { name = activeTheme; };
-    iconTheme = { name = "Neuwaita"; };
+    icontheme = { name = "WhiteSur-dark"; };
+    #iconTheme = { name = "Neuwaita"; };
     font      = { name = "Inter"; size = 11; };
 
     gtk3.extraConfig = {
