@@ -20,9 +20,11 @@ in
     rm -rf ~/.local/share/icons/Neuwaita
     rm -rf ~/.local/share/icons/Hatter-Yaru
     rm -rf ~/.local/share/icons/Yaru
+    rm -rf ~/.local/share/icons/WhiteSur-dark
     rm -rf ~/.local/share/themes/Orchis-Red-Dark-Compact
     rm -rf ~/.local/share/themes/Tokyonight-B-MB-Dark
     rm -rf ~/.local/share/themes/Cyber-Dusk-Rounded-Glass
+    rm -rf ~/.local/share/themes/WhiteSur-Dark
 
     ln -sfn /etc/nixos/themes/Neuwaita \
       ~/.local/share/icons/Neuwaita
@@ -30,10 +32,14 @@ in
       ~/.local/share/icons/Hatter-Yaru
     ln -sfn ${pkgs.yaru-theme}/share/icons/Yaru \
       ~/.local/share/icons/Yaru
+    ln -sfn /etc/nixos/themes/WhiteSur-dark \
+      ~/.local/share/icons/WhiteSur-dark
     ln -sfn /etc/nixos/themes/Orchis-Red-Dark-Compact \
       ~/.local/share/themes/Orchis-Red-Dark-Compact
     ln -sfn /etc/nixos/themes/Tokyonight-B-MB-Dark \
       ~/.local/share/themes/Tokyonight-B-MB-Dark
+    ln -sfn /etc/nixos/themes/WhiteSur-Dark \
+      ~/.local/share/themes/WhiteSur-Dark
 
     mkdir -p ~/.local/share/themes/Cyber-Dusk-Rounded-Glass
     ln -sfn /etc/nixos/themes/Cyber-Dusk-Rounded-Glass/gnome-shell \
