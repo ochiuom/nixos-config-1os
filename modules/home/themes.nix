@@ -63,7 +63,7 @@ in
     then ../../themes/Cyber-Dusk-Rounded-Glass/gtk-3.0/gtk.css
     else ../../themes/${activeTheme}/gtk-3.0/gtk.css;
 
-   home.file.".config/gtk-3.0/assets" = lib.mkIf (activeTheme != "Cyber-Dusk-Rounded-Glass" && activeTheme != "WhiteSur-dark") {
+   home.file.".config/gtk-3.0/assets" = lib.mkIf (activeTheme != "Cyber-Dusk-Rounded-Glass" && activeTheme != "WhiteSur-Dark") {
    source    = ../../themes/${activeTheme}/gtk-3.0/assets;
    recursive = true;
    };
@@ -79,7 +79,7 @@ in
     source = ../../themes/${activeTheme}/gtk-4.0/gtk-dark.css;
   };
 
-  home.file.".config/gtk-4.0/assets" = lib.mkIf (activeTheme != "Cyber-Dusk-Rounded-Glass") {
+  home.file.".config/gtk-4.0/assets" = lib.mkIf (activeTheme != "Cyber-Dusk-Rounded-Glass" && activeTheme != "WhiteSur-Dark") {
     source    = ../../themes/${activeTheme}/gtk-4.0/assets;
     recursive = true;
   };
