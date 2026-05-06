@@ -1,20 +1,47 @@
-# ── Multi-Format Export Wrapper ─────────────────────────────────────
-# Usage: gnuplot -e "OUTFILE='Results'; SCRIPT='plot.gp'" export.gp
+# ── export.gp ────────────────────────────────────────────────────────
+# Usage:
+#   gnuplot -e "SCRIPT='myplot.gp'; OUT='fig1'" export.gp
+#   gnuplot -e "SCRIPT='myplot.gp'; OUT='fig1'; MODE='bw'" export.gp
+#   gnuplot -e "SCRIPT='myplot.gp'; OUT='fig1'; MODE='presentation'" export.gp
+#
+# Produces: OUT.pdf + OUT.png
+# Requires: GNUPLOT_LIB set (handled by home.sessionVariables)
 
-if (!exists("OUTFILE")) OUTFILE='plot_output'
-if (!exists("SCRIPT"))  print "Error: No SCRIPT variable defined!"; exit
+# ── Defaults ──────────────────────────────────────────────────────────
+if (!exists("OUT"))    { OUT    = "output"      }
+if (!exists("MODE"))   { MODE   = "publication" }
+if (!exists("W"))      { W      = "8"           }   # cm, pdf width
+if (!exists("H"))      { H      = "6"           }   # cm, pdf height
+if (!exists("WPNG"))   { WPNG   = "960"         }   # px, png width
+if (!exists("HPNG"))   { HPNG   = "720"         }   # px, png height
+if (!exists("DPI"))    { DPI    = "300"         }
 
-# 1. PDF (Best for Papers)
-set terminal pdfcairo enhanced color font "Liberation Sans,12" size 12cm,9cm
-set output OUTFILE.".pdf"
-print "Exporting ".OUTFILE.".pdf..."
+# ── Style selection ───────────────────────────────────────────────────
+if (MODE eq "bw") {
+    STYLE = "style_bw.gp"
+    MONO  = "monochrome"
+} else { if (MODE eq "presentation") {
+    STYLE = "style_presentation.gp"
+    MONO  = "color"
+} else {
+    STYLE = "style_publication.gp"
+    MONO  = "color"
+}}
+
+# ── PDF export ────────────────────────────────────────────────────────
+set terminal pdfcairo enhanced @MONO font "Helvetica,11" \
+    size @W."cm", @H."cm"
+set output OUT.".pdf"
+load STYLE
 load SCRIPT
+unset output
 
-# 2. PNG (Best for Quick Previews/Presentations)
-# High DPI (300) ensures it looks good even when scaled
-set terminal pngcairo enhanced color font "Liberation Sans,12" size 1200,900 dpi 300
-set output OUTFILE.".png"
-print "Exporting ".OUTFILE.".png..."
+# ── PNG export ────────────────────────────────────────────────────────
+set terminal pngcairo enhanced @MONO font "Helvetica,11" \
+    size @WPNG, @HPNG dpi @DPI
+set output OUT.".png"
+load STYLE
 load SCRIPT
+unset output
 
-set output # Close file handles
+print ">>> Exported: ".OUT.".pdf + ".OUT.".png  [mode=".MODE."]"

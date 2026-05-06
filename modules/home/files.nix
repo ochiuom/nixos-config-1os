@@ -26,21 +26,20 @@
   };
 
 
-  
-  # 1. The Recursive Folder (like easyeffects)
+  # Gnuplot config tree (style files, templates, lib)
   home.file.".config/gnuplot" = {
-    source = ./gnuplot;
-    recursive = true;
+  source = ./../../gnuplot;
+  recursive = true;
   };
 
-  # 2. The Init File (Forced to overwrite any junk)
-  home.file.".gnuplot" = {
-    text = "load 'style_publication.gp'";
-    force = true;
-  };
+  # Init — delegates to init.gp which handles terminal detection
+  home.file.".gnuplot".text = ''
+  load "init.gp"
+  '';
 
-  # 3. The Path Logic
-  home.sessionVariables.GNUPLOT_LIB = "$HOME/.config/gnuplot/lib:$HOME/.config/gnuplot/templates";
+  # LIB path — both lib/ and templates/ searchable
+  home.sessionVariables.GNUPLOT_LIB =
+  "$HOME/.config/gnuplot/lib:$HOME/.config/gnuplot/templates";  
   
 
   # Activation scripts

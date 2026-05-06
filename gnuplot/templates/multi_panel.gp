@@ -1,17 +1,25 @@
-load "~/.config/gnuplot/lib/style_publication.gp"
+# ── multi_panel.gp ────────────────────────────────────────────────────
+load "style_publication.gp"
 
-set multiplot layout 1,2 title "Combined Spectroscopic Analysis"
+if (!exists("FILE1")) { FILE1 = "raman.dat" }
+if (!exists("FILE2")) { FILE2 = "pl.dat"    }
 
-# --- Panel A ---
-set lmargin at screen 0.1
-set rmargin at screen 0.45
-set title "Raman"
-plot "raman.dat" w l
+set multiplot layout 1,2 \
+    margins 0.10, 0.97, 0.15, 0.93 \
+    spacing 0.10, 0.00
 
-# --- Panel B ---
-set lmargin at screen 0.55
-set rmargin at screen 0.9
-set title "Photoluminescence"
-plot "pl.dat" w l
+# ── Panel (a): Raman ──────────────────────────────────────────────────
+set xlabel "Raman shift (cm^{-1})"
+set ylabel "Intensity (arb. units)"
+set label 1 "(a)" at graph -0.20, 1.03 font ",12" front norotate
+
+plot FILE1 u 1:2 w lines lt 1 lw 2.0 t "Raman"
+
+# ── Panel (b): PL ─────────────────────────────────────────────────────
+unset ylabel
+set xlabel "Energy (eV)"
+set label 1 "(b)" at graph -0.12, 1.03 font ",12" front norotate
+
+plot FILE2 u 1:2 w lines lt 2 lw 2.0 t "PL"
 
 unset multiplot

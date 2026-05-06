@@ -85,6 +85,11 @@
       # ── Projects ──────────────────────────────────────────────────────────
       sage-env = "cd ~/Projects/Sage && nix develop --profile ~/.local/state/nix/profiles/sage";
 
+      
+      # Force the lib path even if the session variable fails
+      gnuplot = "G_MESSAGES_DEBUG=none QT_QPA_PLATFORM=wayland GNUPLOT_LIB='$HOME/.config/gnuplot/lib:$HOME/.config/gnuplot/templates' gnuplot 2>/dev/null";
+      sageroot="source $(root-config --prefix)/bin/thisroot.sh";    
+
       # ── Disk Usage Dashboard ──────────────────────────────────────────────
       usage = ''
         echo "" &&
@@ -145,6 +150,10 @@
       HISTIGNORE          = "ls:ll:la:cd:pwd:exit:clear";
       FZF_DEFAULT_OPTS    = "--height 40% --layout=reverse --border --inline-info --color=header:italic";
       FZF_COMPLETION_TRIGGER = "**";
+      # Fix the Wayland warning for gnuplot-qt
+      QT_QPA_PLATFORM = "wayland;xcb";
+      # Keep your existing lib path
+      GNUPLOT_LIB = "$HOME/.config/gnuplot/lib:$HOME/.config/gnuplot/templates";
     };
 
     initExtra = ''
@@ -154,7 +163,8 @@
       bind "set bell-style none"           2>/dev/null
       bind "set completion-ignore-case on" 2>/dev/null
       bind -x '"\ec": "zi\n"'
-
+   
+     
       # ── UP: Full System Upgrade ───────────────────────────────────────────
       UP() {
         local start_time=$(date +%s)
@@ -270,6 +280,7 @@
       eval "$(fzf --bash)"
     '';
   };
+
 
   # ── Program Integrations ──────────────────────────────────────────────────
   programs.fzf         = { enable = true; enableBashIntegration = true; };
