@@ -48,42 +48,24 @@ in
       ~/.local/share/themes/Cyber-Dusk-Rounded-Glass/index.theme
   '';
 
-    # ── GTK 2 ─────────────────────────────────────────────────────────────
-  home.file.".config/gtk-2.0/gtk.css".source =
-    ../../themes/${activeTheme}/gtk-2.0/gtk.css;
-
-  home.file.".config/gtk-2.0/assets" = {
-    source    = ../../themes/${activeTheme}/gtk-2.0/assets;
+   # ── GTK 2 ─────────────────────────────────────────────────────────────
+  home.file.".config/gtk-2.0" = {
+    source    = ../../themes/${activeTheme}/gtk-2.0;
     recursive = true;
   };
 
   # ── GTK 3 ─────────────────────────────────────────────────────────────
-  home.file.".config/gtk-3.0/gtk.css".source =
-    if activeTheme == "Cyber-Dusk-Rounded-Glass"
-    then ../../themes/Cyber-Dusk-Rounded-Glass/gtk-3.0/gtk.css
-    else ../../themes/${activeTheme}/gtk-3.0/gtk.css;
-
-   home.file.".config/gtk-3.0/assets" = lib.mkIf (activeTheme != "Cyber-Dusk-Rounded-Glass" && activeTheme != "WhiteSur-Dark") {
-   source    = ../../themes/${activeTheme}/gtk-3.0/assets;
-   recursive = true;
-   };
-
-  # ── GTK 4 ─────────────────────────────────────────────────────────────
-  home.file.".config/gtk-4.0/gtk.css".source =
-    if activeTheme == "Cyber-Dusk-Rounded-Glass"
-    then ../../themes/Cyber-Dusk-Rounded-Glass/gtk-4.0/gtk.css
-    else ../../themes/${activeTheme}/gtk-4.0/gtk.css;
-
-
-  home.file.".config/gtk-4.0/gtk-dark.css" = lib.mkIf (activeTheme != "Cyber-Dusk-Rounded-Glass") {
-    source = ../../themes/${activeTheme}/gtk-4.0/gtk-dark.css;
-  };
-
-  home.file.".config/gtk-4.0/assets" = lib.mkIf (activeTheme != "Cyber-Dusk-Rounded-Glass" && activeTheme != "WhiteSur-Dark") {
-    source    = ../../themes/${activeTheme}/gtk-4.0/assets;
+  home.file.".config/gtk-3.0" = {
+    source    = ../../themes/${activeTheme}/gtk-3.0;
     recursive = true;
   };
 
+  # ── GTK 4 ─────────────────────────────────────────────────────────────
+  home.file.".config/gtk-4.0" = {
+    source    = ../../themes/${activeTheme}/gtk-4.0;
+    recursive = true;
+  };
+   
   # ── Cursor ────────────────────────────────────────────────────────────
   home.pointerCursor = {
     name       = "Bibata-Modern-Ice";
