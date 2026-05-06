@@ -123,6 +123,8 @@ in
           ${config.home.homeDirectory}/.local/share/icons/Hatter-Yaru || true
         ${pkgs.gtk3}/bin/gtk-update-icon-cache -f -t \
           ${config.home.homeDirectory}/.local/share/icons/Neuwaita || true
+        ${pkgs.gtk3}/bin/gtk-update-icon-cache -f -t \
+          ${config.home.homeDirectory}/.local/share/icons/WhiteSur-dark || true
       '';
       RemainAfterExit = true;
     };
@@ -140,7 +142,7 @@ in
   gtk = {
     enable    = true;
     theme     = { name = activeTheme; };
-    icontheme = { name = "WhiteSur-dark"; };
+    iconTheme = { name = "WhiteSur-dark"; };
     #iconTheme = { name = "Neuwaita"; };
     font      = { name = "Inter"; size = 11; };
 
