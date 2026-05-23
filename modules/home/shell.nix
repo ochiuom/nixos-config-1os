@@ -79,6 +79,7 @@
 
       # ── Torrents ──────────────────────────────────────────────────────────
       torrent-open  = "gocryptfs ~/Videos/.Fragments-vault ~/Videos/Fragments";
+     # torrent-open = "gocryptfs -allow_other ~/Videos/.Fragments-vault ~/Videos/Fragments";
       torrent-play  = "gocryptfs ~/Videos/.Fragments-vault ~/Videos/Fragments && mpv ~/Videos/Fragments";
       torrent-close = "fusermount -u ~/Videos/Fragments";
 
@@ -89,6 +90,7 @@
       # Force the lib path even if the session variable fails
       gnuplot = "G_MESSAGES_DEBUG=none QT_QPA_PLATFORM=wayland GNUPLOT_LIB='$HOME/.config/gnuplot/lib:$HOME/.config/gnuplot/templates' gnuplot 2>/dev/null";
       sageroot="source $(root-config --prefix)/bin/thisroot.sh";    
+      octave = "flatpak run org.octave.Octave";      
 
       # ── Disk Usage Dashboard ──────────────────────────────────────────────
       usage = ''
@@ -188,7 +190,7 @@
         _up_run "Updating Nix Flake"   bash -c "cd /etc/nixos && sudo nix flake update"
         _up_run "Rebuilding NixOS"     nh os switch --hostname ochinix-pc
         _up_run "Updating Flatpaks"    bash -c "flatpak update -y && flatpak uninstall --unused -y"
-        _up_run "Checking Firmware"    bash -c "sudo fwupdmgr get-updates -y; sudo fwupdmgr update -y; exit 0"
+      #  _up_run "Checking Firmware"    bash -c "sudo fwupdmgr get-updates -y; sudo fwupdmgr update -y; exit 0"
         _up_run "Cleaning Generations" bash -c "sudo nix-env --delete-generations +3 --profile /nix/var/nix/profiles/system && sudo nix-store --gc"
         local end_time=$(date +%s)
         local elapsed=$((end_time - start_time))

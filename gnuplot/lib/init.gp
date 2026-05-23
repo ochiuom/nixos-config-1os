@@ -3,5 +3,5 @@
 # Terminal detection handled per-script via MODE= variable
 # This file loaded by ~/.gnuplot on every gnuplot launch
 
-load "style_publication.gp"
+load "/home/ochinix/.config/gnuplot/lib/style_publication.gp"
 print ">>> [gnuplot] Research Suite Loaded"

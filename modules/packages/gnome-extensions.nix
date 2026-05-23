@@ -3,7 +3,6 @@
   environment.systemPackages = with pkgs.gnomeExtensions; [
     user-themes
     caffeine
-   # places-status-indicator
     blur-my-shell
     gsconnect
     desktop-cube
@@ -15,18 +14,18 @@
     search-light
     #space-bar
     tiling-assistant
-    logo-menu
+    #logo-menu
     ip-finder
     #color-picker
-    compact-top-bar
+    #compact-top-bar
     gnome-40-ui-improvements
     fuzzy-app-search
-    penguin-ai-chatbot
-    status-area-horizontal-spacing
-    tailscale-status
+    #penguin-ai-chatbot
+    #status-area-horizontal-spacing
+    #tailscale-status
     #wallpaper-slideshow
     open-bar
-    top-bar-organizer
+    #top-bar-organizer
     vitals
     weather-or-not
     dash-to-dock

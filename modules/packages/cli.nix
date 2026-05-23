@@ -12,7 +12,7 @@
     xdg-utils
     fwupd
     gnupg
-    
+    android-tools   
     # ── Modern CLI Replacements ───────────────────────────────────────────
     fd                           # find
     ripgrep                      # grep

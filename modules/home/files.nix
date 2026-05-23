@@ -27,14 +27,22 @@
 
 
   # Gnuplot config tree (style files, templates, lib)
-  home.file.".config/gnuplot" = {
-  source = ./../../gnuplot;
-  recursive = true;
-  };
+  #home.file.".config/gnuplot" = {
+  #source = ./../../gnuplot;
+  # recursive = true;
+  #};
+
+  home.activation.copyGnuplotConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
+  rm -rf "$HOME/.config/gnuplot"
+  cp -r ${./../../gnuplot} "$HOME/.config/gnuplot"
+  chmod -R u+w "$HOME/.config/gnuplot"
+ '';
 
   # Init — delegates to init.gp which handles terminal detection
   home.file.".gnuplot".text = ''
-  load "init.gp"
+  load "/home/ochinix/.config/gnuplot/lib/init.gp"
+ # load "init.gp"
+   
   '';
 
   # LIB path — both lib/ and templates/ searchable

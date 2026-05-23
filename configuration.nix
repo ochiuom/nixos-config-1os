@@ -65,4 +65,5 @@
 
   # ── Custom options ────────────────────────────────────────────────────────────
  # kernelcore.security.clamav.enable = true;
+  
 }

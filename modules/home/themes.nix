@@ -2,29 +2,27 @@
 { config, pkgs, lib, ... }:
 
 let
-  # ── Change this one line to switch themes ─────────────────────────────
-  activeTheme="WhiteSur-Dark";
-  # activeTheme = "Cyber-Dusk-Rounded-Glass";
-  # activeTheme = "Orchis-Red-Dark-Compact";
+ # activeTheme = "Cyber-Dusk-Rounded-Glass";
+   activeTheme = "Orchis-Red-Dark-Compact";
   # activeTheme = "Tokyonight-B-MB-Dark";
+
+  #isCyber = activeTheme == "Cyber-Dusk-Rounded-Glass";
 
 in
 {
-  # ── Symlink themes and icons ──────────────────────────────────────────
   home.activation.linkThemes = lib.hm.dag.entryAfter ["writeBoundary"] ''
     mkdir -p ~/.local/share/icons
     mkdir -p ~/.local/share/themes
-    mkdir -p ~/.config/gtk-3.0
-    mkdir -p ~/.config/gtk-4.0
 
     rm -rf ~/.local/share/icons/Neuwaita
     rm -rf ~/.local/share/icons/Hatter-Yaru
     rm -rf ~/.local/share/icons/Yaru
     rm -rf ~/.local/share/icons/WhiteSur-dark
+    rm -rf ~/.local/share/icons/Tela
+    rm -rf ~/.local/share/icons/Tela-purple
     rm -rf ~/.local/share/themes/Orchis-Red-Dark-Compact
     rm -rf ~/.local/share/themes/Tokyonight-B-MB-Dark
     rm -rf ~/.local/share/themes/Cyber-Dusk-Rounded-Glass
-    rm -rf ~/.local/share/themes/WhiteSur-Dark
 
     ln -sfn /etc/nixos/themes/Neuwaita \
       ~/.local/share/icons/Neuwaita
@@ -34,12 +32,14 @@ in
       ~/.local/share/icons/Yaru
     ln -sfn /etc/nixos/themes/WhiteSur-dark \
       ~/.local/share/icons/WhiteSur-dark
+    ln -sfn /etc/nixos/themes/Tela \
+      ~/.local/share/icons/Tela
+    ln -sfn /etc/nixos/themes/Tela-purple \
+      ~/.local/share/icons/Tela-purple
     ln -sfn /etc/nixos/themes/Orchis-Red-Dark-Compact \
       ~/.local/share/themes/Orchis-Red-Dark-Compact
     ln -sfn /etc/nixos/themes/Tokyonight-B-MB-Dark \
       ~/.local/share/themes/Tokyonight-B-MB-Dark
-    ln -sfn /etc/nixos/themes/WhiteSur-Dark \
-      ~/.local/share/themes/WhiteSur-Dark
 
     mkdir -p ~/.local/share/themes/Cyber-Dusk-Rounded-Glass
     ln -sfn /etc/nixos/themes/Cyber-Dusk-Rounded-Glass/gnome-shell \
@@ -48,25 +48,16 @@ in
       ~/.local/share/themes/Cyber-Dusk-Rounded-Glass/index.theme
   '';
 
-   # ── GTK 2 ─────────────────────────────────────────────────────────────
-  home.file.".config/gtk-2.0" = {
-    source    = ../../themes/${activeTheme}/gtk-2.0;
-    recursive = true;
-  };
-
-  # ── GTK 3 ─────────────────────────────────────────────────────────────
   home.file.".config/gtk-3.0" = {
     source    = ../../themes/${activeTheme}/gtk-3.0;
     recursive = true;
   };
 
-  # ── GTK 4 ─────────────────────────────────────────────────────────────
   home.file.".config/gtk-4.0" = {
     source    = ../../themes/${activeTheme}/gtk-4.0;
     recursive = true;
   };
-   
-  # ── Cursor ────────────────────────────────────────────────────────────
+
   home.pointerCursor = {
     name       = "Bibata-Modern-Ice";
     package    = pkgs.bibata-cursors;
@@ -75,7 +66,6 @@ in
     x11.enable = true;
   };
 
-  # ── Flatpak theming ───────────────────────────────────────────────────
   home.activation.flatpakTheme = lib.hm.dag.entryAfter ["writeBoundary"] ''
     if command -v flatpak >/dev/null 2>&1; then
       flatpak override --user \
@@ -85,11 +75,10 @@ in
       flatpak override --user \
         --env=GTK_THEME=${activeTheme}
       flatpak override --user \
-        --env=ICON_THEME=Neuwaita
+        --env=ICON_THEME=Tela-purple
     fi
   '';
 
-  # ── Icon cache refresh ────────────────────────────────────────────────
   systemd.user.services.refresh-icon-caches = {
     Unit = {
       Description = "Refresh GTK icon caches";
@@ -106,25 +95,25 @@ in
           ${config.home.homeDirectory}/.local/share/icons/Neuwaita || true
         ${pkgs.gtk3}/bin/gtk-update-icon-cache -f -t \
           ${config.home.homeDirectory}/.local/share/icons/WhiteSur-dark || true
+        ${pkgs.gtk3}/bin/gtk-update-icon-cache -f -t \
+          ${config.home.homeDirectory}/.local/share/icons/Tela || true
+        ${pkgs.gtk3}/bin/gtk-update-icon-cache -f -t \
+          ${config.home.homeDirectory}/.local/share/icons/Tela-purple || true
       '';
       RemainAfterExit = true;
     };
     Install.WantedBy = [ "graphical-session.target" ];
   };
 
-  # ── Packages ──────────────────────────────────────────────────────────
   home.packages = [
     pkgs.yaru-theme
     pkgs.bibata-cursors
-   # pkgs.gnomeExtensions.rounded-window-corners-reborn
   ];
 
-  # ── GTK declaration ───────────────────────────────────────────────────
   gtk = {
     enable    = true;
     theme     = { name = activeTheme; };
-    iconTheme = { name = "WhiteSur-dark"; };
-    #iconTheme = { name = "Neuwaita"; };
+    iconTheme = { name = "Tela-purple"; };
     font      = { name = "Inter"; size = 11; };
 
     gtk3.extraConfig = {
@@ -137,10 +126,9 @@ in
     };
   };
 
-  # ── dconf ─────────────────────────────────────────────────────────────
   dconf.settings."org/gnome/desktop/interface" = {
     gtk-theme         = lib.mkForce activeTheme;
-    icon-theme        = lib.mkForce "Neuwaita";
+    icon-theme        = lib.mkForce "Tela-purple";
     cursor-theme      = "Bibata-Modern-Ice";
     cursor-size       = 24;
     font-antialiasing = "rgba";
@@ -149,8 +137,7 @@ in
   };
 
   dconf.settings."org/gnome/shell/extensions/user-theme" = {
-     name = lib.mkForce "Orchis-Red-Dark-Compact";
-   # name = lib.mkForce activeTheme;
+    name = lib.mkForce "Orchis-Red-Dark-Compact";
   };
 
   dconf.settings."org/gtk/settings/file-chooser" = {
