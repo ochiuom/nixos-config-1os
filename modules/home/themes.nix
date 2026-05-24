@@ -2,18 +2,36 @@
 { config, pkgs, lib, ... }:
 
 let
-   activeTheme = "Ant";
-   #activeTheme = "Dracula";
-   #activeTheme = "Sweet-Dark";
-   # activeTheme = "Cyber-Dusk-Rounded-Glass";
-   #activeTheme = "Orchis-Red-Dark-Compact";
-   # activeTheme = "Tokyonight-B-MB-Dark";
+  activeTheme = "Ant";
+  #activeTheme = "Dracula";
+  #activeTheme = "Sweet-Dark";
+  #activeTheme = "Cyber-Dusk-Rounded-Glass";
+  #activeTheme = "Orchis-Red-Dark-Compact";
+  #activeTheme = "Tokyonight-B-MB-Dark";
 
-  #isCyber = activeTheme == "Cyber-Dusk-Rounded-Glass";
+  themeBase = ../../themes/${activeTheme};
+
+  hasGtk2   = builtins.pathExists "${themeBase}/gtk-2.0";
+  hasGtk3   = builtins.pathExists "${themeBase}/gtk-3.0";
+  hasGtk320 = builtins.pathExists "${themeBase}/gtk-3.20";
+  hasGtk4   = builtins.pathExists "${themeBase}/gtk-4.0";
+  hasAssets = builtins.pathExists "${themeBase}/assets";
+
+  optionalDir = condition: target: src:
+    lib.optionalAttrs condition {
+      "${target}" = { source = src; recursive = true; };
+    };
 
 in
 {
-  home.activation.linkThemes = lib.hm.dag.entryAfter ["writeBoundary"] ''
+  home.activation.cleanGtkBackups = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    for dir in gtk-2.0 gtk-3.0 gtk-3.20 gtk-4.0; do
+      target="$HOME/.config/$dir"
+      [ -d "$target" ] && rm -f "$target"/*.backup
+    done
+  '';
+
+  home.activation.linkThemes = lib.hm.dag.entryAfter ["cleanGtkBackups"] ''
     mkdir -p ~/.local/share/icons
     mkdir -p ~/.local/share/themes
 
@@ -51,15 +69,13 @@ in
       ~/.local/share/themes/Cyber-Dusk-Rounded-Glass/index.theme
   '';
 
-  home.file.".config/gtk-3.0" = {
-    source    = ../../themes/${activeTheme}/gtk-3.0;
-    recursive = true;
-  };
-
-  home.file.".config/gtk-4.0" = {
-    source    = ../../themes/${activeTheme}/gtk-4.0;
-    recursive = true;
-  };
+  home.file = lib.mkMerge [
+    (optionalDir hasGtk2   ".config/gtk-2.0"  "${themeBase}/gtk-2.0")
+    (optionalDir hasGtk3   ".config/gtk-3.0"  "${themeBase}/gtk-3.0")
+    (optionalDir hasGtk320 ".config/gtk-3.20" "${themeBase}/gtk-3.20")
+    (optionalDir hasGtk4   ".config/gtk-4.0"  "${themeBase}/gtk-4.0")
+    (optionalDir hasAssets ".config/assets"   "${themeBase}/assets")
+  ];
 
   home.pointerCursor = {
     name       = "Bibata-Modern-Ice";
@@ -141,8 +157,6 @@ in
 
   dconf.settings."org/gnome/shell/extensions/user-theme" = {
     name = lib.mkForce "Orchis-Red-Dark-Compact";
-   #name = lib.mkForce "Ant";
-   # name = lib.mkForce "Sweet-Dark";
   };
 
   dconf.settings."org/gtk/settings/file-chooser" = {
