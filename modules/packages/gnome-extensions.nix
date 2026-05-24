@@ -4,22 +4,22 @@
     user-themes
     caffeine
     blur-my-shell
-    gsconnect
+    #gsconnect
     desktop-cube
     burn-my-windows
-    impatience
+    #impatience
     compiz-windows-effect
     compiz-alike-magic-lamp-effect
     ddterm
-    search-light
+    #search-light
     #space-bar
     tiling-assistant
     #logo-menu
     ip-finder
     #color-picker
     #compact-top-bar
-    gnome-40-ui-improvements
-    fuzzy-app-search
+    #gnome-40-ui-improvements
+    #fuzzy-app-search
     #penguin-ai-chatbot
     #status-area-horizontal-spacing
     #tailscale-status
@@ -30,9 +30,9 @@
     weather-or-not
     dash-to-dock
     #app-menu-is-back
-    app-grid-wizard
+    #app-grid-wizard
     dynamic-music-pill
     pip-on-top
-    soundbar
+    #soundbar
   ];
 }

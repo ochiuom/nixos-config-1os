@@ -2,9 +2,12 @@
 { config, pkgs, lib, ... }:
 
 let
- # activeTheme = "Cyber-Dusk-Rounded-Glass";
-   activeTheme = "Orchis-Red-Dark-Compact";
-  # activeTheme = "Tokyonight-B-MB-Dark";
+   activeTheme = "Ant";
+   #activeTheme = "Dracula";
+   #activeTheme = "Sweet-Dark";
+   # activeTheme = "Cyber-Dusk-Rounded-Glass";
+   #activeTheme = "Orchis-Red-Dark-Compact";
+   # activeTheme = "Tokyonight-B-MB-Dark";
 
   #isCyber = activeTheme == "Cyber-Dusk-Rounded-Glass";
 
@@ -75,7 +78,7 @@ in
       flatpak override --user \
         --env=GTK_THEME=${activeTheme}
       flatpak override --user \
-        --env=ICON_THEME=Tela-purple
+        --env=ICON_THEME=Neuwaita
     fi
   '';
 
@@ -113,7 +116,7 @@ in
   gtk = {
     enable    = true;
     theme     = { name = activeTheme; };
-    iconTheme = { name = "Tela-purple"; };
+    iconTheme = { name = "Neuwaita"; };
     font      = { name = "Inter"; size = 11; };
 
     gtk3.extraConfig = {
@@ -128,7 +131,7 @@ in
 
   dconf.settings."org/gnome/desktop/interface" = {
     gtk-theme         = lib.mkForce activeTheme;
-    icon-theme        = lib.mkForce "Tela-purple";
+    icon-theme        = lib.mkForce "Neuwaita";
     cursor-theme      = "Bibata-Modern-Ice";
     cursor-size       = 24;
     font-antialiasing = "rgba";
@@ -138,6 +141,8 @@ in
 
   dconf.settings."org/gnome/shell/extensions/user-theme" = {
     name = lib.mkForce "Orchis-Red-Dark-Compact";
+   #name = lib.mkForce "Ant";
+   # name = lib.mkForce "Sweet-Dark";
   };
 
   dconf.settings."org/gtk/settings/file-chooser" = {
