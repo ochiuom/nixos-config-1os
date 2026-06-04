@@ -2,9 +2,9 @@
 { config, pkgs, lib, ... }:
 
 let
-  activeTheme = "Ant";
-  #activeTheme = "Dracula";
-  #activeTheme = "Sweet-Dark";
+ # activeTheme = "Ant";
+  activeTheme = "Dracula";
+ # activeTheme = "Sweet-Dark";
   #activeTheme = "Cyber-Dusk-Rounded-Glass";
   #activeTheme = "Orchis-Red-Dark-Compact";
   #activeTheme = "Tokyonight-B-MB-Dark";

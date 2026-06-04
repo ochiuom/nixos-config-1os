@@ -13,6 +13,7 @@
     fwupd
     gnupg
     android-tools   
+    atuin
     # ── Modern CLI Replacements ───────────────────────────────────────────
     fd                           # find
     ripgrep                      # grep

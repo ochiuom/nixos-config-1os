@@ -1,9 +1,9 @@
 {
   description = "ochinix-pc NixOS configuration";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     disko = {
@@ -12,7 +12,6 @@
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
-
   outputs = inputs@{ self, nixpkgs, home-manager, disko, nixos-hardware, ... }:
   let
     system = "x86_64-linux";

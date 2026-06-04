@@ -23,8 +23,8 @@
     LC_PAPER       = "en_GB.UTF-8";
     LC_MEASUREMENT = "en_GB.UTF-8";
   };
-  console.keyMap = "uk";
-
+ # console.keyMap = "uk";
+ console.useXkbConfig = true;
   # ── User ─────────────────────────────────────────────────────────────────────
   users.users.ochinix = {
     isNormalUser = true;
@@ -65,5 +65,5 @@
 
   # ── Custom options ────────────────────────────────────────────────────────────
  # kernelcore.security.clamav.enable = true;
-  
+  programs.nix-ld.enable = true;  
 }
