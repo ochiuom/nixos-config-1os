@@ -5,7 +5,7 @@
     ./modules/hardware.nix
     ./modules/networking.nix
     ./modules/desktop.nix
-    ./modules/power.nix
+   # ./modules/power.nix
     ./modules/packages.nix
     ./modules/services.nix
     ./modules/nixos/gdm.nix
@@ -16,7 +16,8 @@
   ];
 
   # ── Locale ───────────────────────────────────────────────────────────────────
-  time.timeZone      = "Asia/Kolkata";
+  time.timeZone = "Asia/Singapore";
+  # time.timeZone      = "Asia/Kolkata";
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
     LC_TIME        = "en_GB.UTF-8";

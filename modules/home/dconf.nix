@@ -56,9 +56,11 @@
       enabled-extensions = with pkgs.gnomeExtensions; [
         user-themes.extensionUuid
         caffeine.extensionUuid
+        coverflow-alt-tab.extensionUuid
+        just-perfection.extensionUuid
        # places-status-indicator.extensionUuid
         blur-my-shell.extensionUuid
-       # gsconnect.extensionUuid
+        gsconnect.extensionUuid
         desktop-cube.extensionUuid
         burn-my-windows.extensionUuid
         #impatience.extensionUuid
@@ -80,21 +82,21 @@
         #status-area-horizontal-spacing.extensionUuid
         #tailscale-status.extensionUuid
         #wallpaper-slideshow.extensionUuid
-        #dash-to-panel.extensionUuid
+        dash-to-panel.extensionUuid
         #rounded-window-corners-reborn.extensionUuid
         open-bar.extensionUuid
         #top-bar-organizer.extensionUuid
         vitals.extensionUuid
         weather-or-not.extensionUuid
         #logo-menu.extensionUuid
-       # dash2dock-lite.extensionUuid
+        dash2dock-lite.extensionUuid
         dash-to-dock.extensionUuid
         #app-menu-is-back.extensionUuid
        # media-controls.extensionUuid
         #app-grid-wizard.extensionUuid
         dynamic-music-pill.extensionUuid
         pip-on-top.extensionUuid
-      #  soundbar.extensionUuid
+       # soundbar.extensionUuid
         "desktop-quote@ochinix"
       ];
     };

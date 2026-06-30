@@ -44,7 +44,7 @@
     mpv
     mplayer
     smplayer                     # Qt frontend for mplayer/mpv
-
+    zoom-us
     # ── Graphics & Image ──────────────────────────────────────────────────
     gimp
     inkscape
@@ -70,7 +70,7 @@
     # ── AI / Dev Tools ────────────────────────────────────────────────────
     opencode
     fragments                    # Torrent client (GNOME)
-
+    qbittorrent
     # ── Pi5 Server ────────────────────────────────────────────────────
     joplin-desktop
 

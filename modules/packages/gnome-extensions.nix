@@ -4,7 +4,9 @@
     user-themes
     caffeine
     blur-my-shell
-    #gsconnect
+    gsconnect
+    just-perfection
+    coverflow-alt-tab
     desktop-cube
     burn-my-windows
     #impatience
@@ -29,10 +31,12 @@
     vitals
     weather-or-not
     dash-to-dock
+    dash-to-panel
+    dash2dock-lite
     #app-menu-is-back
     #app-grid-wizard
     dynamic-music-pill
     pip-on-top
-    #soundbar
+   # soundbar
   ];
 }

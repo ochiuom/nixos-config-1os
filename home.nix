@@ -3,7 +3,7 @@
   imports = [
     ./modules/home/desktop-quote
     ./modules/home/dconf.nix
-    ./modules/home/themes.nix
+   # ./modules/home/themes.nix
     ./modules/home/shell.nix
     ./modules/home/media.nix
     ./modules/home/terminal.nix

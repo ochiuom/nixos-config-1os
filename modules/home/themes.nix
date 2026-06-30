@@ -2,12 +2,13 @@
 { config, pkgs, lib, ... }:
 
 let
- # activeTheme = "Ant";
-  activeTheme = "Dracula";
- # activeTheme = "Sweet-Dark";
-  #activeTheme = "Cyber-Dusk-Rounded-Glass";
-  #activeTheme = "Orchis-Red-Dark-Compact";
-  #activeTheme = "Tokyonight-B-MB-Dark";
+  activeTheme = "Lycia";
+  # activeTheme = "Ant";
+  # activeTheme = "Dracula";
+  # activeTheme = "Sweet-Dark";
+  # activeTheme = "Cyber-Dusk-Rounded-Glass";
+  # activeTheme = "Orchis-Red-Dark-Compact";
+  # activeTheme = "Tokyonight-B-MB-Dark";
 
   themeBase = ../../themes/${activeTheme};
 
@@ -21,6 +22,10 @@ let
     lib.optionalAttrs condition {
       "${target}" = { source = src; recursive = true; };
     };
+
+  # Lycia-specific source layout: themes/Lycia/{Lycia,Lycia-hdpi,Lycia-xhdpi}
+  lyciaRoot = ../../themes/Lycia;
+  lyciaVariants = [ "Lycia" "Lycia-hdpi" "Lycia-xhdpi" ];
 
 in
 {
@@ -69,6 +74,30 @@ in
       ~/.local/share/themes/Cyber-Dusk-Rounded-Glass/index.theme
   '';
 
+  # --- Lycia: real file copies, no symlinks ---
+  home.activation.installLyciaTheme = lib.hm.dag.entryAfter ["linkThemes"] ''
+    LOCAL_THEMES="$HOME/.local/share/themes"
+    mkdir -p "$LOCAL_THEMES"
+
+    ${lib.concatMapStringsSep "\n" (variant: ''
+      rm -rf "$LOCAL_THEMES/${variant}"
+      cp -rL "${lyciaRoot}/${variant}" "$LOCAL_THEMES/${variant}"
+      chmod -R u+w "$LOCAL_THEMES/${variant}"
+    '') lyciaVariants}
+
+    # Copy gtk-2.0 / gtk-3.0 / gtk-4.0 contents straight into ~/.config
+    for d in gtk-2.0 gtk-3.0 gtk-4.0; do
+      SRC="$LOCAL_THEMES/Lycia/$d"
+      DEST="$HOME/.config/$d"
+      if [ -d "$SRC" ]; then
+        rm -rf "$DEST"
+        mkdir -p "$DEST"
+        cp -rL "$SRC"/. "$DEST"/
+        chmod -R u+w "$DEST"
+      fi
+    done
+  '';
+
   home.file = lib.mkMerge [
     (optionalDir hasGtk2   ".config/gtk-2.0"  "${themeBase}/gtk-2.0")
     (optionalDir hasGtk3   ".config/gtk-3.0"  "${themeBase}/gtk-3.0")
@@ -78,7 +107,7 @@ in
   ];
 
   home.pointerCursor = {
-    name       = "Bibata-Modern-Ice";
+    name       = "Bibata-Modern-Amber";
     package    = pkgs.bibata-cursors;
     size       = 24;
     gtk.enable = true;
@@ -94,7 +123,7 @@ in
       flatpak override --user \
         --env=GTK_THEME=${activeTheme}
       flatpak override --user \
-        --env=ICON_THEME=Neuwaita
+        --env=ICON_THEME=Hatter-Yaru
     fi
   '';
 
@@ -132,7 +161,7 @@ in
   gtk = {
     enable    = true;
     theme     = { name = activeTheme; };
-    iconTheme = { name = "Neuwaita"; };
+    iconTheme = { name = "Hatter-Yaru"; };
     font      = { name = "Inter"; size = 11; };
 
     gtk3.extraConfig = {
@@ -147,8 +176,8 @@ in
 
   dconf.settings."org/gnome/desktop/interface" = {
     gtk-theme         = lib.mkForce activeTheme;
-    icon-theme        = lib.mkForce "Neuwaita";
-    cursor-theme      = "Bibata-Modern-Ice";
+    icon-theme        = lib.mkForce "Hatter-Yaru";
+    cursor-theme      = "Bibata-Modern-Amber";
     cursor-size       = 24;
     font-antialiasing = "rgba";
     font-hinting      = "slight";
@@ -156,7 +185,7 @@ in
   };
 
   dconf.settings."org/gnome/shell/extensions/user-theme" = {
-    name = lib.mkForce "Orchis-Red-Dark-Compact";
+    name = lib.mkForce "Lycia";
   };
 
   dconf.settings."org/gtk/settings/file-chooser" = {
