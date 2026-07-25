@@ -5,7 +5,7 @@
     ./modules/hardware.nix
     ./modules/networking.nix
     ./modules/desktop.nix
-   # ./modules/power.nix
+    ./modules/power.nix
     ./modules/packages.nix
     ./modules/services.nix
     ./modules/nixos/gdm.nix
