@@ -86,17 +86,21 @@ in
       chmod -R u+w "$LOCAL_THEMES/${variant}"
     '') lyciaVariants}
 
-    # Copy gtk-2.0 / gtk-3.0 / gtk-4.0 contents straight into ~/.config
-    for d in gtk-2.0 gtk-3.0 gtk-4.0; do
-      SRC="$LOCAL_THEMES/Lycia/$d"
-      DEST="$HOME/.config/$d"
-      if [ -d "$SRC" ]; then
-        rm -rf "$DEST"
-        mkdir -p "$DEST"
-        cp -rL "$SRC"/. "$DEST"/
-        chmod -R u+w "$DEST"
-      fi
-    done
+    ${lib.optionalString (activeTheme == "Lycia") ''
+      # Copy gtk-2.0 / gtk-3.0 / gtk-4.0 contents straight into ~/.config
+      # Only done when Lycia is the active theme, otherwise this fights
+      # with the home.file symlinks below for whichever theme IS active.
+      for d in gtk-2.0 gtk-3.0 gtk-4.0; do
+        SRC="$LOCAL_THEMES/Lycia/$d"
+        DEST="$HOME/.config/$d"
+        if [ -d "$SRC" ]; then
+          rm -rf "$DEST"
+          mkdir -p "$DEST"
+          cp -rL "$SRC"/. "$DEST"/
+          chmod -R u+w "$DEST"
+        fi
+      done
+    ''}
   '';
 
   home.file = lib.mkMerge [
