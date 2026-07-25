@@ -128,7 +128,8 @@ in
       flatpak override --user \
         --env=GTK_THEME=${activeTheme}
       flatpak override --user \
-        --env=ICON_THEME=Hatter-Yaru
+       # --env=ICON_THEME=Hatter-Yaru
+        --env=ICON_THEME=Gruvbox-Plus-Dark
     fi
   '';
 
@@ -161,12 +162,14 @@ in
   home.packages = [
     pkgs.yaru-theme
     pkgs.bibata-cursors
+    pkgs.gruvbox-plus-icons
   ];
 
   gtk = {
     enable    = true;
     theme     = { name = activeTheme; };
-    iconTheme = { name = "Hatter-Yaru"; };
+    #iconTheme = { name = "Hatter-Yaru"; };
+    iconTheme = { name = "Gruvbox-Plus-Dark"; };
     font      = { name = "Inter"; size = 11; };
 
     gtk3.extraConfig = {
@@ -181,7 +184,8 @@ in
 
   dconf.settings."org/gnome/desktop/interface" = {
     gtk-theme         = lib.mkForce activeTheme;
-    icon-theme        = lib.mkForce "Hatter-Yaru";
+    #icon-theme        = lib.mkForce "Hatter-Yaru";
+    icon-theme        = lib.mkForce "Gruvbox-Plus-Dark";
     cursor-theme      = "Bibata-Modern-Amber";
     cursor-size       = 24;
     font-antialiasing = "rgba";
