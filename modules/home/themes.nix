@@ -2,7 +2,7 @@
 { config, pkgs, lib, ... }:
 
 let
-    activeTheme = "Otis"
+    activeTheme = "Otis";
   # activeTheme = "Lycia";
   # activeTheme = "Ant";
   # activeTheme = "Dracula";
