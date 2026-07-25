@@ -2,7 +2,8 @@
 { config, pkgs, lib, ... }:
 
 let
-  activeTheme = "Lycia";
+    activeTheme = "Kimi-v40"
+  # activeTheme = "Lycia";
   # activeTheme = "Ant";
   # activeTheme = "Dracula";
   # activeTheme = "Sweet-Dark";
