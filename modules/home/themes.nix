@@ -2,7 +2,8 @@
 { config, pkgs, lib, ... }:
 
 let
-    activeTheme = "Otis";
+  activeTheme = "Orchis-Red-Light-Compact";
+  #  activeTheme = "Otis";
   # activeTheme = "Lycia";
   # activeTheme = "Ant";
   # activeTheme = "Dracula";
@@ -48,6 +49,7 @@ in
     rm -rf ~/.local/share/icons/Tela
     rm -rf ~/.local/share/icons/Tela-purple
     rm -rf ~/.local/share/themes/Orchis-Red-Dark-Compact
+    rm -rf ~/.local/share/themes/Orchis-Red-Light-Compact
     rm -rf ~/.local/share/themes/Tokyonight-B-MB-Dark
     rm -rf ~/.local/share/themes/Cyber-Dusk-Rounded-Glass
 
@@ -65,6 +67,8 @@ in
       ~/.local/share/icons/Tela-purple
     ln -sfn /etc/nixos/themes/Orchis-Red-Dark-Compact \
       ~/.local/share/themes/Orchis-Red-Dark-Compact
+    ln -sfn /etc/nixos/themes/Orchis-Red-Light-Compact \
+      ~/.local/share/themes/Orchis-Red-Light-Compact
     ln -sfn /etc/nixos/themes/Tokyonight-B-MB-Dark \
       ~/.local/share/themes/Tokyonight-B-MB-Dark
 
@@ -178,7 +182,7 @@ in
     };
 
     gtk4.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
+      gtk-application-prefer-light-theme = 1;
     };
   };
 

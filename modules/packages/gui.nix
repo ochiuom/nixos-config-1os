@@ -45,6 +45,7 @@
     mplayer
     smplayer                     # Qt frontend for mplayer/mpv
     zoom-us
+    spotify
     # ── Graphics & Image ──────────────────────────────────────────────────
     gimp
     inkscape
