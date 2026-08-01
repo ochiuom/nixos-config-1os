@@ -2,7 +2,8 @@
 { config, pkgs, lib, ... }:
 
 let
-  activeTheme = "Orchis-Red-Light-Compact";
+    activeTheme = "Bubble-Lighter";
+  # activeTheme = "Orchis-Red-Light-Compact";
   #  activeTheme = "Otis";
   # activeTheme = "Lycia";
   # activeTheme = "Ant";

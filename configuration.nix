@@ -50,6 +50,11 @@
     ];
   };
 
+  programs.direnv = {
+  enable = true;
+  nix-direnv.enable = true;
+   };
+
   # ── Unfree packages ───────────────────────────────────────────────────────────
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [
@@ -61,6 +66,7 @@
   environment.variables = {
     GST_PLUGIN_PATH = "/run/current-system/sw/lib/gstreamer-1.0/";
   };
+
 
   system.stateVersion = "26.05";
 
