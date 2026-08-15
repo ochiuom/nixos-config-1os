@@ -49,19 +49,46 @@
     '';
   };
 
-  # ── Ghostty ───────────────────────────────────────────────────────────────
+   # ── Ghostty ───────────────────────────────────────────────────────────────
   home.file.".config/ghostty/config".text = ''
     window-width = 105
     window-height = 40
     window-step-resize = true
     font-family = JetBrains Mono
     font-size = 10
+    font-feature = -calt
     cursor-style = block
     cursor-style-blink = true
     shell-integration = none
     gtk-single-instance = true
-    background = #2c2c2c
+    theme = One Half Light
+#    One Half Light
+#    Monokai Pro Light
+#    Tinacious Design Light
+#    Catppuccin Latte
+
+    # Spacing / layout
+    window-padding-x = 12
+    window-padding-y = 10
+    window-padding-balance = true
+    window-decoration = true
+
+    # Feel
+    mouse-hide-while-typing = true
+    cursor-style-blink = true
+    unfocused-split-opacity = 0.85
+    bold-is-bright = false
+
+    # Scrollback (comfort for long sessions)
+    scrollback-limit = 10000
+
     keybind = ctrl+shift+e=new_window
     keybind = ctrl+shift+n=new_tab
+    keybind = ctrl+shift+c=copy_to_clipboard
+    keybind = ctrl+shift+v=paste_from_clipboard
+    keybind = ctrl+plus=increase_font_size:1
+    keybind = ctrl+minus=decrease_font_size:1
+    keybind = ctrl+0=reset_font_size
   '';
+
 }
