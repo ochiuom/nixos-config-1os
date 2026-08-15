@@ -54,7 +54,7 @@
     gpick                        # Color picker (X11)
     wl-color-picker              # Color picker (Wayland)
     veusz
-
+    p7zip
     # ── File Management ───────────────────────────────────────────────────
     yazi                         # Terminal file manager
     baobab                       # Disk usage analyzer
